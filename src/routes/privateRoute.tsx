@@ -23,8 +23,8 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ path, allowedRoles }) => {
     user.role === "Admin"
       ? import("../modules/Admin")
       : user.role === "Instructor"
-      ? import("../modules/Instructor")
-      : import("../modules//User")
+      ? import("../modules/Instructors")
+      : import("../modules/Learners")
   );
 
   return (

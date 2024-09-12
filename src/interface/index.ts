@@ -33,7 +33,7 @@ export interface instructorProps {
   instagram: string;
   youtube: string;
   certification: string | null;
-  status: 'Pending' | 'Active' | 'Inactive';
+  status: "Pending" | "Active" | "Inactive";
 }
 export interface userProps {
   _id: string;
@@ -55,7 +55,7 @@ export interface userProps {
   linkedin: string;
   facebook: string;
 
-  status: 'Pending' | 'Active' | 'Inactive';
+  status: "Pending" | "Active" | "Inactive";
 }
 
 export interface CourseProps {
@@ -143,35 +143,32 @@ export interface AdminLayoutProps {
   children: JSX.Element[] | JSX.Element;
 }
 
-export interface Coord {
-  lon: number;
-  lat: number;
+interface Lecture {
+  Title: string;
+  Lectures: string[];
 }
-export interface WeatherEntity {
+
+interface Question {
+  question: string;
+  answer: string;
+}
+
+interface Video {
   id: number;
-  main: string;
-  description: string;
-  icon: string;
+  title: string;
+  youtubeId: string;
+  thumbnailUrl: string;
+  playtime: string;
+  watched: boolean;
 }
-export interface Main {
-  temp: number;
-  pressure: number;
-  humidity: number;
-  temp_min: number;
-  temp_max: number;
-}
-export interface Wind {
-  speed: number;
-  deg: number;
-}
-export interface Clouds {
-  all: number;
-}
-export interface Sys {
-  type: number;
-  id: number;
-  message: number;
-  country: string;
-  sunrise: number;
-  sunset: number;
+
+export interface Course {
+  Title: string;
+  Description: string;
+  Rating: number;
+  ReviewsCount: number;
+  LearningPoints: string[];
+  Content: Lecture[];
+  Questions: Question[];
+  Videos: Video[];
 }

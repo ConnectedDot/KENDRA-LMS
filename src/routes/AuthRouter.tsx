@@ -52,20 +52,19 @@ function Auth() {
       Dashboard = lazy(() => import("../modules/Admin"));
       navigateTo = PrivatePaths.ADMIN;
     } else if (user.role === "Instructor") {
-      Dashboard = lazy(() => import("../modules/Instructor"));
+      Dashboard = lazy(() => import("../modules/Instructors"));
       navigateTo = PrivatePaths.INSTRUCTOR;
     } else {
-      Dashboard = lazy(() => import("../modules/User"));
+      Dashboard = lazy(() => import("../modules/Learners"));
       navigateTo = PrivatePaths.USER;
-    }
-    // }
 
-    return (
-      <React.Suspense fallback={<Loader />}>
-        <Dashboard />
-        <Navigate to={navigateTo} replace />
-      </React.Suspense>
-    );
+      return (
+        <React.Suspense fallback={<Loader />}>
+          <Dashboard />
+          <Navigate to={navigateTo} replace />
+        </React.Suspense>
+      );
+    }
   }
 
   if (!user) {

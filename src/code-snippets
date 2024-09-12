@@ -1,0 +1,266 @@
+// Sign in or Sign up
+
+import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+function Authentication() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSignUp = async () => {
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      // Handle successful sign-up (e.g., redirect to profile page)
+    } catch (error) {
+      // Handle errors (e.g., display an error message)
+    }
+  };
+
+  const handleSignIn = async () => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      // Handle successful sign-in (e.g., redirect to dashboard)
+    } catch (error) {
+      // Handle errors (e.g., display an error message)
+    }
+  };
+
+  return (
+    <div>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button onClick={handleSignUp}>Sign Up</button>
+      <button onClick={handleSignIn}>Sign In</button>
+    </div>
+  );
+}
+
+export default Authentication;
+
+// Sign Out
+firebase.auth().signOut();
+
+// User Auth  State
+import React, { useEffect, useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      setUser(user);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (user) {
+    // User is logged in
+    return <div>Welcome, {user.displayName}!</div>;
+  } else {
+    // User is not logged in
+    return <Authentication />;
+  }
+}
+
+export default App;
+
+
+// Firestore CRUD Operations for Courses formdata
+
+const addCourse = (newCourse) => {
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    courses: [...prevFormData.courses, newCourse],
+  }));
+};
+
+const updateCourse = (courseId, updatedCourse) => {
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    courses: prevFormData.courses.map((course) =>
+      course.id === courseId ? updatedCourse : course
+    ),
+  }));
+};
+
+const deleteCourse = (courseId) => {
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    courses: prevFormData.courses.filter((course) => course.id !== courseId),
+  }));
+};
+
+// Firestore CRUD Operations
+
+Create
+const createCourse = async (courseData) => {
+  try {
+    await db.collection('courses').add(courseData);
+    // Handle successful creation (e.g., display a success message)
+  } catch (error) {
+    // Handle errors (e.g., display an error message)
+  }
+};
+
+
+Read
+const getCourses = async () => {
+  try {
+    const querySnapshot = await db.collection('courses').get();
+    const courses = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+
+    const updateCourse = async (courseId, updatedCourseData) => {
+      try {
+        await db.collection('courses').doc(courseId).update(updatedCourseData);
+        // Handle successful update (e.g., display a success message)
+      } catch (error) {
+        // Handle errors (e.g., display an error message)
+      }
+    };
+
+    
+
+    const deleteCourse = async (courseId) => {
+      try {
+        await db.collection('courses').doc(courseId).delete();
+        // Handle successful deletion (e.g., remove the course from the UI)
+      } catch (error) {
+        // Handle errors (e.g., display an error message)
+      }
+    };
+
+    
+    // Handle multiple file uploads
+
+    import React, { useState } from 'react';
+
+function UploadCourse() {
+  const [courseTitle, setCourseTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [videos, setVideos] = useState([]);
+  const instructorId = 'INSTRUCTOR_ID'; // Replace with actual instructor ID
+
+  const handleFileChange = (e) => {
+    setVideos([...e.target.files]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Create a new course document in Firestore
+    const courseRef = db.collection('courses').doc();
+    await courseRef.set({
+      courseTitle,
+      description,
+      instructorId,
+      rating: 0,
+    });
+
+    // Upload videos to Firebase Storage and save their URLs in Firestore
+    const uploadPromises = videos.map((video, index) => {
+      const videoRef = storage.ref().child(`courses/${courseRef.id}/${index + 1}-${video.name}`);
+      return videoRef.put(video).then((snapshot) => {
+        return snapshot.ref.getDownloadURL().then((url) => {
+          return db.collection('courses').doc(courseRef.id).collection('videos').add({
+            videoTitle: video.name,
+            videoUrl: url,
+            order: index + 1,
+          });
+        });
+      });
+    });
+
+    await Promise.all(uploadPromises);
+    console.log('Course and videos uploaded successfully');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Course Title:</label>
+        <input
+          type="text"
+          value={courseTitle}
+          onChange={(e) => setCourseTitle(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label>Description:</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label>Upload Videos:</label>
+        <input
+          type="file"
+          multiple
+          onChange={handleFileChange}
+          required
+        />
+      </div>
+      <button type="submit">Upload Course</button>
+    </form>
+  );
+}
+
+export default UploadCourse;
+
+
+// Fetching uploaded courses
+import React, { useEffect, useState } from 'react';
+
+function CourseDetails({ courseId }) {
+  const [course, setCourse] = useState(null);
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      const courseDoc = await db.collection('courses').doc(courseId).get();
+      setCourse(courseDoc.data());
+
+      const videosSnapshot = await db.collection('courses').doc(courseId).collection('videos').orderBy('order').get();
+      const videosList = videosSnapshot.docs.map(doc => doc.data());
+      setVideos(videosList);
+    };
+
+    fetchCourse();
+  }, [courseId]);
+
+  if (!course) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      <h2>{course.courseTitle}</h2>
+      <p>{course.description}</p>
+      <h3>Videos</h3>
+      <ul>
+        {videos.map((video, index) => (
+          <li key={index}>
+            <a href={video.videoUrl} target="_blank" rel="noopener noreferrer">
+              {video.videoTitle}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default CourseDetails;
+
+
+

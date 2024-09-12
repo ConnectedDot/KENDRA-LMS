@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 const privateRoutes = [
   {
     path: "/dashboard",
-    element: lazy(() => import("../modules/User")),
+    element: lazy(() => import("../modules/Learners")),
   },
   // {
   //   path: '/course-play',

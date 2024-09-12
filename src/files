@@ -1,0 +1,496 @@
+// Assuming you have a function to add a lesson to the database
+async function addLesson(lessonData) {
+  const lesson = await db.collection('lessons').add(lessonData);
+  return lesson.id; // Returns the newly created lesson's ID
+}
+
+// Example lesson data
+const lessonData = {
+  title: 'Getting Started with MongoDB',
+  videoUrl: 'https://example.com/video.mp4',
+  textContent: 'Lesson text content here...',
+  quizzes: [], // Assuming quizzes are managed separately
+};
+
+// Adding a new lesson and linking it to a course
+const lessonId = await addLesson(lessonData);
+const courseId = 'abc123'; // ID of the course to which this lesson should be added
+await db
+  .collection('courses')
+  .doc(courseId)
+  .update({
+    lessons: admin.firestore.FieldValue.arrayUnion(lessonId),
+  });
+
+const studentFormData = {
+  email: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  isVerified: false,
+  profile_picture: '',
+  role: 'Student',
+  status: 'Active',
+  enrolledCourses: [],
+  skill_level: '',
+};
+
+const instructorFormData = {
+  email: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  isVerified: false,
+  profile_picture: '',
+  role: 'Instructor',
+  status: 'Active',
+  bio: '',
+  phone_number: '',
+  expertise: '',
+  courses: [],
+  total_students: 0,
+  total_courses: 0,
+  total_reviews: 0,
+  skill_level: '',
+  website: '',
+  social: {
+    twitter: '',
+    linkedin: '',
+    facebook: '',
+    instagram: '',
+    youtube: '',
+  },
+  certification: '',
+  headline: '',
+};
+
+const adminFormData = {
+  email: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  isVerified: false,
+  profile_picture: '',
+  role: 'Admin',
+  status: 'Active',
+  position: '',
+  accessLevel: '',
+};
+
+// Component to uploading or selecting multiple files upload
+
+import React, { useState } from 'react';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+
+const CourseForm = () => {
+  const [videos, setVideos] = useState([]); // Array to store video files
+  const [uploadedVideoUrls, setUploadedVideoUrls] = useState([]); // Array to store uploaded video URLs
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setVideos(files);
+  };
+
+  // Handleupload one
+  const handleUpload = async () => {
+    const storage = getStorage();
+
+    // Upload each video file
+    for (const video of videos) {
+      const storageRef = ref(storage, `courses/videos/${video.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, video);
+
+      // Monitor upload progress (optional)
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          // ... (Handle upload progress)
+        },
+        (error) => {
+          // ... (Handle upload errors)
+        },
+        () => {
+          // Upload complete
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setUploadedVideoUrls((prevUrls) => [...prevUrls, downloadURL]);
+          });
+        }
+      );
+    }
+  };
+
+  // HandleUpload two option with video data filled in
+  const handleUpload = async () => {
+    const storage = getStorage();
+
+    // Upload each video file
+    for (const video of videos) {
+      const storageRef = ref(storage, `courses/videos/${video.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, video);
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          // ... (Handle upload progress)
+        },
+        (error) => {
+          // ... (Handle upload errors)
+        },
+        () => {
+          // Upload complete
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            // Create a video object with the necessary data
+            const newVideo = {
+              id: Date.now(), // Generate a unique ID (you can use a library like UUID)
+              title: video.name, // Use the video file name as the title
+              youtubeId: downloadURL, // Store the download URL as youtubeId
+              thumbnailUrl: '', // You'll need to generate a thumbnail (see below)
+              playtime: '', // You'll need to get the playtime (see below)
+              watched: false,
+            };
+
+            // Update the 'videos' state with the new video object
+            setVideos((prevVideos) => [...prevVideos, newVideo]);
+          });
+        }
+      );
+    }
+
+    // 2. Generate Thumbnails and Playtime (Optional)
+    //Thumbnails: You can use a library like video-thumbnail-generator to generate thumbnails from the uploaded videos.
+    //Playtime: You can use a library like ffprobe to get the playtime of the video.
+
+    //npm install video-thumbnail-generator ffprobe
+    // Example code to generate thumbnails and playtime
+  };
+
+  // handlesubmit one
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // ... (Get other course data from the form)
+
+    // Create a new course document in Firestore
+    const newCourse = {
+      // ... (Other course data)
+      Videos: uploadedVideoUrls,
+    };
+
+    // ... (Create the course document in Firestore)
+
+    // Update the instructor's document with the new course reference
+    await addCourseToInstructor(instructorId, newCourseId); // Assuming you have a function to do this
+  };
+
+  // Handle submit two
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // ... (Get other course data from the form)
+
+    // Create a new course document in Firestore
+    const newCourse = {
+      // ... (Other course data)
+      Videos: videos, // Use the 'videos' state directly
+    };
+
+    try {
+      // Create the course document in Firestore
+      const docRef = await addDoc(collection(firestore, 'courses'), newCourse);
+      const newCourseId = docRef.id;
+
+      // Update the instructor's document with the new course reference
+      await addCourseToInstructor(instructorId, newCourseId); // Assuming you have a function to do this
+
+      // ... (Handle success, e.g., redirect or display a message)
+    } catch (error) {
+      // ... (Handle errors, e.g., display an error message)
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* ... (Other form fields) */}
+
+      <input type="file" multiple onChange={handleFileChange} />
+      <button type="button" onClick={handleUpload}>
+        Upload Videos
+      </button>
+
+      {/* ... (Rest of your form) */}
+    </form>
+  );
+};
+
+export default CourseForm;
+
+// Complete Example (with addCourseToInstructor ):
+
+import React, { useState } from 'react';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { addDoc, collection, doc, updateDoc, getFirestore } from 'firebase/firestore';
+
+const CourseForm = () => {
+  // ... (Your existing state and functions)
+
+  const firestore = getFirestore(); // Initialize Firestore
+
+  const addCourseToInstructor = async (instructorId: string, courseId: string) => {
+    const instructorRef = doc(firestore, 'instructors', instructorId);
+
+    // Get the current instructor document
+    const instructorDoc = await getDoc(instructorRef);
+    const instructorData = instructorDoc.data();
+
+    // Add the new course reference to the courses array
+    if (instructorData) {
+      const updatedCourses = [...instructorData.courses, courseId]; // Add the new course ID to the array
+      await updateDoc(instructorRef, { courses: updatedCourses });
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // ... (Get other course data from the form)
+
+    // Create a new course document in Firestore
+    const newCourse = {
+      // ... (Other course data)
+      Videos: videos, // Use the 'videos' state directly
+    };
+
+    try {
+      // Create the course document in Firestore
+      const docRef = await addDoc(collection(firestore, 'courses'), newCourse);
+      const newCourseId = docRef.id;
+
+      // Update the instructor's document with the new course reference
+      await addCourseToInstructor(instructorId, newCourseId); // Assuming you have a function to do this
+
+      // ... (Handle success, e.g., redirect or display a message)
+    } catch (error) {
+      // ... (Handle errors, e.g., display an error message)
+    }
+  };
+
+  // ... (Rest of your component)
+};
+
+export default CourseForm;
+
+export interface InstructorProps {
+  _id: string;
+  id: string;
+  uid: string | undefined;
+  gender: string;
+  email: string;
+  password: string;
+  role?: string;
+  token: string;
+  photo?: string;
+  photoURL?: string;
+  emailVerified?: string;
+  firstName: string;
+  lastName: string;
+  bio: string;
+  phone_number: string;
+  expertise: string;
+  courses: string[]; // Array of course document IDs
+  isVerified: boolean;
+  profile_picture: string;
+  total_students: number;
+  total_courses: any[];
+  total_reviews: any[];
+  skill_level: any[];
+  website: string;
+  twitter: string;
+  linkedin: string;
+  facebook: string;
+  instagram: string;
+  youtube: string;
+  certification: string | null;
+  status: 'Pending' | 'Active' | 'Inactive';
+}
+
+export interface InstructorProps {
+  _id: string;
+  id: string;
+  uid: string | undefined;
+  gender: string;
+  email: string;
+  password: string;
+  role?: string;
+  token: string;
+  photo?: string;
+  photoURL?: string;
+  emailVerified?: string;
+  firstName: string;
+  lastName: string;
+  bio: string;
+  phone_number: string;
+  expertise: string;
+  courses: string[]; // Array of course document IDs
+  isVerified: boolean;
+  profile_picture: string;
+  total_students: number;
+  total_courses: any[];
+  total_reviews: any[];
+  skill_level: any[];
+  website: string;
+  twitter: string;
+  linkedin: string;
+  facebook: string;
+  instagram: string;
+  youtube: string;
+  certification: string | null;
+  status: 'Pending' | 'Active' | 'Inactive';
+}
+
+export interface UserProps {
+  _id: string;
+  id: string;
+  uid: string | undefined;
+  gender: string;
+  email: string;
+  role?: string;
+  emailVerified?: string;
+  firstName: string;
+  lastName: string;
+  bio: string;
+  phone_number: string;
+  courses: string[]; // Array of course document IDs
+  isVerified: boolean;
+  profile_picture: string;
+  total_courses: any[];
+  twitter: string;
+  linkedin: string;
+  facebook: string;
+  status: 'Pending' | 'Active' | 'Inactive';
+}
+
+export interface CourseProps {
+  _id: string;
+  title: string;
+  image: string;
+  instructor: string; // Instructor document ID
+  description: string;
+  rating: number;
+  price: string;
+  reviewsCount: number;
+  learningPoints: string[];
+  content: {
+    title: string;
+    lectures: string[];
+  }[];
+  videos: {
+    id: number;
+    title: string;
+    youtubeId: string;
+    thumbnailUrl: string;
+    playtime: string;
+    watched: boolean;
+  }[];
+  questions: {
+    question: string;
+    answer: string;
+  }[];
+}
+
+const instructorData = {
+  _id: 'instructor_1',
+  id: '1',
+  uid: 'uid_1',
+  gender: 'female',
+  email: 'angela@example.com',
+  password: 'hashed_password',
+  role: 'instructor',
+  token: 'token_1',
+  photo: 'photo_url',
+  photoURL: 'photo_url',
+  emailVerified: 'true',
+  firstName: 'Angela',
+  lastName: 'Yu',
+  bio: 'Expert in Python',
+  phone_number: '1234567890',
+  expertise: 'Python',
+  courses: ['course_1', 'course_2'],
+  isVerified: true,
+  profile_picture: 'profile_picture_url',
+  total_students: 1000,
+  total_courses: ['course_1', 'course_2'],
+  total_reviews: ['review_1', 'review_2'],
+  skill_level: ['beginner', 'intermediate'],
+  website: 'https://example.com',
+  twitter: 'https://twitter.com/angela',
+  linkedin: 'https://linkedin.com/in/angela',
+  facebook: 'https://facebook.com/angela',
+  instagram: 'https://instagram.com/angela',
+  youtube: 'https://youtube.com/angela',
+  certification: 'certified',
+  status: 'Active',
+};
+
+const studentData = {
+  _id: 'user_1',
+  id: '1',
+  uid: 'uid_1',
+  gender: 'male',
+  email: 'user@example.com',
+  role: 'student',
+  emailVerified: 'true',
+  firstName: 'John',
+  lastName: 'Doe',
+  bio: 'Learning Python',
+  phone_number: '0987654321',
+  courses: ['course_1'],
+  isVerified: true,
+  profile_picture: 'profile_picture_url',
+  total_courses: ['course_1'],
+  twitter: 'https://twitter.com/john',
+  linkedin: 'https://linkedin.com/in/john',
+  facebook: 'https://facebook.com/john',
+  status: 'Active',
+};
+
+const courseDocument = {
+  _id: 'course_1',
+  title: 'Introduction to Python',
+  image: 'https://picsum.photos/400/?grayscale',
+  instructor: 'instructor_1',
+  description: 'This is a course that will teach you the basics of programming',
+  rating: 4.5,
+  price: '₦41,900',
+  reviewsCount: 100,
+  learningPoints: ['Variables', 'Functions', 'Loops'],
+  content: [
+    {
+      title: 'Section 1: Introduction',
+      lectures: ['Welcome to the course', 'What is programming'],
+    },
+    {
+      title: 'Section 2: Variables',
+      lectures: ['What are variables', 'Declaring variables'],
+    },
+  ],
+  videos: [
+    {
+      id: 1,
+      title: '1. Introduction to the Course',
+      youtubeId: 'https://www.youtube.com/watch?v=4LYDQLhx3Es',
+      thumbnailUrl: 'https://i.ytimg.com/vi/4LYDQLhx3Es/hqdefault.jpg',
+      playtime: '10:00',
+      watched: false,
+    },
+  ],
+  questions: [
+    {
+      question: 'What is the course about?',
+      answer: 'This course is about programming',
+    },
+    {
+      question: 'What will I learn in this course?',
+      answer: 'You will learn the basics of programming',
+    },
+  ],
+};
