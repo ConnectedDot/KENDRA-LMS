@@ -471,6 +471,18 @@ export const DataCourse: Course = {
       watched: false,
     },
   ],
+  category: [
+    {
+      id: 1,
+      title: "Development",
+    },
+  ],
+  subcategoryId: [
+    {
+      id: 1,
+      title: "Web Development",
+    },
+  ],
 };
 
 //  <Checkbox

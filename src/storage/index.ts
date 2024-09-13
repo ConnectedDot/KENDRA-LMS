@@ -8,6 +8,14 @@ export function getStoredUser() {
 export function setStoredUser(user: userProps) {
   localStorage.setItem("user", JSON.stringify(user));
 }
+export function getStoredCart() {
+  const storedUser = localStorage.getItem("cart");
+  return storedUser ? JSON.parse(storedUser) : null;
+}
+
+export function setStoredCart(user: userProps) {
+  localStorage.setItem("cart", JSON.stringify(user));
+}
 
 // STUB: save login token to local storage
 export function setLoginToken(token: string) {

@@ -54,6 +54,7 @@ export interface userProps {
   twitter: string;
   linkedin: string;
   facebook: string;
+  cart: any[];
 
   status: "Pending" | "Active" | "Inactive";
 }
@@ -128,6 +129,14 @@ export interface IUser {
   phone_number: string;
 }
 
+export interface FormErrors {
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  // Add more fields as needed
+}
+
 export interface LoginProps {
   email: string;
   password: string;
@@ -161,6 +170,14 @@ interface Video {
   playtime: string;
   watched: boolean;
 }
+interface CategioryInfo {
+  id: number;
+  title: string;
+}
+interface SubCategioryInfo {
+  id: number;
+  title: string;
+}
 
 export interface Course {
   Title: string;
@@ -171,4 +188,6 @@ export interface Course {
   Content: Lecture[];
   Questions: Question[];
   Videos: Video[];
+  category: CategioryInfo[];
+  subcategoryId: SubCategioryInfo[];
 }
