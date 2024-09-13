@@ -26,6 +26,7 @@ import { PrivatePaths } from "../../routes/path";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { GoogleAuthProvider } from "firebase/auth";
 import { message } from "antd";
+import { sendVerificationEmail } from "../../utils/sendVerificationEmail";
 
 interface UpdateUserData {
   userId: string;
@@ -40,7 +41,7 @@ interface User {
 export function useFirebaseLogin() {
   const navigate = useNavigate();
   const mutationFn: MutationFunction<
-    { userData: userProps; token: string },
+    { userData: userProps; token: string; user: any },
     { email: string; password: string }
   > = async (formData) => {
     const userCredential = await signInWithEmailAndPassword(
@@ -58,7 +59,7 @@ export function useFirebaseLogin() {
       if (userDoc.exists()) {
         const userData = userDoc.data() as userProps;
         const token = await user.getIdToken();
-        return { userData, token };
+        return { userData, token, user };
       } else {
         throw new Error("User data not found in Firestore.");
       }
@@ -69,9 +70,15 @@ export function useFirebaseLogin() {
 
   return useMutation({
     mutationFn,
-    onSuccess: ({ userData, token }) => {
+    onSuccess: async ({ userData, token, user }) => {
       if (userData.isVerified === false) {
         message.info(`Please, verify your email address at ${userData.email}`);
+        try {
+          sendEmailVerification(user);
+          message.success("A new verification email has been sent.");
+        } catch (error) {
+          message.error("Failed to send verification email.");
+        }
         return;
       } else {
         setStoredUser(userData);
@@ -220,7 +227,8 @@ export function useFirebaseRegister() {
 
     if (user) {
       await sendEmailVerification(user);
-      console.log("Email verification sent to:", user.email);
+
+      console.log("Email verification sent to:", user);
 
       const userId = `user${Date.now()}`;
       const { password, ...userData } = formData;

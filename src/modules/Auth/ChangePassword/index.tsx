@@ -141,9 +141,9 @@ export default function ChangePassword() {
                     className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
                   >
                     {isPasswordVisible ? (
-                      <EyeInvisibleOutlined />
+                      <EyeInvisibleOutlined style={{ color: "black" }} />
                     ) : (
-                      <EyeTwoTone />
+                      <EyeTwoTone twoToneColor="black" />
                     )}
                   </button>
                 </div>
@@ -167,9 +167,9 @@ export default function ChangePassword() {
                     className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
                   >
                     {isPasswordVisible ? (
-                      <EyeInvisibleOutlined />
+                      <EyeInvisibleOutlined style={{ color: "black" }} />
                     ) : (
-                      <EyeTwoTone />
+                      <EyeTwoTone twoToneColor="black" />
                     )}
                   </button>
                 </div>

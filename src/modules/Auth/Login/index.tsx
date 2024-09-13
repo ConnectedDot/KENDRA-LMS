@@ -13,11 +13,13 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 import Logo from "../../../assets/Logo/kendra-re.png";
+import { useIsMutating } from "@tanstack/react-query";
 
 const Login = () => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useIsMutating();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -57,22 +59,25 @@ const Login = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleSubmit = async (e?: any) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    console.log("Clicked");
+    // setIsLoading(true);
 
     if (!validateForm()) {
-      setIsLoading(false);
+      // setIsLoading(false);
       return;
     }
 
     try {
       await mutate(formData);
-      setIsLoading(false);
+      // setIsLoading(false);
     } catch (error) {
       // Handle error here
-      console.error(error);
-      setIsLoading(false);
+      // console.error(error);
+      // setIsLoading(false);
     }
   };
 
@@ -163,9 +168,9 @@ const Login = () => {
                     className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
                   >
                     {isPasswordVisible ? (
-                      <EyeInvisibleOutlined />
+                      <EyeInvisibleOutlined style={{ color: "black" }} />
                     ) : (
-                      <EyeTwoTone />
+                      <EyeTwoTone twoToneColor="black" />
                     )}
                   </button>
                 </div>

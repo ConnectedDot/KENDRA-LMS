@@ -12,22 +12,24 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 import Logo from "../../../assets/Logo/kendra-re.png";
+import { useIsMutating } from "@tanstack/react-query";
 
 const Registration = () => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     firstName: "",
     lastName: "",
-    role: "User",
+    role: "Instructor",
   });
 
   const { mutate } = useFirebaseRegister();
   const { mutate: google } = useFirebaseGoogleLogin();
+  const isLoading = useIsMutating();
   const handleInputChange = (e?: any) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -73,20 +75,20 @@ const Registration = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
 
     if (!validateForm()) {
-      setIsLoading(false);
+      // setIsLoading(false);
       return;
     }
 
     try {
       await mutate(formData);
-      setIsLoading(false);
+      // setIsLoading(false);
     } catch (error) {
       // Handle error here
-      console.error(error);
-      setIsLoading(false);
+      // console.error(error);
+      // setIsLoading(false);
     }
   };
 
@@ -183,6 +185,7 @@ const Registration = () => {
                     onChange={handleInputChange}
                     className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
                     placeholder="Email Address"
+                    autoComplete="email"
                   />
                 </div>
                 <div className="col-span-full relative">
@@ -197,7 +200,7 @@ const Registration = () => {
                     className="w-full focus:outline-none border py-3 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
                     placeholder="Password here..."
                     type={isPasswordVisible ? "text" : "password"}
-                    autoComplete="password"
+                    autoComplete="new-password"
                   />
                   <button
                     type="button"
@@ -205,9 +208,9 @@ const Registration = () => {
                     className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
                   >
                     {isPasswordVisible ? (
-                      <EyeInvisibleOutlined />
+                      <EyeInvisibleOutlined style={{ color: "black" }} />
                     ) : (
-                      <EyeTwoTone />
+                      <EyeTwoTone twoToneColor="black" />
                     )}
                   </button>
                 </div>
