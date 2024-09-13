@@ -1,58 +1,64 @@
 export const categories = [
   {
-    name: 'Development',
+    id: 1,
+    name: "Development",
     subcategories: [
-      { name: 'Web Development', path: '/courses/web-development' },
-      { name: 'Mobile Development', path: '/courses/mobile-development' },
-      { name: 'Game Development', path: '/courses/game-development' },
+      { id: 1, name: "Web Development", path: "/courses/web-development" },
+      {
+        id: 2,
+        name: "Mobile Development",
+        path: "/courses/mobile-development",
+      },
+      { id: 3, name: "Game Development", path: "/courses/game-development" },
     ],
   },
   {
-    name: 'Development',
+    id: 2,
+    name: "Business",
     subcategories: [
-      { name: 'Web Development', path: '/courses/web-development' },
-      { name: 'Mobile Development', path: '/courses/mobile-development' },
-      { name: 'Game Development', path: '/courses/game-development' },
+      { id: 4, name: "Finance", path: "/courses/finance" },
+      { id: 5, name: "Entrepreneurship", path: "/courses/entrepreneurship" },
+      { id: 6, name: "Management", path: "/courses/management" },
     ],
   },
   {
-    name: 'Development',
+    id: 3,
+    name: "Design",
     subcategories: [
-      { name: 'Web Development', path: '/courses/web-development' },
-      { name: 'Mobile Development', path: '/courses/mobile-development' },
-      { name: 'Game Development', path: '/courses/game-development' },
+      { id: 7, name: "Web Design", path: "/courses/web-design" },
+      { id: 8, name: "Graphic Design", path: "/courses/graphic-design" },
+      { id: 9, name: "UX/UI Design", path: "/courses/ux-ui-design" },
     ],
   },
   {
-    name: 'Business',
+    id: 4,
+    name: "Marketing",
     subcategories: [
-      { name: 'Finance', path: '/courses/finance' },
-      { name: 'Entrepreneurship', path: '/courses/entrepreneurship' },
-      { name: 'Management', path: '/courses/management' },
+      { id: 10, name: "SEO", path: "/courses/seo" },
+      { id: 11, name: "Social Media", path: "/courses/social-media" },
+      { id: 12, name: "Content Marketing", path: "/courses/content-marketing" },
     ],
   },
   {
-    name: 'Design',
+    id: 5,
+    name: "IT & Software",
     subcategories: [
-      { name: 'Web Design', path: '/courses/web-design' },
-      { name: 'Graphic Design', path: '/courses/graphic-design' },
-      { name: 'UX/UI Design', path: '/courses/ux-ui-design' },
+      { id: 13, name: "Networking", path: "/courses/networking" },
+      { id: 14, name: "Hardware", path: "/courses/hardware" },
+      { id: 15, name: "Operating Systems", path: "/courses/operating-systems" },
     ],
   },
   {
-    name: 'Marketing',
+    id: 6,
+    name: "Personal Development",
     subcategories: [
-      { name: 'SEO', path: '/courses/seo' },
-      { name: 'Social Media', path: '/courses/social-media' },
-      { name: 'Content Marketing', path: '/courses/content-marketing' },
-    ],
-  },
-  {
-    name: 'IT & Software',
-    subcategories: [
-      { name: 'Networking', path: '/courses/networking' },
-      { name: 'Hardware', path: '/courses/hardware' },
-      { name: 'Operating Systems', path: '/courses/operating-systems' },
+      { id: 16, name: "Leadership", path: "/courses/leadership" },
+      { id: 17, name: "Productivity", path: "/courses/productivity" },
+      {
+        id: 18,
+        name: "Communication Skills",
+        path: "/courses/communication-skills",
+      },
     ],
   },
   // Add more categories and subcategories as needed

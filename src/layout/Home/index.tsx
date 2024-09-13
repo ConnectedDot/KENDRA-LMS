@@ -1,18 +1,26 @@
-import { SetStateAction, Suspense, useState } from 'react';
-import { Loader } from '../../components';
-import { AdminLayoutProps } from '../../interface';
-import { MdArrowDownward, MdShoppingCart } from 'react-icons/md';
-import { categories } from './components/menu';
-import Logo from '../../assets/Logo/kendra-re.png';
+import { SetStateAction, Suspense, useState } from "react";
+import { Loader } from "../../components";
+import { AdminLayoutProps } from "../../interface";
+import { MdArrowDownward, MdShoppingCart } from "react-icons/md";
+import { categories } from "./components/menu";
+import Logo from "../../assets/Logo/kendra-re.png";
 
-import { Link } from 'react-router-dom';
-import MobileNavigation from './components/MobileNavigation';
+import { Link } from "react-router-dom";
+import MobileNavigation from "./components/MobileNavigation";
+import { CartDrawer } from "./components/Cartdrawer";
 
-const HomeLayout: React.FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) => {
+const HomeLayout: React.FC<AdminLayoutProps> = ({
+  children,
+}: AdminLayoutProps) => {
   const [activeCat, setActiveCat] = useState<{
     name: string;
     subcategories: { name: string; path: string }[];
   } | null>(null);
+  const [open, setOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
 
   const handleMouseEnter = (
     category: SetStateAction<{
@@ -33,7 +41,11 @@ const HomeLayout: React.FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) 
       <div className="bg-gray-200">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
-            <img className="h-24 w-24 rounded-full mr-6 hidden md:block" src={Logo} alt="" />
+            <img
+              className="h-24 w-24 rounded-full mr-6 hidden md:block"
+              src={Logo}
+              alt=""
+            />
 
             <div>
               <div className="block md:hidden">
@@ -63,17 +75,22 @@ const HomeLayout: React.FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) 
               >
                 Login
               </Link>
-              <Link
-                to="/cart"
+              <div
+                // to="/cart"
                 className="relative mr-2 flex-none text-black px-3.5 py-2.5 text-sm font-semibold outline-none border-none"
               >
                 <div className="relative">
-                  <MdShoppingCart style={{ fontSize: '20px' }} />
+                  <MdShoppingCart
+                    onClick={handleOpen}
+                    style={{ fontSize: "20px" }}
+                  />
                   <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-1.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
                     {cartCount}
                   </span>
+                  {/* <CartDrawer /> */}
+                  <CartDrawer open={isOpen} setOpen={handleClose} />
                 </div>
-              </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -90,31 +107,33 @@ const HomeLayout: React.FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) 
                   onMouseEnter={() => handleMouseEnter(category)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <span className="font-semibold text-gray-900">{category.name}</span>
+                  <span className="font-semibold text-gray-900">
+                    {category.name}
+                  </span>
 
                   {activeCat?.name === category.name && (
-                    <div className="absolute left-0 right-0 top-full mt-0 bg-gray-500 text-white p-2 z-10">
+                    <div className="absolute items-center justify-start top-full mt-0 bg-black w-screen text-white p-2 z-10">
                       {/* Flex layout for subcategories */}
-                      <div className="flex justify-start items-center gap-x-4 w-full">
+                      <div className="flex gap-x-4 w-screen">
                         {activeCat.subcategories.map((subcategory) => (
                           <Link
                             key={subcategory.name}
                             to={subcategory.path}
-                            className="text-sm font-semibold hover:text-gray-300"
+                            className="text-sm font-semibold px-3 py-2"
                           >
                             {subcategory.name}
                           </Link>
                         ))}
                       </div>
                       {/* Arrow indicating the dropdown */}
-                      <div
+                      {/* <div
                         className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full w-0 h-0"
                         style={{
-                          borderLeft: '5px solid transparent',
-                          borderRight: '5px solid transparent',
-                          borderBottom: '5px solid gray',
+                          borderLeft: "5px solid transparent",
+                          borderRight: "5px solid transparent",
+                          borderBottom: "5px solid gray",
                         }}
-                      />
+                      /> */}
                     </div>
                   )}
                 </div>
