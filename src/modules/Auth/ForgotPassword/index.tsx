@@ -3,6 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Card, Divider, Form, Input, message } from "antd";
 import { sendPasswordResetEmail, getAuth } from "firebase/auth";
 
+import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  GooglePlusOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
+import {
+  useFirebaseGoogleLogin,
+  useFirebaseLogin,
+  useFirebaseRegister,
+} from "../../../hooks/auth";
+import Logo from "../../../assets/Logo/kendra-re.png";
+
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -26,7 +39,7 @@ export default function ForgotPassword() {
     const email = formData.email;
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        message.success("Password reset email sent successfully");
+        message.success(`Password reset mail sent to ${email}`);
         setIsLoading(false);
         navigate("/login");
       })
@@ -35,77 +48,85 @@ export default function ForgotPassword() {
         const errorCode = error.code;
         const errorMessage = error.message;
         message.error(errorMessage);
-        // ..
       });
   };
 
   return (
-    <div className="flex h-screen items-center justify-center">
-      <Card
-        style={{
-          borderRadius: "",
-          boxShadow:
-            "rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px",
-        }}
-      >
-        <div className="w-[300px] flex-col items-center justify-center p-5">
-          <div className="mb-5  text-3xl font-bold text-black">
-            Recover password
-          </div>
-          <div className="mb-8 text-sm font-medium text-black">
-            Enter the email address associated with your account and we'll send
-            you a link to reset your password.
-          </div>
-          <Form
-            name="forgor-password"
-            className="bg-white"
-            form={form}
-            variant="outlined"
-            layout="vertical"
-            requiredMark={false}
-            onFinish={handleSubmit}
-          >
-            <Form.Item
-              name="email"
-              rules={[{ required: true }]}
-              help=""
-              label="Email"
-            >
-              <Input
-                className="rounded border-gray-300"
-                name="email"
-                placeholder="Enter Email"
-                onChange={handleInputChange}
-              />
-            </Form.Item>
-
-            <div className="mt-6 mb-5">
-              <Button
-                loading={Boolean(isLoading)}
-                type="text"
-                htmlType="submit"
-                style={{ borderRadius: "0" }}
-                className="flex w-full justify-center bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Submit
-              </Button>
-            </div>
-
-            <Divider className="!text-xs">OR</Divider>
-
-            <div className="mb-3 mt-3 flex flex-col items-center gap-1">
-              <div className="flex items-center gap-1 border-gray-400 border-l-gray-500">
-                <Link
-                  to="/login"
-                  className="text-sm font-bold text-blue-500 hover:text-black"
-                >
-                  Return to login
-                </Link>
+    <section>
+      <div className="flex  h-screen relative justify-center lg:px-0 items-center lg:h-screen md:px-12 overflow-hidden">
+        <div className="bg-white px-4 relative flex flex-1 flex-col lg:py-24 md:flex-none md:px-28 py-10 sm:justify-center xl:py-36 z-10">
+          <div className="w-full lg:h-full max-w-md md:max-w-sm md:px-0 md:w-96 mx-auto sm:px-4">
+            <div className="flex flex-col">
+              <div>
+                <div className="flex flex-col justify-center items-center">
+                  <img
+                    src={Logo}
+                    alt="Logo"
+                    className="flex h-16 w-16 rounded-full "
+                  />{" "}
+                  <h2 className="flex font-bold leading-tight text-black text-3xl font-display">
+                    Recover Password{" "}
+                  </h2>{" "}
+                  <div className="mb-8 mt-8 text-sm text-center font-medium text-black">
+                    Enter the email address associated with your account and
+                    we'll send you a link to reset your password.
+                  </div>
+                </div>
               </div>
             </div>
-          </Form>
+            <form>
+              <div className="space-y-6">
+                <div>
+                  <label htmlFor="email" className="sr-only">
+                    Email Adress{" "}
+                  </label>
+
+                  <input
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full focus:outline-none border py-3 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
+                    placeholder="Email Address"
+                  />
+                </div>
+
+                <div className="col-span-full">
+                  <button
+                    onClick={handleSubmit}
+                    className="items-center justify-center h-12 rounded-xl focus-visible:outline-black focus:outline-none inline-flex bg-black border-2 focus-visible:ring-black hover:bg-gray-500 hover:text-black px-6 py-3 text-center text-white w-full"
+                    type="submit"
+                  >
+                    Submit{" "}
+                    <span className="ml-3">
+                      {isLoading && (
+                        <LoadingOutlined
+                          style={{
+                            fontSize: 16,
+                            fontWeight: "500",
+                            color: "black",
+                          }}
+                          spin
+                        />
+                      )}
+                    </span>
+                  </button>
+                </div>
+                <div className="space-y-4 ">
+                  <p className="flex justify-center font-medium text-sm leading-tight text-black">
+                    <Link
+                      className="text-accent-500 hover:text-accent-400 ml-3"
+                      to="/login"
+                    >
+                      Return to login{" "}
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-      </Card>
-    </div>
+      </div>
+    </section>
   );
 }
