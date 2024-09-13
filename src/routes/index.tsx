@@ -24,14 +24,14 @@ const RoutesWrapper = () => {
             element={
               <Fragment>
                 <Suspense fallback={<Loader />}>
-                  {/* {route.useAuth ? (
+                  {route.useAuth ? (
                     <AuthGuard allowedRoles={route.allowedRoles}>
                       <route.component />
                     </AuthGuard>
                   ) : (
                     <route.component />
-                  )} */}
-                  <route.component />
+                  )}
+                  {/* <route.component /> */}
                 </Suspense>
               </Fragment>
             }

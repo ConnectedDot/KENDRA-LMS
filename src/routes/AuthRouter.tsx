@@ -23,14 +23,18 @@ const paths = [
     path: "/create-account",
     element: lazy(() => import("../modules/Auth/Register")),
   },
+  {
+    path: "/verify-account",
+    element: lazy(() => import("../modules/Auth/VerifyEmail")),
+  },
   // {
   //   path: "/teaching/join",
   //   element: lazy(() => import("../modules/Auth/Instructor-Register")),
   // },
-  // {
-  //   path: "/forget-password",
-  //   element: lazy(() => import("../modules/Auth/ForgotPassword")),
-  // },
+  {
+    path: "/forget-password",
+    element: lazy(() => import("../modules/Auth/ForgotPassword")),
+  },
 
   // just to view it
   {

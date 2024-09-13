@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 const privateRoutes = [
   {
-    path: "/dashboard",
+    path: "dashboard",
     element: lazy(() => import("../modules/Learners")),
   },
   // {
