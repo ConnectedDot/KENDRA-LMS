@@ -1,8 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import { queryKeys } from "../../react-query/constants";
-import { useContext } from "react";
-import { AuthContext } from "../../context";
-// import { isAuthenticated } from '../../utils';
 import { axiosInstance } from "../../axios-Instance";
 import {
   getLoginToken,
@@ -27,42 +22,18 @@ const userProfile = async () => {
 };
 
 export function useAuthenticatedUser() {
-  // const authCtx = useContext(AuthContext);
-  // const fallback = undefined;
   const data = getStoredUser();
-  // const { data = fallback } = useQuery({
-  //   // enabled: isAuthenticated(),
-  //   queryKey: [queryKeys.user],
-  //   queryFn: () => userProfile(),
-  //   onSuccess: (data: any) => {
-  //     authCtx.updateUser(data);
-  //     setStoredUser(data);
-  //   },
-  //   onError: (error: any) => {
-  //     authCtx.logout();
-  //   },
-  // });
   return data;
 }
 
 const totalLogout = async () => {
   signOut(auth)
     .then(() => {
-      // queryClient.removeQueries();
       clearLocalStorage();
     })
     .catch((error) => {
       console.error("Error during total logout:", error);
     });
-
-  // try {
-  //   await signOut(auth);
-
-  //   queryClient.removeQueries();
-  //   clearLocalStorage();
-  // } catch (error) {
-  //   console.error("Error during total logout:", error);
-  // }
 };
 
 function clearLocalStorage() {
@@ -84,6 +55,7 @@ function clearLocalStorage() {
     linkedin: "",
     facebook: "",
     status: "Pending",
+    cart: [],
   });
   setLoginToken("");
   localStorage.clear();

@@ -1,6 +1,11 @@
 import { createContext, useEffect, useState } from "react";
 import { queryKeys } from "../react-query/constants";
-import { getLoginToken, getStoredUser, setStoredUser } from "../storage";
+import {
+  getLoginToken,
+  getStoredCart,
+  getStoredUser,
+  setStoredUser,
+} from "../storage";
 // import { getDecodedJWT, isAuthenticated } from '../utils';
 import { useAuthenticatedUser } from "./hooks";
 import { useQueryClient } from "@tanstack/react-query";
@@ -18,6 +23,7 @@ export const AuthContext = createContext({
 function AuthContextProvider({ children }: ChildProps) {
   const [authToken, setAuthToken] = useState<string | undefined>(undefined);
   const [user, setUser] = useState<userProps | undefined>(undefined);
+  const [cart, setCart] = useState<userProps[]>([]);
   const userDetails = useAuthenticatedUser();
   const queryClient = useQueryClient();
 
@@ -38,6 +44,13 @@ function AuthContextProvider({ children }: ChildProps) {
     const data = getStoredUser();
     if (data) {
       setUser(data);
+    }
+  }, []);
+
+  useEffect(() => {
+    const data = getStoredCart();
+    if (data) {
+      setCart(data);
     }
   }, []);
 
@@ -79,6 +92,7 @@ function AuthContextProvider({ children }: ChildProps) {
       facebook: "",
       status: "Pending",
       total_courses: [],
+      cart: cart ? [...cart] : [],
     };
 
     setUser(userObj);
