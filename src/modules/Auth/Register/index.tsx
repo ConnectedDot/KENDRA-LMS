@@ -23,14 +23,7 @@ const Registration = () => {
     password: "",
     firstName: "",
     lastName: "",
-    isVerified: true,
-    imageUrl: "",
     role: "User",
-    matricNumber: "",
-    state: "",
-    schoolName: "",
-    yearOfEntry: "",
-    department: "",
   });
 
   const { mutate } = useFirebaseRegister();
@@ -72,10 +65,6 @@ const Registration = () => {
     // Add more validation rules as needed
 
     return isValid;
-  };
-
-  const handleLogin = () => {
-    navigate("/login");
   };
 
   const togglePasswordVisibility = () => {
@@ -122,7 +111,7 @@ const Registration = () => {
                     className="flex h-16 w-16 rounded-full "
                   />{" "}
                   <h2 className="flex font-bold leading-tight text-black text-3xl font-display">
-                    Sign Up to
+                    Sign Up
                   </h2>{" "}
                 </div>
                 <div className="py-3">
@@ -208,6 +197,7 @@ const Registration = () => {
                     className="w-full focus:outline-none border py-3 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
                     placeholder="Password here..."
                     type={isPasswordVisible ? "text" : "password"}
+                    autoComplete="password"
                   />
                   <button
                     type="button"

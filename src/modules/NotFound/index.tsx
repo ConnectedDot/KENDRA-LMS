@@ -1,6 +1,6 @@
-import { FrownOutlined } from '@ant-design/icons';
-import { MdError, MdNotificationsPaused } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { FrownOutlined } from "@ant-design/icons";
+import { MdError, MdNotificationsPaused } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -8,13 +8,13 @@ const NotFound = () => {
     navigate(-1);
   };
   const contact = () => {
-    navigate('/contact');
+    navigate("/contact");
   };
 
   return (
     <main className="h-screen grid place-items-center bg-white">
-      <div className="text-center">
-        <MdError style={{ fontSize: '48px', color: 'black' }} />
+      <div className="flex flex-col justify-center items-center text-center">
+        <MdError style={{ fontSize: "48px", color: "black" }} />
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
           Page not found
         </h1>
@@ -24,7 +24,7 @@ const NotFound = () => {
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <button
             type="button"
-            className="text-sm font-semibold rounded-md bg-primary-100 text-black hover:bg-black hover:text-primary-100 px-3.5 py-2.5 shadow-sm outline-none border-none"
+            className="text-sm font-semibold rounded-md bg-primary-100 bg-black text-white hover:text-black hover:bg-slate-300 hover:text-primary-100 px-3.5 py-2.5 shadow-sm outline-none border-none"
             onClick={handleGoBack}
           >
             Go back

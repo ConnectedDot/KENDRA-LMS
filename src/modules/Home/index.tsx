@@ -65,7 +65,7 @@ const Home = () => {
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
                   href="/create-account"
-                  className="rounded-md bg-black text-white px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 hover:text-black hover:bg-slate-300"
+                  className="rounded-md bg-black text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
                 >
                   Get started
                 </a>

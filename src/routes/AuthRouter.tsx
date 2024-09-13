@@ -24,8 +24,20 @@ const paths = [
     element: lazy(() => import("../modules/Auth/Register")),
   },
   {
-    path: "/verify-account",
-    element: lazy(() => import("../modules/Auth/VerifyEmail")),
+    path: "/verify-email/:id",
+    element: lazy(
+      () => import("../modules/Auth/VerifyEmail/VerificationDialog")
+    ),
+  },
+  // {
+  //   path: "/change-password/*",
+  //   element: <AuthActionRouter />,
+  // },
+  {
+    path: "/email-dalogue/*",
+    element: lazy(
+      () => import("../modules/Auth/VerifyEmail/VerificationDialog")
+    ),
   },
   // {
   //   path: "/teaching/join",
@@ -34,6 +46,10 @@ const paths = [
   {
     path: "/forget-password",
     element: lazy(() => import("../modules/Auth/ForgotPassword")),
+  },
+  {
+    path: "/change-password/*",
+    element: lazy(() => import("../modules/Auth/ChangePassword")),
   },
 
   // just to view it

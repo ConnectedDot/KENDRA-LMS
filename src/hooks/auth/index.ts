@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, MutationFunction } from "@tanstack/react-query";
 import { FirebaseError } from "firebase/app";
 import {
@@ -6,20 +6,20 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithPopup,
+  confirmPasswordReset,
+  getAuth,
 } from "firebase/auth";
 import {
   collection,
   doc,
   getDoc,
   getDocs,
-  getFirestore,
   QuerySnapshot,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { auth, db, storage } from "../../Firebase";
-import { AuthContext } from "../../context";
+import { auth, db } from "../../Firebase";
 import { userProps } from "../../interface";
 import { setLoginToken, setStoredUser } from "../../storage";
 import { PrivatePaths } from "../../routes/path";
@@ -37,14 +37,8 @@ interface User {
   // Add other properties if necessary
 }
 
-const database = getFirestore();
-
-const SERVER_ERROR = "There was an error contacting the server.";
-
 export function useFirebaseLogin() {
-  const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
-
   const mutationFn: MutationFunction<
     { userData: userProps; token: string },
     { email: string; password: string }
@@ -77,8 +71,7 @@ export function useFirebaseLogin() {
     mutationFn,
     onSuccess: ({ userData, token }) => {
       if (userData.isVerified === false) {
-        navigate(`/verify-email?email=${encodeURIComponent(userData?.email)}`);
-        // message.info("Please, verify your email address");
+        message.info(`Please, verify your email address at ${userData.email}`);
         return;
       } else {
         setStoredUser(userData);
@@ -88,6 +81,8 @@ export function useFirebaseLogin() {
         // Handle role-based redirection
         if (userData.role === "Admin") {
           navigate(`${PrivatePaths.ADMIN}dashboard`);
+        } else if (userData.role === "Instructor") {
+          navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
         } else {
           navigate(`${PrivatePaths.USER}dashboard`);
         }
@@ -126,6 +121,7 @@ export function useFirebaseGoogleLogin() {
   > = async () => {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
+    console.log(user, "google user details");
     const token = await user.getIdToken();
     const userDocRef = doc(db, "KLMS-USER", user.uid);
     const userDoc = await getDoc(userDocRef);
@@ -178,6 +174,8 @@ export function useFirebaseGoogleLogin() {
       // Handle role-based redirection
       if (userData.role === "Admin") {
         navigate(`${PrivatePaths.ADMIN}dashboard`);
+      } else if (userData.role === "Instructor") {
+        navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
       } else {
         navigate(`${PrivatePaths.USER}dashboard`);
       }
@@ -225,16 +223,17 @@ export function useFirebaseRegister() {
       console.log("Email verification sent to:", user.email);
 
       const userId = `user${Date.now()}`;
-      const userData = {
-        ...formData,
+      const { password, ...userData } = formData;
+      const userDocData = {
+        ...userData,
         id: userId,
         uid: user.uid,
         isVerified: false,
       };
 
-      await setDoc(doc(db, "KLMS-USER", user.uid), userData);
+      await setDoc(doc(db, "KLMS-USER", user.uid), userDocData);
 
-      return { userData, email: formData.email }; // Return email as well
+      return { userData: userDocData, email: formData.email }; // Return email as well
     } else {
       throw new Error("User not authenticated.");
     }
@@ -246,7 +245,7 @@ export function useFirebaseRegister() {
       message.success("Verification email sent. Please check your inbox.");
       console.log(userData, "userData after registration");
       // navigate("/login");
-      navigate(`/verify-email?email=${encodeURIComponent(userData?.email)}`);
+      navigate(`/email-dalogue/?email=${encodeURIComponent(userData?.email)}`);
     },
     onError: (error: any) => {
       let errorMessage = "An unexpected error occurred.";
@@ -266,7 +265,7 @@ export function useFirebaseRegister() {
         }
       }
 
-      message.success(errorMessage);
+      message.error(errorMessage);
     },
   });
 }
@@ -275,12 +274,12 @@ const updateUser: MutationFunction<void, UpdateUserData> = async ({
   userId,
   updatedData,
 }) => {
-  const gpphotoId = `gp-user${Date.now()}`;
+  const endraId = `klms-user${Date.now()}`;
   let photoURL = "";
 
   if (updatedData.imageUrl instanceof File) {
     const storage = getStorage();
-    const photoRef = ref(storage, `photos/${gpphotoId}`);
+    const photoRef = ref(storage, `photos/${endraId}`);
     await uploadBytes(photoRef, updatedData.imageUrl);
     photoURL = await getDownloadURL(photoRef);
   } else if (typeof updatedData.imageUrl === "string") {
@@ -354,3 +353,37 @@ export function useFetchUserEmails() {
 
   return { emails, loading, error };
 }
+
+export const useFirebasePasswordReset = (oobCode: string, apiKey: string) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handlePasswordReset = async (
+    newPassword: string,
+    confirmPassword: string
+  ) => {
+    if (newPassword !== confirmPassword) {
+      setError("Passwords don't match");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const auth = getAuth();
+      await confirmPasswordReset(auth, oobCode, newPassword);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error confirming password reset:", error);
+      setError("Failed to reset password");
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    isLoading,
+    error,
+    handlePasswordReset,
+  };
+};

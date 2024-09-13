@@ -22,16 +22,6 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    firstName: "",
-    lastName: "",
-    isVerified: true,
-    imageUrl: "",
-    role: "User",
-    matricNumber: "",
-    state: "",
-    schoolName: "",
-    yearOfEntry: "",
-    department: "",
   });
 
   const { mutate } = useFirebaseLogin();
@@ -107,7 +97,7 @@ const Login = () => {
                     className="flex h-16 w-16 rounded-full "
                   />{" "}
                   <h2 className="flex font-bold leading-tight text-black text-3xl font-display">
-                    Sign In to
+                    Sign In
                   </h2>{" "}
                 </div>
                 <div className="py-3">

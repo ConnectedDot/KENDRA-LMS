@@ -134,7 +134,6 @@ export interface FormErrors {
   password?: string;
   firstName?: string;
   lastName?: string;
-  // Add more fields as needed
 }
 
 export interface LoginProps {
@@ -144,8 +143,6 @@ export interface LoginProps {
 
 export interface LayoutProps {
   children: JSX.Element[] | JSX.Element;
-  // Heading: string;
-  // Background: string;
 }
 
 export interface AdminLayoutProps {
