@@ -24,6 +24,10 @@ const paths = [
     element: lazy(() => import("../modules/Auth/Register")),
   },
   {
+    path: "/kendra-teachers",
+    element: lazy(() => import("../modules/Auth/Register")),
+  },
+  {
     path: "/verify-email/:id",
     element: lazy(
       () => import("../modules/Auth/VerifyEmail/VerificationDialog")
