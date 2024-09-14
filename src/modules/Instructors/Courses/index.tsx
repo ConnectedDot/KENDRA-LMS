@@ -219,7 +219,7 @@ const CourseRegForm = () => {
 								<button
 									disabled={isLoading}
 									onClick={HandleSubmission}
-									className="rounded-md bg-black text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
+									className="w-[10%] rounded-md bg-black text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
 								>
 									<span className="mr-2 text-xs">
 										<span className="ml-3">
