@@ -16,7 +16,7 @@ interface BasicInfoTabProps {
 		gender: string;
 		email: string;
 		bio: string;
-		photoURL?: string;
+		photo?: string;
 	};
 	onUpdateData: (data: any) => void;
 }
@@ -27,7 +27,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 }) => {
 	const [uploadError, setUploadError] = useState<any>({});
 	const [previewImage, setPreviewImage] = useState<string | null>(
-		formData.photoURL || imageUrl
+		formData.photo || imageUrl
 	);
 	const [files, setFiles] = useState<string | null>(null);
 
@@ -53,6 +53,13 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 		setUploadError(null);
 		return true;
 	};
+
+	// const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	//     const files = e.target.files;
+	//     if (files && files.length > 0) {
+	//       setFormData((prevData) => ({ ...prevData, imageUrl: files[0] }));
+	//     }
+	//   };
 
 	const handleFileChange = async (info: any) => {
 		if (uploadError) {
@@ -183,40 +190,28 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 
 			<div className="flex justify-between items-center min-h-[150px] mb-4 mt-4">
 				<div className="flex">
-					<ConfigProvider button={{style: {width: 20, margin: 4}}}>
-						<Popover
-							placement="top"
-							title=""
-							content={
-								<div>
-									<p>Upload a profile picture</p>
-								</div>
-							}
-						>
-							<Upload
-								{...props}
-								name="photo"
-								className="avatar-uploader"
-								showUploadList={false}
-								beforeUpload={beforeUpload}
-							>
-								<div className="relative w-100 h-60">
-									{previewImage ? (
-										<img
-											src={previewImage}
-											alt="profile"
-											className="w-full h-full rounded-lg object-cover"
-										/>
-									) : (
-										<TiCameraOutline className="bg-gray-500 text-white text-xl" />
-									)}
-									<div className="absolute inset-0 bg-gray-500 bg-opacity-70 rounded-lg flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-										<TiCameraOutline className="text-white text-xl" />
-									</div>
-								</div>
-							</Upload>
-						</Popover>
-					</ConfigProvider>
+					<Upload
+						{...props}
+						name="photo"
+						className="avatar-uploader"
+						showUploadList={false}
+						beforeUpload={beforeUpload}
+					>
+						<div className="relative w-100 h-60">
+							{previewImage ? (
+								<img
+									src={previewImage}
+									alt="profile"
+									className="w-full h-full rounded-lg object-cover"
+								/>
+							) : (
+								<TiCameraOutline className="bg-gray-500 text-white text-xl" />
+							)}
+							<div className="absolute inset-0 bg-gray-500 bg-opacity-70 rounded-lg flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+								<TiCameraOutline className="text-white text-xl" />
+							</div>
+						</div>
+					</Upload>
 				</div>
 			</div>
 		</div>

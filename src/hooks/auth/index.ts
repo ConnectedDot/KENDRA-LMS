@@ -403,13 +403,19 @@ const updateUser: MutationFunction<void, UpdateUserData> = async ({
 	const gpphotoId = `klms-user${Date.now()}`;
 	let photoURL = "";
 
+	// Handle photo upload
 	if (updatedData.photo instanceof File) {
 		const storage = getStorage();
 		const photoRef = ref(storage, `photos/${gpphotoId}`);
-		await uploadBytes(photoRef, updatedData.imageUrl);
+		await uploadBytes(photoRef, updatedData.photo);
 		photoURL = await getDownloadURL(photoRef);
 	} else if (typeof updatedData.photo === "string") {
 		photoURL = updatedData.photo;
+	} else if (updatedData.photo?.originFileObj instanceof File) {
+		const storage = getStorage();
+		const photoRef = ref(storage, `photos/${gpphotoId}`);
+		await uploadBytes(photoRef, updatedData.photo.originFileObj);
+		photoURL = await getDownloadURL(photoRef);
 	}
 
 	const userRef = doc(db, "KLMS-USER", userId);
@@ -423,12 +429,23 @@ const updateUser: MutationFunction<void, UpdateUserData> = async ({
 	const gpUserData: Record<string, any> = {
 		...currentData,
 		...updatedData,
-		photo: photoURL || currentData.photo,
 	};
 
+	// Only include the photo field if photoURL is defined
+	if (photoURL) {
+		gpUserData.photo = photoURL;
+	} else if (currentData.photo) {
+		gpUserData.photo = currentData.photo;
+	}
+
 	// Ensure no File objects are passed to Firestore
-	if (gpUserData.imageUrl instanceof File) {
-		delete gpUserData.imageUrl;
+	if (gpUserData.photo instanceof File) {
+		delete gpUserData.photo;
+	}
+
+	// Remove photo field if it's undefined
+	if (gpUserData.photo === undefined) {
+		delete gpUserData.photo;
 	}
 
 	await updateDoc(userRef, gpUserData);
@@ -443,7 +460,7 @@ export function useUpdateUser() {
 			message.success("User data updated successfully");
 		},
 		onError: (error: any) => {
-			message.error("Error updating user data");
+			message.error(`Error updating user data: ${error.message}`);
 		},
 	});
 }
