@@ -21,7 +21,7 @@ export interface instructorProps {
   expertise: string;
   courses: string[];
   isVerified: boolean;
-  profile_picture: string;
+  imageUrl: string;
   total_students: number;
   total_courses: any[];
   total_reviews: any[];
@@ -49,7 +49,7 @@ export interface userProps {
   phone_number: string;
   courses: string[];
   isVerified: boolean;
-  profile_picture: string;
+  imageUrl: string;
   total_courses: any[];
   twitter: string;
   linkedin: string;

@@ -42,6 +42,7 @@ function AuthContextProvider({ children }: ChildProps) {
 
   useEffect(() => {
     const data = getStoredUser();
+    console.log(data, "data");
     if (data) {
       setUser(data);
     }
@@ -86,7 +87,7 @@ function AuthContextProvider({ children }: ChildProps) {
       phone_number: "",
       courses: [],
       isVerified: false,
-      profile_picture: "",
+      imageUrl: "",
       twitter: "",
       linkedin: "",
       facebook: "",

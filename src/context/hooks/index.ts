@@ -49,7 +49,7 @@ function clearLocalStorage() {
     bio: "",
     phone_number: "",
     courses: [],
-    profile_picture: "",
+    imageUrl: "",
     total_courses: [],
     twitter: "",
     linkedin: "",

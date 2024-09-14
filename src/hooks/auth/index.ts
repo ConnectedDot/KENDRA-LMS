@@ -161,7 +161,7 @@ export function useFirebaseGoogleLogin() {
         status: "Pending",
         cart: [],
 
-        profile_picture: user.photoURL || "",
+        imageUrl: user.photoURL || "",
 
         // Add the remaining properties from the 'userProps' type
       };
