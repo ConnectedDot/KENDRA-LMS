@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import type {GetProp, UploadProps} from "antd";
 import {message, Upload} from "antd";
 import {TiCameraOutline} from "react-icons/ti";
@@ -10,54 +10,31 @@ import {category} from "../../../Data";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 interface BasicInfoTabProps {
+	formData: {
+		Title: string;
+		Description: string;
+		price: string;
+		category: {id: string; title: string}[];
+		subcategoryId: {id: string; title: string}[];
+		id?: string;
+		instructorId?: string;
+	};
 	onUpdateData: (data: any) => void;
 }
 
-const BasicInfoTab: React.FC<BasicInfoTabProps> = ({onUpdateData}) => {
-	const {user} = useContext(AuthContext);
+const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
+	formData,
+	onUpdateData,
+}) => {
 	const [uploadError, setUploadError] = useState<any>({});
-	const [selectedCategory, setSelectedCategory] = useState("");
-	const [selectedSubcategory, setSelectedSubcategory] = useState("");
-	const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setSelectedCategory(e.target.value);
-		setSelectedSubcategory("");
-		setFormData(prevData => ({
-			...prevData,
-			category: e.target.value,
-			subcategoryId: "",
-		}));
-	};
-
-	const handleSubcategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setSelectedSubcategory(e.target.value);
-		setFormData(prevData => ({
-			...prevData,
-			subcategoryId: e.target.value,
-		}));
-	};
-
-	const [formData, setFormData] = useState<{
-		Title?: string;
-		Description?: any;
-		price?: string;
-		image?: FileType | undefined;
-		category?: string;
-		subcategoryId?: string;
-		id?: string;
-		instructorId?: string;
-	}>({
-		Title: "",
-		Description: "",
-		price: "",
-		image: undefined,
-		category: "",
-		subcategoryId: "",
-		instructorId: user?.id || "",
-	});
-	console.log(formData);
+	const [selectedCategory, setSelectedCategory] = useState(
+		formData.category[0]?.id || ""
+	);
+	const [selectedSubcategory, setSelectedSubcategory] = useState(
+		formData.subcategoryId[0]?.id || ""
+	);
 
 	const [previewImage, setPreviewImage] = useState<string | null>(imageUrl);
-
 	const [files, setFiles] = useState<string | null>(null);
 
 	const beforeUpload = (file: FileType) => {
@@ -106,16 +83,44 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({onUpdateData}) => {
 		}
 
 		const formData = new FormData();
-		formData.append("image", file);
+		onUpdateData({image: file});
+		if (files) {
+			formData.append("image", files);
+		}
 	};
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e?: any) => {
 		const {name, value} = e.target;
-		setFormData(prevData => ({
-			...prevData,
-			[name]: value,
-		}));
 		onUpdateData({[name]: value});
+	};
+
+	const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const selectedCatId = e.target.value;
+		const selectedCat = category.find(cat => cat.id === selectedCatId);
+
+		setSelectedCategory(selectedCatId);
+		setSelectedSubcategory("");
+		onUpdateData({
+			category: selectedCat
+				? [{id: selectedCat.id, title: selectedCat.title}]
+				: [],
+			subcategoryId: [],
+		});
+	};
+
+	const handleSubcategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const selectedSubcatId = e.target.value;
+		const selectedSubcat = category
+			.find(cat => cat.id === selectedCategory)
+			?.subcategory.find(subcat => subcat.id === selectedSubcatId);
+
+		setSelectedSubcategory(selectedSubcatId);
+
+		onUpdateData({
+			subcategoryId: selectedSubcat
+				? [{id: selectedSubcat.id, title: selectedSubcat.title}]
+				: [],
+		});
 	};
 
 	const props = {
@@ -131,49 +136,6 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({onUpdateData}) => {
 			<h2 className=" mb-2 mt-0 font-bold text-xl md:text-xl">
 				Basic Information
 			</h2>
-			<div className="flex justify-between items-center mb-0 min-h-[150px]">
-				{" "}
-				<div className="flex">
-					<>
-						{" "}
-						<ConfigProvider button={{style: {width: 20, margin: 4}}}>
-							<Popover
-								placement="top"
-								title=""
-								content={
-									<div>
-										<p>Upload a cover picture</p>
-									</div>
-								}
-							>
-								<Upload
-									{...props}
-									name="image"
-									// listType="picture-circle"
-									className="avatar-uploader"
-									showUploadList={false}
-									beforeUpload={beforeUpload}
-								>
-									<div className="relative w-60 h-32">
-										{previewImage ? (
-											<img
-												src={previewImage}
-												alt="images"
-												className="w-full h-full rounded-lg object-cover"
-											/>
-										) : (
-											<TiCameraOutline className="bg-gray-500 text-white text-xl" />
-										)}
-										<div className="absolute inset-0 bg-gray-500 bg-opacity-70 rounded-lg flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-											<TiCameraOutline className="text-white text-xl" />
-										</div>{" "}
-									</div>
-								</Upload>{" "}
-							</Popover>
-						</ConfigProvider>
-					</>
-				</div>
-			</div>
 
 			<div className="flex flex-col md:flex-row gap-6 py-4">
 				<div className="flex-1">
@@ -196,7 +158,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({onUpdateData}) => {
 					<input
 						id="Description"
 						name="Description"
-						// value={formData.Description}
+						value={formData.Description}
 						onChange={handleInputChange}
 						className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
 						placeholder="Description"
@@ -205,37 +167,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({onUpdateData}) => {
 			</div>
 
 			<div className="flex flex-col md:flex-row gap-6 py-4">
-				<div className="flex-1">
-					<label htmlFor="price" className="sr-only">
-						Instructor
-					</label>
-					<input
-						id="instid"
-						name="instid"
-						readOnly
-						value={`${user?.firstName} ${user?.lastName}`}
-						className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
-						placeholder="Price"
-					/>
-					<input type="hidden" name="instructorId" value={user?.id} />
-				</div>
-				<div className="flex-1">
-					<label htmlFor="image" className="sr-only">
-						Image
-					</label>
-					<input
-						id="image"
-						name="image"
-						type="file"
-						onChange={handleFileChange}
-						className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
-						placeholder="Image"
-					/>
-				</div>
-			</div>
-
-			<div className="flex flex-col md:flex-row gap-6 py-4">
-				<div className="flex-1">
+				<div className="flex-1 relative">
 					<label htmlFor="category" className="sr-only">
 						Category
 					</label>
@@ -253,8 +185,19 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({onUpdateData}) => {
 							</option>
 						))}
 					</select>
+					<div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+						<svg
+							className="w-5 h-5 text-gray-400"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+							aria-hidden="true"
+						>
+							<path fillRule="evenodd" d="M10 12l-6-6h12l-6 6z" />
+						</svg>
+					</div>
 				</div>
-				<div className="flex-1">
+				<div className="flex-1 relative">
 					<label htmlFor="subcategory" className="sr-only">
 						Subcategory
 					</label>
@@ -275,23 +218,58 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({onUpdateData}) => {
 								</option>
 							))}
 					</select>
+					<div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+						<svg
+							className="w-5 h-5 text-gray-400"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+							aria-hidden="true"
+						>
+							<path fillRule="evenodd" d="M10 12l-6-6h12l-6 6z" />
+						</svg>
+					</div>
 				</div>
 			</div>
 
-			<div className="flex flex-col gap-4 mt-4">
-				<label htmlFor="image" className="sr-only">
-					Image
-				</label>
-				<TextArea
-					id="description"
-					name="description"
-					rows={4}
-					onChange={handleFileChange}
-					className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
-					placeholder="Image"
-				/>
+			<div className="flex justify-between items-center min-h-[150px] mb-4 mt-4">
+				<div className="flex">
+					<ConfigProvider button={{style: {width: 20, margin: 4}}}>
+						<Popover
+							placement="top"
+							title=""
+							content={
+								<div>
+									<p>Upload a cover picture</p>
+								</div>
+							}
+						>
+							<Upload
+								{...props}
+								name="image"
+								className="avatar-uploader"
+								showUploadList={false}
+								beforeUpload={beforeUpload}
+							>
+								<div className="relative w-100 h-60">
+									{previewImage ? (
+										<img
+											src={previewImage}
+											alt="images"
+											className="w-full h-full rounded-lg object-cover"
+										/>
+									) : (
+										<TiCameraOutline className="bg-gray-500 text-white text-xl" />
+									)}
+									<div className="absolute inset-0 bg-gray-500 bg-opacity-70 rounded-lg flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+										<TiCameraOutline className="text-white text-xl" />
+									</div>
+								</div>
+							</Upload>
+						</Popover>
+					</ConfigProvider>
+				</div>
 			</div>
-
 			<div className="p-6 bg-gray-200 rounded-3xl">
 				<h2 className="text-sm font-semibold mb-4">Disclaimer</h2>
 				<div className="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-[18px]">
@@ -306,8 +284,6 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({onUpdateData}) => {
 					</p>
 				</div>
 			</div>
-
-			<></>
 		</div>
 	);
 };

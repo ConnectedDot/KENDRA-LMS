@@ -69,7 +69,6 @@ const Navbar = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const {user} = useContext(AuthContext);
-	console.log(user, "user in navbar");
 	const [currentLink, setCurrentLink] = useState("/");
 
 	const handleLinkClick = (href: string) => {
@@ -78,7 +77,7 @@ const Navbar = () => {
 
 	const handleSearch = () => {
 		// Handle the search functionality here
-		console.log("Searching for:", searchQuery);
+		// console.log("Searching for:", searchQuery);
 	};
 
 	return (

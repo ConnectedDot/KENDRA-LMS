@@ -181,6 +181,7 @@ export interface Course {
 	Title: string;
 	image?: any;
 	Description: string;
+	fullbrief: string;
 	Rating: number;
 	ReviewsCount: number;
 	price: string;
