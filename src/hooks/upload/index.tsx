@@ -4,6 +4,7 @@ import {
 	uploadBytesResumable,
 	getDownloadURL,
 	uploadBytes,
+	getStorage,
 } from "firebase/storage";
 import {doc, setDoc} from "firebase/firestore";
 import {db, storage} from "../../Firebase";
@@ -28,6 +29,20 @@ const useCourseForm = () => {
 		if (formData.image) {
 			const photoRef = ref(storage, `photos/${courseId}`);
 			await uploadBytes(photoRef, formData.image);
+			photoURL = await getDownloadURL(photoRef);
+		}
+
+		if (formData.image instanceof File) {
+			const storage = getStorage();
+			const photoRef = ref(storage, `photos/${courseId}`);
+			await uploadBytes(photoRef, formData.image);
+			photoURL = await getDownloadURL(photoRef);
+		} else if (typeof formData.image === "string") {
+			photoURL = formData.image;
+		} else if (formData.image?.originFileObj instanceof File) {
+			const storage = getStorage();
+			const photoRef = ref(storage, `photos/${courseId}`);
+			await uploadBytes(photoRef, formData.image.originFileObj);
 			photoURL = await getDownloadURL(photoRef);
 		}
 

@@ -27,8 +27,9 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 }) => {
 	const [uploadError, setUploadError] = useState<any>({});
 	const [previewImage, setPreviewImage] = useState<string | null>(
-		formData.photo || imageUrl
+		formData.photo || imageUrl || null
 	);
+
 	const [files, setFiles] = useState<string | null>(null);
 
 	const beforeUpload = (file: FileType) => {

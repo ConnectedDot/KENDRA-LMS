@@ -179,6 +179,7 @@ interface SubCategioryInfo {
 
 export interface Course {
 	_id: string;
+	id: string;
 	Title: string;
 	image?: any;
 	Description: string;

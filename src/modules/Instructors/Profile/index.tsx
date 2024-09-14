@@ -108,15 +108,21 @@ const ProfilePage = () => {
 	const handleUpdateData = (data: Partial<Instructor>) => {
 		setFormData(prevData => ({...prevData, ...data}));
 	};
-	// const isLoading = useIsMutating();
-	console.log(formData, "formData");
+
 	const {mutate: updateUser} = useUpdateUser();
 	const [progress, setProgress] = useState<number>(0);
-	// useEffect(() => {
-	// 	if (user) {
-	// 		setFormData(user as unknown as Instructor);
-	// 	}
-	// }, [user]);
+
+	useEffect(() => {
+		const calculateProgress = () => {
+			const totalFields = Object.keys(formData).length;
+			const filledFields = Object.values(formData).filter(
+				value => value !== "" && value !== null && value !== undefined
+			).length;
+			return Math.round((filledFields / totalFields) * 100);
+		};
+
+		setProgress(calculateProgress());
+	}, [formData]);
 
 	useEffect(() => {
 		if (user) {
