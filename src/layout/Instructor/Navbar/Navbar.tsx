@@ -4,13 +4,14 @@ import React, {useContext, useState} from "react";
 import {Bars3Icon} from "@heroicons/react/24/outline";
 import Drawer from "./Drawer";
 import Drawerdata from "./Drawerdata";
-import Signdialog from "./Signdialog";
-import Registerdialog from "./Registerdialog";
+import Signdialog from "../../../components/Forms/Signdialog";
+import Registerdialog from "../../../components/Forms/Registerdialog";
 import {Link} from "react-router-dom";
 import logo from "../../../assets/Logo/kendra-re.png";
 import {AuthContext} from "../../../context";
 import {AvatarMenu} from "./AvatarMenu";
 import {FaSearch} from "react-icons/fa";
+import {PrivatePaths} from "../../../routes/path";
 
 interface NavigationItem {
 	name: string;
@@ -19,11 +20,27 @@ interface NavigationItem {
 }
 
 const navigation: NavigationItem[] = [
-	{name: "Home", href: "#/", current: true},
-	{name: "Courses", href: "#courses", current: false},
-	{name: "Mentor", href: "#mentor", current: false},
-	{name: "Group", href: "/", current: false},
-	{name: "Testimonial", href: "#testimonial", current: false},
+	{
+		name: "Dashboard",
+		href: `${PrivatePaths.INSTRUCTOR}dashboard`,
+		current: true,
+	},
+	{
+		name: "My Courses",
+		href: `${PrivatePaths.INSTRUCTOR}courses-view`,
+		current: false,
+	},
+	{
+		name: "Mentor",
+		href: `${PrivatePaths.INSTRUCTOR}mentorships`,
+		current: false,
+	},
+	{name: "Group", href: `${PrivatePaths.INSTRUCTOR}groups`, current: false},
+	{
+		name: "Programs",
+		href: `${PrivatePaths.INSTRUCTOR}programs-view`,
+		current: false,
+	},
 ];
 
 function classNames(...classes: string[]) {

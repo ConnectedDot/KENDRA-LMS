@@ -1,10 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {PrivatePaths} from "../../../routes/path";
 import {useFullLogout} from "../../../context/hooks";
 
 export const AvatarMenu = ({user}: {user: any}) => {
 	const [open, setOpen] = useState(false);
+	const [userData, setUserData] = useState(user);
+
+	useEffect(() => {
+		if (user) {
+			setUserData(user);
+		}
+	}, [user]);
 
 	const getPathPrefix = (role: string) => {
 		switch (role) {
@@ -25,7 +32,7 @@ export const AvatarMenu = ({user}: {user: any}) => {
 		fullLogout();
 	};
 
-	const pathPrefix = getPathPrefix(user?.role);
+	const pathPrefix = getPathPrefix(userData?.role);
 
 	const dropdownItems = [
 		{
@@ -63,7 +70,10 @@ export const AvatarMenu = ({user}: {user: any}) => {
 	};
 
 	return (
-		<nav className="">
+		<nav
+			className="relative top-0 left-0 right-0 z-50"
+			// Add the "z-50" class to make sure the menu appears on top of other elements
+		>
 			<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 				<div className="flex items-center space-x-3 rtl:space-x-reverse"></div>
 				<div className="relative flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -76,32 +86,32 @@ export const AvatarMenu = ({user}: {user: any}) => {
 						aria-haspopup="true"
 					>
 						<span className="sr-only">Open user menu</span>
-						{user?.imageUrl ? (
+						{userData?.imageUrl ? (
 							<img
 								className="w-8 h-8 rounded-full"
-								src={user?.imageUrl}
-								alt={user?.firstName}
+								src={userData?.imageUrl}
+								alt={userData?.firstName}
 							/>
 						) : (
 							<div className="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold">
-								{getInitials(user?.firstName, user?.lastName)}
+								{getInitials(userData?.firstName, userData?.lastName)}
 							</div>
 						)}
 					</button>
 					{open && (
 						<div
-							className="absolute -right-10 top-12 w-48 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700 dark:divide-gray-600"
+							className="absolute -right-12 top-12 w-48 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700 dark:divide-gray-600"
 							id="user-dropdown"
 						>
 							<div className="px-4 py-3">
 								<span className="block text-sm text-gray-900 dark:text-white">
-									{user?.firstName} {user?.lastName}
+									{user?.firstName} {userData?.lastName}
 								</span>
 								<span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-									{user?.email}
+									{userData?.email}
 								</span>
 							</div>
-							<ul className="py-2" aria-labelledby="user-menu-button">
+							<ul className="py-2" aria-labelledby="userData-menu-button">
 								{dropdownItems.slice(0, -1).map((item, index) => (
 									<li key={index}>
 										<Link
