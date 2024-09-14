@@ -28,7 +28,7 @@ const studentFormData = {
   firstName: '',
   lastName: '',
   isVerified: false,
-  profile_picture: '',
+  imageUrl: '',
   role: 'Student',
   status: 'Active',
   enrolledCourses: [],
@@ -41,7 +41,7 @@ const instructorFormData = {
   firstName: '',
   lastName: '',
   isVerified: false,
-  profile_picture: '',
+  imageUrl: '',
   role: 'Instructor',
   status: 'Active',
   bio: '',
@@ -70,7 +70,7 @@ const adminFormData = {
   firstName: '',
   lastName: '',
   isVerified: false,
-  profile_picture: '',
+  imageUrl: '',
   role: 'Admin',
   status: 'Active',
   position: '',
@@ -298,7 +298,7 @@ export interface InstructorProps {
   expertise: string;
   courses: string[]; // Array of course document IDs
   isVerified: boolean;
-  profile_picture: string;
+  imageUrl: string;
   total_students: number;
   total_courses: any[];
   total_reviews: any[];
@@ -332,7 +332,7 @@ export interface InstructorProps {
   expertise: string;
   courses: string[]; // Array of course document IDs
   isVerified: boolean;
-  profile_picture: string;
+  imageUrl: string;
   total_students: number;
   total_courses: any[];
   total_reviews: any[];
@@ -361,7 +361,7 @@ export interface UserProps {
   phone_number: string;
   courses: string[]; // Array of course document IDs
   isVerified: boolean;
-  profile_picture: string;
+  imageUrl: string;
   total_courses: any[];
   twitter: string;
   linkedin: string;
@@ -416,7 +416,7 @@ const instructorData = {
   expertise: 'Python',
   courses: ['course_1', 'course_2'],
   isVerified: true,
-  profile_picture: 'profile_picture_url',
+  imageUrl: 'imageUrl_url',
   total_students: 1000,
   total_courses: ['course_1', 'course_2'],
   total_reviews: ['review_1', 'review_2'],
@@ -445,7 +445,7 @@ const studentData = {
   phone_number: '0987654321',
   courses: ['course_1'],
   isVerified: true,
-  profile_picture: 'profile_picture_url',
+  imageUrl: 'imageUrl_url',
   total_courses: ['course_1'],
   twitter: 'https://twitter.com/john',
   linkedin: 'https://linkedin.com/in/john',
