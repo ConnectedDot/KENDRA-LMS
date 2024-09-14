@@ -7,6 +7,10 @@ const privateRoutes = [
 		element: lazy(() => import("../modules/Instructors")),
 	},
 	{
+		path: "/profile",
+		element: lazy(() => import("../modules/Instructors/Profile")),
+	},
+	{
 		path: "/courses-new",
 		element: lazy(() => import("../modules/Instructors/Courses")),
 	},

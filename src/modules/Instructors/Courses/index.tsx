@@ -10,19 +10,11 @@ import {TbSortAscending} from "react-icons/tb";
 import {Flex, Progress, TabsProps} from "antd";
 import BasicInfoTab from "../components/BasicInfo";
 import {DocumentArrowUpIcon} from "@heroicons/react/24/outline";
-import {UploadOutlined} from "@ant-design/icons";
+import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
 import {MdArrowBack} from "react-icons/md";
 import ContentTab from "../components/ContentTab";
 import VideoContentTab from "../components/VideoContentTab";
-import {
-	getStorage,
-	ref,
-	uploadBytesResumable,
-	getDownloadURL,
-} from "firebase/storage";
-import {getFirestore, doc, setDoc} from "firebase/firestore";
-import videojs from "video.js";
-import {toBlob} from "canvas-to-blob";
+import useCourseForm from "../../../hooks/upload";
 
 interface Course {
 	Title: string;
@@ -53,6 +45,17 @@ const CourseRegForm = () => {
 	const [updateLoading, setUpdateLoading] = useState(false);
 	const [currentTabIndex, setcurrentTabIndex] = useState(0);
 	const {user} = useContext(AuthContext);
+	const {
+		handleSubmit,
+		isLoading,
+		uploadProgress,
+		uploadPercentage,
+	}: {
+		handleSubmit: Function;
+		isLoading: boolean;
+		uploadProgress: {[key: string]: number};
+		uploadPercentage: any;
+	} = useCourseForm();
 
 	useEffect(() => {
 		if (user) {
@@ -76,60 +79,18 @@ const CourseRegForm = () => {
 			{Title: "", Lectures: [""]},
 		],
 		Videos: [],
-		instructorId: "", // Set this based on your logic
+		instructorId: "",
 	});
 
 	const handleUpdateData = (data: Partial<Course>) => {
 		setFormData(prevData => ({...prevData, ...data}));
 	};
-
-	console.log(formData, "following parent's data");
-
 	const [progress, setProgress] = useState<number>(0);
 
-	// useEffect(() => {
-	// 	const calculateProgress = () => {
-	// 		const totalFields = 12; // Total number of fields in the formData
-	// 		let filledFields = 0;
-
-	// 		if (formData._id) filledFields++;
-	// 		if (formData.Title) filledFields++;
-	// 		if (formData.Description) filledFields++;
-	// 		if (formData.fullbrief) filledFields++;
-	// 		if (formData.Rating) filledFields++;
-	// 		if (formData.ReviewsCount) filledFields++;
-	// 		if (formData.price) filledFields++;
-	// 		if (formData.image) filledFields++;
-	// 		if (formData.LearningPoints.length > 0) filledFields++;
-	// 		if (formData.Content.length > 0) filledFields++;
-	// 		if (formData.Questions.length > 0) filledFields++;
-	// 		if (formData.Videos.length > 0) filledFields++;
-	// 		if (formData.category.length > 0) filledFields++;
-	// 		if (formData.subcategoryId.length > 0) filledFields++;
-
-	// 		const progress = (filledFields / totalFields) * 100;
-	// 		setProgress(progress);
-	// 	};
-
-	// 	calculateProgress();
-	// }, [formData]);
-
-	const handleInputChange = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		const {name, value} = e.target;
-		setFormData(prevData => ({...prevData, [name]: value}));
+	const HandleSubmission = (e?: any) => {
+		e.preventDefault();
+		handleSubmit(formData);
 	};
-
-	const handleUpdateCourse = (data: any) => {
-		setFormData(prevData => ({...prevData, ...data}));
-	};
-
-	// const handleUpdate = () => {
-	// 	setUpdateLoading(true);
-	// 	// const UpdatedData = { data: questionaireData };
-	// 	// Update(UpdatedData as any);
-	// };
 
 	const items: TabsProps["items"] = [
 		{
@@ -156,287 +117,12 @@ const CourseRegForm = () => {
 				<VideoContentTab onUpdateData={handleUpdateData} formData={formData} />
 			),
 		},
-		// {
-		// 	key: "4",
-		// 	label: "Questions",
-		// 	icon: <GiBriefcase />,
-		// 	children: <BasicInfoTab onUpdateData={handleUpdateCourse} />,
-		// },
 	];
-
-	// Define storageRef before using it
-	// const storage = getStorage();
-	// const storageRef = ref(storage, 'some-child');
-
-	// Ensure file and metadata are defined
-	// const file = new File([""], "filename");
-	// const metadata = {
-	//   contentType: 'image/jpeg'
-	// };
-
-	// const getVideoDuration = (file: File): Promise<string> => {
-	//   return new Promise((resolve) => {
-	//     const video = document.createElement("video");
-	//     video.preload = "metadata";
-
-	//     video.onloadedmetadata = () => {
-	//       window.URL.revokeObjectURL(video.src);
-	//       const duration = video.duration;
-	//       const formattedDuration = new Date(duration * 1000).toISOString().substr(11, 8); // Format HH:mm:ss
-	//       resolve(formattedDuration);
-	//     };
-	//     video.src = URL.createObjectURL(file);
-	//   });
-	// };
-
-	// const getVideoThumbnail = (file: File): Promise<string> => {
-	//   return new Promise((resolve) => {
-	//     const video = document.createElement("video");
-	//     video.preload = "metadata";
-
-	//     video.onloadeddata = () => {
-	//       const canvas = document.createElement("canvas");
-	//       canvas.width = video.videoWidth;
-	//       canvas.height = video.videoHeight;
-	//       const context = canvas.getContext("2d");
-
-	//       if (context) {
-	//         context.drawImage(video, 0, 0, canvas.width, canvas.height);
-	//         const thumbnailUrl = canvas.toDataURL("image/png");
-	//         resolve(thumbnailUrl);
-	//       }
-	//     };
-
-	//     video.src = URL.createObjectURL(file);
-	//   });
-	// };
-
-	// const uploadVideoToFirebase = (file: File): Promise<string> => {
-	//   const storage = getStorage();
-	//   const storageRef = ref(storage, `videos/${file.name}`);
-	//   const uploadTask = uploadBytesResumable(storageRef, file);
-
-	//   return new Promise((resolve, reject) => {
-	//     uploadTask.on(
-	//       "state_changed",
-	//       (snapshot) => {
-	//         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-	//         console.log("Upload is " + progress + "% done");
-	//       },
-	//       (error) => {
-	//         reject(error);
-	//       },
-	//       () => {
-	//         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-	//           resolve(downloadURL);
-	//         });
-	//       }
-	//     );
-	//   });
-	// };
-
-	// const saveVideoToFirestore = async (videoData: any) => {
-	//   const db = getFirestore();
-	//   const videoDocRef = doc(db, "videos", videoData.id);
-
-	//   await setDoc(videoDocRef, videoData);
-	//   console.log("Video metadata saved to Firestore");
-	// };
-
-	// const progress = uploadBytesResumable(storageRef, file, metadata);
-
-	// const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-	//   const files = e.target.files;
-	//   if (!files) return;
-
-	//   const uploadPromises = Array.from(files).map(async (file, index) => {
-	//     const uploadUrl = await uploadVideoToFirebase(file);
-	//     const playtime = await getVideoDuration(file);
-	//     const thumbnailUrl = await getVideoThumbnail(file);
-
-	//     const videoData = {
-	//       id: formData.Videos.length + index + 1,
-	//       title: file.name,
-	//       youtubeId: uploadUrl,
-	//       thumbnailUrl,
-	//       playtime,
-	//       watched: false,
-	//     };
-
-	//     await saveVideoToFirestore(videoData); // Save metadata to Firestore
-	//     return videoData;
-	//   });
-
-	//   const uploadedVideos = await Promise.all(uploadPromises);
-	//   setFormData(prevData => ({
-	//     ...prevData,
-	//     Videos: [...prevData.Videos, ...uploadedVideos],
-	//   }));
-
-	//   alert("Videos uploaded successfully!");
-	// };
-
-	//////////////
-	/////////////
-	////////////
-
-	const uploadVideo = async (file: File): Promise<string> => {
-		const storage = getStorage();
-		const storageRef = ref(storage, `videos/${file.name}`); // Customize the path
-
-		const uploadTask = uploadBytesResumable(storageRef, file);
-
-		return new Promise((resolve, reject) => {
-			uploadTask.on(
-				"state_changed",
-				snapshot => {
-					// Optional: Track progress (e.g., update a progress bar)
-					const progress =
-						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-					console.log("Upload is " + progress + "% done");
-				},
-				error => {
-					reject(error); // Handle upload errors
-				},
-				() => {
-					// Upload complete
-					getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-						resolve(downloadURL);
-					});
-				}
-			);
-		});
-	};
-
-	// const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-	//     const files = e.target.files;
-	//     if (!files) return;
-
-	//     const uploadPromises = Array.from(files).map(async (file, index) => {
-	//         const uploadUrl = await uploadVideo(file);
-	//         const duration = await extractVideoMetadata(uploadUrl);
-	//         const thumbnailUrl = await generateThumbnail(uploadUrl);
-
-	//         return {
-	//             id: formData.Videos.length + index + 1,
-	//             title: file.name,
-	//             youtubeId: uploadUrl,
-	//             thumbnailUrl: thumbnailUrl,
-	//             playtime: formatTime(duration),
-	//             watched: false,
-	//         };
-	//     });
-
-	// 	const uploadedVideos = await Promise.all(uploadPromises);
-	// 	setFormData(prevData => ({
-	// 		...prevData,
-	// 		Videos: [...prevData.Videos, ...uploadedVideos.map(video => ({ ...video, thumbnailUrl: video.thumbnailUrl || "" }))],
-	// 	}));
-	// };
-
-	// const handleUpdate = async () => {
-	// 	setUpdateLoading(true);
-
-	// 	// Upload videos and update formData
-	// 	const uploadedVideos = await Promise.all(
-	// 		formData.Videos.map(async (video) => {
-	// 			const uploadUrl = await uploadVideo(video.file);
-	// 			const duration = await extractVideoMetadata(uploadUrl);
-	// 			const thumbnailUrl = await generateThumbnail(uploadUrl);
-
-	// 			return {
-	// 				...video,
-	// 				youtubeId: uploadUrl,
-	// 				thumbnailUrl: thumbnailUrl,
-	// 				playtime: formatTime(duration ?? 0),
-	// 			};
-	// 		})
-	// 	);
-	// 	// Update formData with uploaded videos
-	// 	setFormData((prevData) => ({
-	// 		...prevData,
-	// 		Videos: uploadedVideos,
-	// 	}));
-
-	// 	// Submit formData to backend
-	// 	try {
-	// 		// Make API call to submit formData
-	// 		// Replace `apiEndpoint` with your actual API endpoint
-	// 		const response = await fetch(apiEndpoint, {
-	// 			method: "POST",
-	// 			body: JSON.stringify(formData),
-	// 			headers: {
-	// 				"Content-Type": "application/json",
-	// 			},
-	// 		});
-
-	// 		if (response.ok) {
-	// 			// Handle successful submission
-	// 			console.log("Form data submitted successfully!");
-	// 		} else {
-	// 			// Handle submission error
-	// 			console.error("Failed to submit form data");
-	// 		}
-	// 	} catch (error) {
-	// 		// Handle network error
-	// 		console.error("Network error:", error);
-	// 	}
-
-	// 	setUpdateLoading(false);
-	// };
-
-	//  return new Promise((resolve, reject) => {
-	//     uploadTask.on('state_changed',
-	//         (snapshot) => {
-	//             // Optional: Track progress (e.g., update a progress bar)
-	//             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-	//             console.log('Upload is ' + progress + '% done');
-	//         },
-	//         (error) => {
-	//             reject(error); // Handle upload errors
-	//         },
-	//         () => {
-	//             // Upload complete
-	//             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-	//                 resolve(downloadURL);
-	//             });
-	//         }
-	//     );
-	// });
-
-	// const uploadVideo = async (file: File): Promise<string> => {
-	//     // ... (Implementation from previous example)
-	// };
-
-	// const extractVideoMetadata = async (videoUrl: string) => {
-	//     // ... (Implementation from previous example)
-	// };
-
-	// const generateThumbnail = async (videoUrl: string) => {
-	//     // ... (Implementation from previous example)
-	// };
-
-	// const formatTime = (seconds: number) => {
-	//     // ... (Implementation from previous example)
-	// };
 
 	const handleNext = () => {
 		if (currentTabIndex < items.length - 1) {
 			setcurrentTabIndex(currentTabIndex + 1);
 		}
-
-		// if (currentTabIndex >= 1) {
-		//   const formChanged = hasFormChanged(initialData, questionaireData);
-
-		//   if (formChanged) {
-		//     if (!formID) {
-		//       handleCreate();
-		//     } else {
-		//       handleUpdate();
-		//     }
-		//   } else {
-		//   }
-		// }
 	};
 
 	const handlePrev = () => {
@@ -465,6 +151,16 @@ const CourseRegForm = () => {
 					<Flex vertical gap="small" style={{width: 300}}>
 						<Progress percent={progress} size="small" />
 					</Flex>
+				</div>
+				<div className="flex">
+					{Object.keys(uploadProgress).map(videoTitle => (
+						<div key={videoTitle}>
+							<p>
+								{videoTitle}: {uploadProgress[videoTitle]}%
+							</p>
+							<p>{uploadPercentage}</p>
+						</div>
+					))}
 				</div>
 			</div>
 
@@ -521,12 +217,25 @@ const CourseRegForm = () => {
 								</button>
 							) : (
 								<button
-									// onClick={handleUpdate}
-									className="w-[14%] bg-gray-500 hover:bg-blue-500 text-white p-2 rounded flex justify-center items-center"
+									disabled={isLoading}
+									onClick={HandleSubmission}
+									className="rounded-md bg-black text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
 								>
 									<span className="mr-2 text-xs">
-										{updateLoading ? "Submitting..." : "Update"}
+										<span className="ml-3">
+											{isLoading && (
+												<LoadingOutlined
+													style={{
+														fontSize: 16,
+														fontWeight: "500",
+														color: "black",
+													}}
+													spin
+												/>
+											)}
+										</span>
 									</span>
+
 									<UploadOutlined />
 								</button>
 							)}
