@@ -47,6 +47,7 @@ export interface userProps {
 	lastName: string;
 	bio: string;
 	phone_number: string;
+	photo?: string | File;
 	courses: string[];
 	isVerified: boolean;
 	imageUrl: string;

@@ -278,58 +278,58 @@ export function useFirebaseRegister() {
 	});
 }
 
-const updateUser: MutationFunction<void, UpdateUserData> = async ({
-	userId,
-	updatedData,
-}) => {
-	const endraId = `klms-user${Date.now()}`;
-	let photoURL = "";
+// const updateUser: MutationFunction<void, UpdateUserData> = async ({
+// 	userId,
+// 	updatedData,
+// }) => {
+// 	const endraId = `klms-user${Date.now()}`;
+// 	let photoURL = "";
 
-	if (updatedData.imageUrl instanceof File) {
-		const storage = getStorage();
-		const photoRef = ref(storage, `photos/${endraId}`);
-		await uploadBytes(photoRef, updatedData.imageUrl);
-		photoURL = await getDownloadURL(photoRef);
-	} else if (typeof updatedData.imageUrl === "string") {
-		photoURL = updatedData.imageUrl;
-	}
+// 	if (updatedData.imageUrl instanceof File) {
+// 		const storage = getStorage();
+// 		const photoRef = ref(storage, `photos/${endraId}`);
+// 		await uploadBytes(photoRef, updatedData.imageUrl);
+// 		photoURL = await getDownloadURL(photoRef);
+// 	} else if (typeof updatedData.imageUrl === "string") {
+// 		photoURL = updatedData.imageUrl;
+// 	}
 
-	const userRef = doc(db, "KLMS-USER", userId);
-	const userDoc = await getDoc(userRef);
+// 	const userRef = doc(db, "KLMS-USER", userId);
+// 	const userDoc = await getDoc(userRef);
 
-	if (!userDoc.exists()) {
-		throw new Error("User does not exist");
-	}
+// 	if (!userDoc.exists()) {
+// 		throw new Error("User does not exist");
+// 	}
 
-	const currentData = userDoc.data();
-	const gpUserData: Record<string, any> = {
-		...currentData,
-		...updatedData,
-		imageUrl: photoURL || currentData.imageUrl,
-	};
+// 	const currentData = userDoc.data();
+// 	const gpUserData: Record<string, any> = {
+// 		...currentData,
+// 		...updatedData,
+// 		imageUrl: photoURL || currentData.imageUrl,
+// 	};
 
-	// Ensure no File objects are passed to Firestore
-	if (gpUserData.imageUrl instanceof File) {
-		delete gpUserData.imageUrl;
-	}
+// 	// Ensure no File objects are passed to Firestore
+// 	if (gpUserData.imageUrl instanceof File) {
+// 		delete gpUserData.imageUrl;
+// 	}
 
-	await updateDoc(userRef, gpUserData);
+// 	await updateDoc(userRef, gpUserData);
 
-	await setStoredUser(gpUserData as any);
-};
+// 	await setStoredUser(gpUserData as any);
+// };
 
-export function useUpdateUser() {
-	return useMutation({
-		mutationFn: updateUser,
-		onSuccess: () => {
-			message.success("User data updated successfully");
-		},
-		onError: (error: any) => {
-			console.error("Error updating user data:", error);
-			message.error("Error updating user data");
-		},
-	});
-}
+// export function useUpdateUser() {
+// 	return useMutation({
+// 		mutationFn: updateUser,
+// 		onSuccess: () => {
+// 			message.success("User data updated successfully");
+// 		},
+// 		onError: (error: any) => {
+// 			console.error("Error updating user data:", error);
+// 			message.error("Error updating user data");
+// 		},
+// 	});
+// }
 
 export function useFetchUserEmails() {
 	const [emails, setEmails] = useState<User[]>([]);
@@ -395,3 +395,55 @@ export const useFirebasePasswordReset = (oobCode: string, apiKey: string) => {
 		handlePasswordReset,
 	};
 };
+
+const updateUser: MutationFunction<void, UpdateUserData> = async ({
+	userId,
+	updatedData,
+}) => {
+	const gpphotoId = `klms-user${Date.now()}`;
+	let photoURL = "";
+
+	if (updatedData.photo instanceof File) {
+		const storage = getStorage();
+		const photoRef = ref(storage, `photos/${gpphotoId}`);
+		await uploadBytes(photoRef, updatedData.imageUrl);
+		photoURL = await getDownloadURL(photoRef);
+	} else if (typeof updatedData.photo === "string") {
+		photoURL = updatedData.photo;
+	}
+
+	const userRef = doc(db, "KLMS-USER", userId);
+	const userDoc = await getDoc(userRef);
+
+	if (!userDoc.exists()) {
+		throw new Error("User does not exist");
+	}
+
+	const currentData = userDoc.data();
+	const gpUserData: Record<string, any> = {
+		...currentData,
+		...updatedData,
+		photo: photoURL || currentData.photo,
+	};
+
+	// Ensure no File objects are passed to Firestore
+	if (gpUserData.imageUrl instanceof File) {
+		delete gpUserData.imageUrl;
+	}
+
+	await updateDoc(userRef, gpUserData);
+
+	await setStoredUser(gpUserData as any);
+};
+
+export function useUpdateUser() {
+	return useMutation({
+		mutationFn: updateUser,
+		onSuccess: () => {
+			message.success("User data updated successfully");
+		},
+		onError: (error: any) => {
+			message.error("Error updating user data");
+		},
+	});
+}

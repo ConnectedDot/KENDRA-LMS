@@ -111,7 +111,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 						id="firstName"
 						name="firstName"
 						value={formData.firstName}
-						onChange={handleInputChange}
+						readOnly
 						className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
 						placeholder="First Name"
 					/>
@@ -124,7 +124,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 						id="lastName"
 						name="lastName"
 						value={formData.lastName}
-						onChange={handleInputChange}
+						readOnly
 						className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
 						placeholder="Last Name"
 					/>
@@ -136,14 +136,18 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 					<label htmlFor="gender" className="sr-only">
 						Gender
 					</label>
-					<input
+					<select
 						id="gender"
 						name="gender"
 						value={formData.gender}
 						onChange={handleInputChange}
 						className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
-						placeholder="Gender"
-					/>
+					>
+						<option value="">Select Gender</option>
+						<option value="male">Male</option>
+						<option value="female">Female</option>
+						<option value="other">Other</option>
+					</select>
 				</div>
 				<div className="flex-1">
 					<label htmlFor="email" className="sr-only">
@@ -153,7 +157,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 						id="email"
 						name="email"
 						value={formData.email}
-						onChange={handleInputChange}
+						readOnly
 						className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
 						placeholder="Email"
 					/>

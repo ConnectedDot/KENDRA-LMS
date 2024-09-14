@@ -86,10 +86,10 @@ export const AvatarMenu = ({user}: {user: any}) => {
 						aria-haspopup="true"
 					>
 						<span className="sr-only">Open user menu</span>
-						{userData?.imageUrl ? (
+						{userData?.photo ? (
 							<img
 								className="w-8 h-8 rounded-full"
-								src={userData?.imageUrl}
+								src={userData?.photo}
 								alt={userData?.firstName}
 							/>
 						) : (

@@ -6,7 +6,7 @@ import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {IoMdBusiness} from "react-icons/io";
 import {GiBriefcase} from "react-icons/gi";
 import {TbSortAscending} from "react-icons/tb";
-import {Flex, Progress, TabsProps} from "antd";
+import {Flex, message, Progress, TabsProps} from "antd";
 // import BasicInfoTab from "../components/BasicInfoTab";
 // import ContactInfoTab from "../components/ContactInfoTab";
 // import ProfessionalInfoTab from "../components/ProfessionalInfoTab";
@@ -17,6 +17,8 @@ import useProfileForm from "../../../hooks/upload";
 import BasicInfoTab from "./components/BasicInfoTab";
 import ContactInfoTab from "./components/ContactInfoTab";
 import ProfessionalInfoTab from "./components/ProfessionalInfoTab";
+import {useUpdateUser} from "../../../hooks/auth";
+import {useIsMutating} from "react-query";
 
 interface Instructor {
 	_id: string;
@@ -57,20 +59,11 @@ const ProfilePage = () => {
 	const handleGoBack = () => {
 		navigate(-1);
 	};
+
 	const [updateLoading, setUpdateLoading] = useState(false);
 	const [currentTabIndex, setcurrentTabIndex] = useState(0);
 	const {user} = useContext(AuthContext);
-	const {
-		handleSubmit,
-		isLoading,
-		uploadProgress,
-		uploadPercentage,
-	}: {
-		handleSubmit: Function;
-		isLoading: boolean;
-		uploadProgress: {[key: string]: number};
-		uploadPercentage: any;
-	} = useProfileForm();
+	const userId = user?.uid;
 
 	useEffect(() => {
 		if (user) {
@@ -115,17 +108,38 @@ const ProfilePage = () => {
 	const handleUpdateData = (data: Partial<Instructor>) => {
 		setFormData(prevData => ({...prevData, ...data}));
 	};
+	// const isLoading = useIsMutating();
+	console.log(formData, "formData");
+	const {mutate: updateUser} = useUpdateUser();
 	const [progress, setProgress] = useState<number>(0);
+	// useEffect(() => {
+	// 	if (user) {
+	// 		setFormData(user as unknown as Instructor);
+	// 	}
+	// }, [user]);
+
 	useEffect(() => {
 		if (user) {
 			setFormData(user as unknown as Instructor);
 		}
 	}, [user]);
 
-	const HandleSubmission = (e?: any) => {
-		e.preventDefault();
-		handleSubmit(formData);
+	const handleUpdate = (e?: any) => {
+		if (userId) {
+			updateUser({userId, updatedData: formData});
+		} else {
+			message.warning("User ID is not available");
+		}
 	};
+
+	// const handleUpdate = () => {
+	// 	if (userId) {
+	// 		updateUser({userId, updatedData: formData});
+	// 		message.info("button clicked");
+	// 	} else {
+	// 		message.warning("User ID is not available");
+	// 	}
+	// };
 
 	const items: TabsProps["items"] = [
 		{
@@ -190,7 +204,7 @@ const ProfilePage = () => {
 						<Progress percent={progress} size="small" />
 					</Flex>
 				</div>
-				<div className="flex">
+				{/* <div className="flex">
 					{Object.keys(uploadProgress).map(videoTitle => (
 						<div key={videoTitle}>
 							<p>
@@ -199,7 +213,7 @@ const ProfilePage = () => {
 							<p>{uploadPercentage}</p>
 						</div>
 					))}
-				</div>
+				</div> */}
 			</div>
 
 			<div className="flex flex-row">
@@ -255,13 +269,13 @@ const ProfilePage = () => {
 								</button>
 							) : (
 								<button
-									disabled={isLoading}
-									onClick={HandleSubmission}
+									// disabled={isLoading}
+									onClick={handleUpdate}
 									className="w-[10%] rounded-md bg-black text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
 								>
 									<span className="mr-2 text-xs">
 										<span className="ml-3">
-											{isLoading && (
+											{/* {isLoading && (
 												<LoadingOutlined
 													style={{
 														fontSize: 16,
@@ -270,7 +284,7 @@ const ProfilePage = () => {
 													}}
 													spin
 												/>
-											)}
+											)} */}
 										</span>
 									</span>
 

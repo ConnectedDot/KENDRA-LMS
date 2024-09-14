@@ -83,18 +83,18 @@ const ProfessionalInfoTab: React.FC<ProfessionalInfoTabProps> = ({
 				<label htmlFor="status" className="sr-only">
 					Status
 				</label>
-				<select
+				<input
 					id="status"
 					name="status"
-					aria-readonly
+					readOnly
 					value={localFormData.status}
 					// onChange={handleInputChange}
 					className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
 				>
-					<option value="Pending">Pending</option>
+					{/* <option value="Pending">Pending</option>
 					<option value="Active">Active</option>
-					<option value="Inactive">Inactive</option>
-				</select>
+					<option value="Inactive">Inactive</option> */}
+				</input>
 			</div>
 
 			<div className="flex flex-col gap-4 mt-4">

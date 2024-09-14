@@ -84,6 +84,7 @@ function AuthContextProvider({children}: ChildProps) {
 			_id: "",
 			uid: undefined,
 			bio: "",
+			photo: "",
 			phone_number: "",
 			courses: [],
 			isVerified: false,
