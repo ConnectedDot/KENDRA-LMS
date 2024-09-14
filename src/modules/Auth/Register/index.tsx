@@ -107,14 +107,16 @@ const Registration = () => {
             <div className="flex flex-col">
               <div>
                 <div className="flex flex-col justify-center items-center">
-                  <img
-                    src={Logo}
-                    alt="Logo"
-                    className="flex h-16 w-16 rounded-full "
-                  />{" "}
+                  <Link to="/">
+                    <img
+                      src={Logo}
+                      alt="Logo"
+                      className="flex h-16 w-16 rounded-full "
+                    />
+                  </Link>
                   <h2 className="flex font-bold leading-tight text-black text-3xl font-display">
                     Sign Up
-                  </h2>{" "}
+                  </h2>
                 </div>
                 <div className="py-3">
                   <span className="w-full inline-flex relative mt-3 z-0">

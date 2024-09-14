@@ -105,11 +105,13 @@ export default function ChangePassword() {
             <div className="flex flex-col">
               <div>
                 <div className="flex flex-col justify-center items-center">
-                  <img
-                    src={Logo}
-                    alt="Logo"
-                    className="flex h-16 w-16 rounded-full "
-                  />{" "}
+                  <Link to="/">
+                    <img
+                      src={Logo}
+                      alt="Logo"
+                      className="flex h-16 w-16 rounded-full "
+                    />
+                  </Link>
                   <h2 className="flex font-bold leading-tight text-black text-3xl font-display">
                     Change Password{" "}
                   </h2>{" "}
