@@ -56,7 +56,7 @@ const HomeLayout: React.FC<AdminLayoutProps> = ({
 
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <Link
-                to="/teaching/join"
+                to="/kendra-teachers"
                 className="mr-6 flex-none text-gray-600 hover:text-black px-3.5 py-2.5 text-sm font-semibold outline-none border-none hidden lg:block"
               >
                 Teach on Kendra
@@ -76,14 +76,11 @@ const HomeLayout: React.FC<AdminLayoutProps> = ({
                 Login
               </Link>
               <div
-                // to="/cart"
+                onClick={handleOpen}
                 className="relative mr-2 flex-none text-black px-3.5 py-2.5 text-sm font-semibold outline-none border-none"
               >
                 <div className="relative">
-                  <MdShoppingCart
-                    onClick={handleOpen}
-                    style={{ fontSize: "20px" }}
-                  />
+                  <MdShoppingCart style={{ fontSize: "20px" }} />
                   <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-1.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
                     {cartCount}
                   </span>
