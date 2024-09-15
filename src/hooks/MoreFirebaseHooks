@@ -1,0 +1,357 @@
+/* eslint-disable */
+
+
+// Rules for Firestore
+
+service cloud.firestore{
+    match /databases/{database}/documents {
+      match /Admin/{adminId} {
+        allow read: if request.auth != null && request.auth.token.role == 'Admin';
+        allow write: if request.auth != null && request.auth.token.role == 'Admin';
+        allow delete: if request.auth != null && request.auth.token.role == 'Admin';
+      }
+  
+      match /KLMS-USER/{userId} {
+        allow read: if request.auth != null && (request.auth.uid == userId || request.auth.token.role == 'Admin');
+        allow write: if request.auth != null && (request.auth.uid == userId || request.auth.token.role == 'Admin');
+        allow delete: if request.auth != null && (request.auth.uid == userId || request.auth.token.role == 'Admin');
+      }
+  
+      match /courses/{courseId} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && request.auth.token.role == 'Admin';
+        allow create: if request.auth != null && request.auth.token.role == 'Instructor';
+        allow delete: if request.auth != null && request.auth.token.role == 'Admin';
+      }
+  
+      match /transactions/{transactionId} {
+        allow read: if request.auth != null && (request.auth.token.role == 'Admin' || request.auth.uid == resource.data.userId);
+        allow write: if request.auth != null && request.auth.token.role == 'Admin';
+        allow delete: if request.auth != null && (request.auth.token.role == 'Admin' || request.auth.uid == resource.data.userId);
+      }
+    }
+  }
+  
+  // Explanation:
+  // Admin Collection:
+  // Only users with the role 'Admin' can read, write, and delete data in the 'Admin' collection.
+  // KLMS-USER Collection:
+  // Users can read, write, and delete their own data.
+  // Admins can read, write, and delete any user's data.
+  // Courses Collection:
+  // All users can read courses.
+  // Only Admins can write (update/edit) courses.
+  // Only Instructors can create new courses.
+  // Only Admins can delete courses.
+  // Transactions Collection:
+  // Admins can read, write, and delete any transaction.
+  // Users can read their own transactions.
+  // Only Admins can write (update) transactions.
+
+
+
+  service cloud.firestore {
+    match /databases/{database}/documents {
+      match /KLMS-USER/{userId} {
+        allow read: if request.auth != null && (
+          request.auth.token.role == 'Admin' || 
+          get(/databases/(database)/documents/KLMS-USER/$(request.auth.uid)).data.role == 'Admin'
+        );
+        // ... other rules
+      }
+    }
+  }
+//   To access the role from your Firestore collection:
+// You would need to use an embedded read within your security rules. This involves querying the KLMS-USER collection to retrieve the user's document based on the request.auth.uid and then checking the role field.
+// Example:
+  
+
+
+
+// 1. Use Firebase Functions:
+// Create a Firebase Function: Set up a Cloud Function triggered by a specific event, like user creation or user update.
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
+
+exports.updateUserRole = functions.https.onCall((data, context) => {
+  const uid = data.uid;
+  const role = data.role;
+
+  return admin.auth().getUser(uid)
+    .then(user => {
+      return admin.auth().setCustomUserClaims(uid, { role: role });
+    })
+    .then(() => {
+      return { message: `User ${uid} role updated to ${role}` };
+    })
+    .catch(error => {
+      console.error('Error updating user role:', error);
+      throw error;
+    });
+});
+
+
+// 2. Client-Side Update (with Caution):
+// Assuming you have a secure backend endpoint to validate the request
+const updateUserRole = async (uid, role) => {
+  try {
+    const response = await fetch('/your-backend-endpoint', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ uid, role })
+    });
+
+    if (response.ok) {
+      // Update custom claims on the client-side
+      const user = await firebase.auth().currentUser;
+      await user.updateProfile({
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        customClaims: { role: role }
+      });
+      console.log('User role updated successfully!');
+    } else {
+      console.error('Error updating user role:', response.status);
+    }
+  } catch (error) {
+    console.error('Error updating user role:', error);
+  }
+};
+
+
+
+// 3. Implementation Steps:
+// Create a Firebase Function:
+// Go to the Firebase console and navigate to "Functions."
+
+npm install firebase-admin
+
+// Initialize the Admin SDK
+const admin = require('firebase-admin');
+admin.initializeApp();
+
+// Implement the logic to set custom claims:
+exports.setRole = functions.https.onCall((data, context) => {
+  const uid = data.uid;
+  const role = data.role;
+
+  return admin.auth().setCustomUserClaims(uid, { role: role })
+    .then(() => {
+      return { message: `User ${uid} role updated to ${role}` };
+    })
+    .catch(error => {
+      console.error('Error updating user role:', error);
+      throw error;
+    });
+});
+
+// Trigger the Function from Your Client-Side Code:
+// ... other code ...
+
+const mutationFn: MutationFunction<
+    {userData: any},
+    {email: string; password: string; [key: string]: any}
+> = async formData => {
+    // ... create user with createUserWithEmailAndPassword ...
+
+    if (user) {
+        // ... other logic ...
+
+        // Call the Cloud Function to set custom claims
+        const response = await fetch('/your-cloud-function-url', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ uid: user.uid, role: formData.role })
+        });
+
+        // ... rest of your registration logic ...
+    } else {
+        // ... error handling ...
+    }
+};
+
+// ... rest of your useMutation logic ...
+
+
+// Performance: Embedded reads in security rules can impact performance, especially if you have a large database or complex rules.
+// Example Security Rules:
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /KLMS-USER/{userId} {
+      allow read: if request.auth != null && (
+        request.auth.uid == userId || 
+        get(/databases/$(database)/documents/KLMS-USER/$(request.auth.uid)).data.role == 'Admin'
+      );
+      allow write: if request.auth != null && (
+        request.auth.uid == userId || 
+        get(/databases/$(database)/documents/KLMS-USER/$(request.auth.uid)).data.role == 'Admin'
+      );
+      allow delete: if request.auth != null && (
+        request.auth.uid == userId || 
+        get(/databases/$(database)/documents/KLMS-USER/$(request.auth.uid)).data.role == 'Admin'
+      );
+    }
+
+    match /courses/{courseId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/KLMS-USER/$(request.auth.uid)).data.role == 'Admin';
+      allow create: if request.auth != null && get(/databases/$(database)/documents/KLMS-USER/$(request.auth.uid)).data.role == 'Instructor';
+      allow delete: if request.auth != null && get(/databases/$(database)/documents/KLMS-USER/$(request.auth.uid)).data.role == 'Admin';
+    }
+
+    // ... other collections ...
+  }
+}
+
+
+// Example (Firestore for Role Storage with Optimization):
+// Client-side code
+const user = firebase.auth().currentUser;
+const userDocRef = doc(db, "KLMS-USER", user.uid);
+const userDoc = await getDoc(userDocRef);
+const role = userDoc.data()?.role; // Cache the role
+
+// ... later in your application ...
+
+// Use the cached role instead of reading from Firestore again
+if (role === "Admin") {
+  // ...
+} else if (role === "Instructor") {
+  // ...
+}
+
+
+// a custom hook to fetch the details of a signed-in user in React using Firebase Authentication:
+import { useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+export const useFirebaseUser = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  return user;
+};
+
+// Usage:
+import { useFirebaseUser } from './firebase-hooks'; // Assuming your hook is in a separate file
+
+function MyComponent() {
+  const user = useFirebaseUser();
+
+  if (user) {
+    return (
+      <div>
+        <h1>Welcome, {user.displayName}!</h1>
+        <p>Your UID: {user.uid}</p>
+        {/* ... other user-specific content ... */}
+      </div>
+    );
+  } else {
+    return <div>Please sign in.</div>;
+  }
+}
+
+
+// 1. Using Firebase Authentication SDK (Client-Side):
+// updateProfile() Method: The Firebase Authentication SDK provides the updateProfile() method to modify a user's profile data.
+
+
+import { getAuth, updateProfile } from 'firebase/auth';
+
+const auth = getAuth();
+const user = auth.currentUser; // Get the currently signed-in user
+
+if (user) {
+  updateProfile(user, {
+    displayName: 'New Display Name', // Optional
+    photoURL: 'https://example.com/new-profile-picture.jpg' // Update the photo URL
+  })
+    .then(() => {
+      // Profile updated successfully
+      console.log('User profile updated!');
+    })
+    .catch((error) => {
+      // An error occurred
+      console.error('Error updating profile:', error);
+    });
+} else {
+  // User is not signed in
+  console.log('User is not signed in.');
+}
+
+
+// 2. Using Firebase Admin SDK (Server-Side):
+// updateUser() Method: The Firebase Admin SDK provides the updateUser() method to modify a user's profile data from a server-side environment.
+
+const admin = require('firebase-admin');
+admin.initializeApp();
+
+const uid = 'user_uid'; // Replace with the user's UID
+
+admin.auth().updateUser(uid, {
+  photoURL: 'https://example.com/new-profile-picture.jpg' // Update the photo URL
+})
+  .then((userRecord) => {
+    // User updated successfully
+    console.log('User updated:', userRecord.toJSON());
+  })
+  .catch((error) => {
+    // An error occurred
+    console.error('Error updating user:', error);
+  });
+
+
+//   Error Handling: Implement robust error handling in both your client-side and server-side code to handle potential errors during the update process.
+// Example (Client-Side):
+import { useState } from 'react';
+import { getAuth, updateProfile } from 'firebase/auth';
+
+function UserProfile() {
+  const [imageUrl, setImageUrl] = useState('');
+
+  const handleImageChange = (event) => {
+    setImageUrl(event.target.value);
+  };
+
+  const handleUpdateProfile = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      try {
+        await updateProfile(user, { photoURL: imageUrl });
+        console.log('Profile updated successfully!');
+      } catch (error) {
+        console.error('Error updating profile:', error);
+      }
+    } else {
+      console.log('User is not signed in.');
+    }
+  };
+
+  return (
+    <div>
+      <input type="text" value={imageUrl} onChange={handleImageChange} />
+      <button onClick={handleUpdateProfile}>Update Profile</button>
+    </div>
+  );
+}
+
+export default UserProfile;
+
+

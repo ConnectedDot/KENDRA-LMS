@@ -8,6 +8,7 @@ import {Testimonials} from "../../components/Cards/Testimonials";
 import LearnersAreViewing from "../../components/Cards/LearnersViewing";
 import {featuredCourses, learnersAreViewing, testimonials} from "../../Data";
 import {CarouselImages} from "../../components/CarouselComponent/CarouselImages";
+import ReviewCarousel from "../../components/ReviewCardss";
 
 const Home = () => {
 	return (
@@ -88,7 +89,11 @@ const Home = () => {
 					</div>
 				</div>
 
-				<>{/* <ReviewCarousel /> */}</>
+				<>
+					<ReviewCarousel />
+				</>
+
+				{/* import ReviewCarousel from "../../components/ReviewCard"; */}
 
 				<section className=" px-4 mx-auto md:mx-24 w-8xl rounded-3xl bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
 					<div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">

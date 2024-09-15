@@ -6,6 +6,8 @@ import {Link, useNavigate} from "react-router-dom";
 import FeaturedCourse from "./courses/components/FeaturedCourse";
 import {useFetchCourses} from "../../hooks/Querry";
 import {Course} from "../../interface";
+import {useFirebaseUserSignedIn, useObserveAuthState} from "../../hooks/auth";
+// import {useObserveAuthState} from "../../hooks/auth";
 
 const Dashboard = () => {
 	const navigate = useNavigate();
@@ -14,7 +16,9 @@ const Dashboard = () => {
 	};
 	const {courses, error} = useFetchCourses();
 	const {user} = useContext(AuthContext);
-
+	// const userFire = useFirebaseUserSignedIn();
+	const userFire = useObserveAuthState();
+	console.log(userFire, "userFire");
 	const HandleCourses = () => {
 		navigate(`${PrivatePaths.INSTRUCTOR}courses-new`);
 	};
@@ -37,15 +41,15 @@ const Dashboard = () => {
 
 	const quickLinks = [
 		{to: `${PrivatePaths.USER}courses-view`, text: "My Courses"},
-		{to: `${PrivatePaths.USER}`, text: "Track My Progress"},
-		{to: `${PrivatePaths.USER}`, text: "Community"},
+		{to: `${PrivatePaths.USER}tracker`, text: "Track My Progress"},
+		{to: `${PrivatePaths.USER}community`, text: "Community"},
 	];
 
 	return (
 		<>
 			<Navbarin>
 				<section className="px-0 md:mx-0  mx-auto mb-6 mt-6">
-					<div className="flex justify-center items-center">
+					<div className="flex items-center">
 						{" "}
 						<div className="flex">
 							{user?.photo ? (
@@ -55,7 +59,7 @@ const Dashboard = () => {
 									alt={user?.firstName}
 								/>
 							) : (
-								<div className="w-20 h-20  rounded-full bg-gray-500 flex items-center justify-center text-white font-bold">
+								<div className="w-20 h-20 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold">
 									{getInitials(user?.firstName, user?.lastName)}
 								</div>
 							)}

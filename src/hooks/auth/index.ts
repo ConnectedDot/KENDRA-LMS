@@ -8,6 +8,8 @@ import {
 	signInWithPopup,
 	confirmPasswordReset,
 	getAuth,
+	onAuthStateChanged,
+	updateProfile,
 } from "firebase/auth";
 import {
 	collection,
@@ -278,59 +280,6 @@ export function useFirebaseRegister() {
 	});
 }
 
-// const updateUser: MutationFunction<void, UpdateUserData> = async ({
-// 	userId,
-// 	updatedData,
-// }) => {
-// 	const endraId = `klms-user${Date.now()}`;
-// 	let photoURL = "";
-
-// 	if (updatedData.imageUrl instanceof File) {
-// 		const storage = getStorage();
-// 		const photoRef = ref(storage, `photos/${endraId}`);
-// 		await uploadBytes(photoRef, updatedData.imageUrl);
-// 		photoURL = await getDownloadURL(photoRef);
-// 	} else if (typeof updatedData.imageUrl === "string") {
-// 		photoURL = updatedData.imageUrl;
-// 	}
-
-// 	const userRef = doc(db, "KLMS-USER", userId);
-// 	const userDoc = await getDoc(userRef);
-
-// 	if (!userDoc.exists()) {
-// 		throw new Error("User does not exist");
-// 	}
-
-// 	const currentData = userDoc.data();
-// 	const gpUserData: Record<string, any> = {
-// 		...currentData,
-// 		...updatedData,
-// 		imageUrl: photoURL || currentData.imageUrl,
-// 	};
-
-// 	// Ensure no File objects are passed to Firestore
-// 	if (gpUserData.imageUrl instanceof File) {
-// 		delete gpUserData.imageUrl;
-// 	}
-
-// 	await updateDoc(userRef, gpUserData);
-
-// 	await setStoredUser(gpUserData as any);
-// };
-
-// export function useUpdateUser() {
-// 	return useMutation({
-// 		mutationFn: updateUser,
-// 		onSuccess: () => {
-// 			message.success("User data updated successfully");
-// 		},
-// 		onError: (error: any) => {
-// 			console.error("Error updating user data:", error);
-// 			message.error("Error updating user data");
-// 		},
-// 	});
-// }
-
 export function useFetchUserEmails() {
 	const [emails, setEmails] = useState<User[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -464,3 +413,89 @@ export function useUpdateUser() {
 		},
 	});
 }
+
+// import { useState, useEffect } from 'react';
+// import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+export const useFirebaseUserSignedIn = () => {
+	const [fireUser, setFireUser] = useState(null);
+
+	useEffect(() => {
+		const auth = getAuth();
+		const unsubscribe = onAuthStateChanged(auth, user => {
+			setFireUser(user as any);
+		});
+
+		// Clean up the listener when the component unmounts
+		return () => unsubscribe();
+	}, []);
+
+	return fireUser;
+};
+
+//  Observer Listerner
+
+export const useObserveAuthState = () => {
+	const auth = getAuth();
+	const [fireUser, setFireUser] = useState(null);
+	onAuthStateChanged(auth, user => {
+		setFireUser(user as any);
+	});
+	return fireUser;
+};
+
+export const useUpdateFirebaseUser = () => {
+	const [fireUser, setFireUser] = useState(null);
+
+	useEffect(() => {
+		const auth = getAuth();
+		const unsubscribe = onAuthStateChanged(auth, user => {
+			setFireUser(user as any);
+		});
+
+		// Clean up the listener when the component unmounts
+		return () => unsubscribe();
+	}, []);
+
+	return fireUser;
+};
+
+export const useFirebaseLogout = () => {
+	const mutationFn: MutationFunction<void, void> = async () => {
+		const auth = getAuth();
+		await auth.signOut();
+	};
+
+	return useMutation({
+		mutationFn,
+		onSuccess: () => {
+			message.success("Logged out successfully");
+		},
+		onError: (error: any) => {
+			message.error("Failed to log out");
+		},
+	});
+};
+
+// import { getAuth, updateProfile } from 'firebase/auth';
+
+// const auth = getAuth();
+// const user = auth.currentUser; // Get the currently signed-in user
+
+// if (user) {
+//   updateProfile(user, {
+//     displayName: 'New Display Name', // Optional
+//     photoURL: 'https://example.com/new-profile-picture.jpg' // Update the photo URL
+//   })
+//     .then(() => {
+//       // Profile updated successfully
+//       console.log('User profile updated!');
+//     })
+//     .catch((error) => {
+//       // An error occurred
+//       console.error('Error updating profile:', error);
+//     });
+// } else {
+//   // User is not signed in
+//   console.log('User is not signed in.');
+// }
