@@ -185,6 +185,7 @@ export interface Course {
 	Description: string;
 	fullbrief: string;
 	students: number;
+	instructorId?: any;
 	instuctor: string;
 	Rating: number;
 	ReviewsCount: number;

@@ -1,15 +1,43 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Navbarin from "../../../layout/Instructor/Navbar";
 import {useLocation} from "react-router-dom";
 import {Course} from "../../../interface";
+import rcvideo from "../../../assets/rec.mp4";
+import {getStorage, ref, getDownloadURL} from "firebase/storage";
 
 interface CoursesViewProps {
 	course: Course;
 }
 
-const CoursePage = ({}) => {
+const CoursePage = () => {
 	const location = useLocation();
 	const {course} = location.state as CoursesViewProps;
+	console.log(course);
+	const [videoUrl, setVideoUrl] = useState<string | null>(null);
+	const [error, setError] = useState<string | null>(null);
+	// Initialize Firebase Storage
+	const storage = getStorage();
+	// https://firebasestorage.googleapis.com/v0/b/kendra-lms.appspot.com/o/courses%2Fcourse_1726339084612%2Fvideos%2FNode.js%20Tutorial%20-%203%20-%20Chrome's%20V8%20Engine.mkv?alt=media&token=4915f9f8-c942-4fae-a827-d2ab40008c2a
+	// Create a reference to the file
+	// const fileRef = ref(storage, "courses/course_1726322548642/videos");
+	const fileRef = ref(
+		storage,
+		"courses/course_1726322548642/videos/AZ-204 Exam EP 01_ Developing Solutions for Microsoft Azure.mkv"
+	);
+
+	console.log(fileRef);
+
+	getDownloadURL(fileRef)
+		.then(url => {
+			// Use the URL to download the file
+			// ...
+			console.log(url, "url");
+		})
+		.catch(error => {
+			console.log(error);
+			// Handle any errors
+			console.error(error);
+		});
 
 	return (
 		<Navbarin>
@@ -42,12 +70,22 @@ const CoursePage = ({}) => {
 
 					{/* Right Section */}
 					<div className="md:w-4/12 bg-gray-100 p-4 rounded-lg mt-4 md:mt-0">
-						<video
+						{/* <video
 							className="w-full rounded-lg"
-							// src={videoUrl}
+							// src={rcvideo}
+							src="https://firebasestorage.googleapis.com/v0/b/kendra-lms.appspot.com/o/courses%2Fcourse_1726322548642%2Fvideos%2FAZ-204%20Exam%20EP%2001_%20Developing%20Solutions%20for%20Microsoft%20Azure.mkv?alt=media&token=9824bcae-f190-4750-9eb4-c4e881a79056"
 							controls
-							poster="https://via.placeholder.com/300" // Replace with actual poster image
-						/>
+							poster={course.image}
+						/> */}
+
+						<video width="640" height="360" controls>
+							<source
+								src="courses/course_1726322548642/videos/AZ-204 Exam EP 01_ Developing Solutions for Microsoft Azure.mkv"
+								type="video/mp4"
+							/>
+							Your browser does not support the video tag.
+						</video>
+
 						<p className="mt-4 text-2xl font-bold text-gray-900">
 							{course.price}
 						</p>

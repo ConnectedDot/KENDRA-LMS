@@ -16,15 +16,12 @@ const Dashboard = () => {
 	};
 	const {courses, error} = useFetchCourses();
 	const {user} = useContext(AuthContext);
-	// const userFire = useFirebaseUserSignedIn();
-	const userFire = useObserveAuthState();
-	console.log(userFire, "userFire");
 	const HandleCourses = () => {
 		navigate(`${PrivatePaths.INSTRUCTOR}courses-new`);
 	};
 
 	const HandleViewCourses = (course: Course) => {
-		navigate(`${PrivatePaths.INSTRUCTOR}courses-view/${course.id}`, {
+		navigate(`${PrivatePaths.USER}course-details/${course.id}`, {
 			state: {course},
 		});
 	};
@@ -143,15 +140,8 @@ const Dashboard = () => {
 							{courses.map(course => (
 								<FeaturedCourse
 									key={course.id}
-									title={course.Title}
-									category={
-										course.category && course.category.length > 0
-											? course.category[0].title
-											: "No Category"
-									}
-									description={course.Description}
-									imageUrl={course.image} // Ensure this field exists in your course object
-									link={`${PrivatePaths.USER}course-details/${course.id}`} // Adjust the link as necessary
+									course={course}
+									onClick={() => HandleViewCourses(course)}
 								/>
 							))}
 						</div>

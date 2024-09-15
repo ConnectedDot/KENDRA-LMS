@@ -49,24 +49,6 @@ const CarouselComponent: React.FC<CarouselComponentProps> = ({
 	children,
 	deviceType,
 }) => {
-	// const ButtonGroup = ({ next, previous, goToSlide, ...rest }: CarouselRestProps) => {
-	//   const {
-	//     carouselState: { currentSlide },
-	//   } = rest;
-	//   return (
-	//     <div style={{ display: 'flex' }} className="carousel-button-group relative">
-	//       <button
-	//         className={currentSlide === 0 ? 'disable' : ''}
-	//         onClick={() => previous && previous()}
-	//       >
-	//         Previous
-	//       </button>
-	//       <button onClick={() => next && next()}>Next</button>
-	//       <button onClick={() => goToSlide && goToSlide(currentSlide + 1)}>Go to any slide</button>
-	//     </div>
-	//   );
-	// };
-
 	const ButtonGroup = ({
 		next,
 		previous,
@@ -77,11 +59,11 @@ const CarouselComponent: React.FC<CarouselComponentProps> = ({
 			carouselState: {currentSlide},
 		} = rest;
 		return (
-			<div className="carousel-button-group absolute inset-y-1/2 transform -translate-y-1/2 w-full flex justify-between px-4">
+			<div className="-mt-28 carousel-button-group absolute inset-y-1/2 transform -translate-y-1/2 w-full flex justify-between px-4 mb-24">
 				<div
 					className={`bg-black hover:bg-gray-800 text-white  p-0 rounded-full w-14 h-14 flex items-center justify-center ${
 						currentSlide === 0 ? "hidden opacity-50 cursor-not-allowed" : ""
-					} -ml-20`}
+					} -ml-14`}
 					onClick={() => previous && previous()}
 				>
 					<MdArrowBackIos style={{fontSize: "12px"}} />
@@ -89,7 +71,7 @@ const CarouselComponent: React.FC<CarouselComponentProps> = ({
 				<div
 					className={`bg-black hover:bg-gray-800 text-white p-0 rounded-full w-14 h-14  flex items-center justify-center ${
 						currentSlide === 0 ? "!hidden" : ""
-					} -mr-20`}
+					} -mr-14`}
 					onClick={() => next && next()}
 				>
 					<MdArrowForwardIos style={{fontSize: "12px"}} />

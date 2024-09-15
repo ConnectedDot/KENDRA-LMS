@@ -12,7 +12,7 @@ import DecriptionTab from "../../Learners/components/DecriptionTab";
 import {useLocation} from "react-router-dom";
 import {Course} from "../../../interface";
 import {getStorage, ref, getDownloadURL} from "firebase/storage"; // Import Firebase Storage functions
-import "video.js/dist/video-js.css"; // Import video.js CSS
+// import "video.js/dist/video-js.css"; // Import video.js CSS
 import Navbarin from "../../../layout/Instructor/Navbar";
 import mvideo from "../../../assets/rec.mp4";
 
@@ -23,38 +23,12 @@ interface CoursesViewProps {
 const CoursesView: React.FC = () => {
 	const location = useLocation();
 	const {course} = location.state as CoursesViewProps;
-
-	// const videoRef = useRef<HTMLVideoElement | null>(null);
-	const storage = getStorage(); // Initialize Firebase Storage
-
-	// const [currentVideo, setCurrentVideo] = useState(
-	// 	course?.Videos?.length > 0 ? course?.Videos[0].youtubeId : ""
-	// );
-	// const [loading, setLoading] = useState(false);
 	const [playlists, setPlaylists] = useState(course.Videos);
 	const [currentTabIndex, setcurrentTabIndex] = useState(0);
 	const [searchVisible, setSearchVisible] = useState(false);
-	const [searchQuery, setSearchQuery] = useState("");
-
-	const isGoogleDrive = (url: string) => url.includes("drive.google");
-	const getGoogleDriveDirectLink = (url: string) => {
-		const fileId = url.split("/d/")[1]?.split("/")[0];
-		return `https://drive.google.com/file/d/${fileId}/preview`;
-	};
-
-	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchQuery(e.target.value);
-	};
-
-	// console.log(currentVideo, "currentVideo");
-
-	const getVideoUrl = (url: string) => {
-		if (isGoogleDrive(url)) {
-			return getGoogleDriveDirectLink(url);
-		}
-		return url;
-	};
-
+	const indexVideo = course.Videos.findIndex(
+		(video: {youtubeId: any}) => video.youtubeId === course.Videos[0].youtubeId
+	);
 	const handleVideoChange = (url: string) => {
 		startTransition(() => {
 			setLoading(true);
@@ -62,52 +36,17 @@ const CoursesView: React.FC = () => {
 		});
 	};
 
-	// const handleVideoEnd = () => {
-	// 	const currentIndex = course.Videos.findIndex(
-	// 		(video: {youtubeId: any}) => video.youtubeId === currentVideo
-	// 	);
-	// 	const updatedPlaylists = playlists.map((video: any, index: any) => {
-	// 		if (index === currentIndex) {
-	// 			return {...video, watched: true};
-	// 		}
-	// 		return video;
-	// 	});
-	// 	setPlaylists(updatedPlaylists);
-
-	// 	if (currentIndex < playlists.length - 1) {
-	// 		setCurrentVideo(playlists[currentIndex + 1].youtubeId);
-	// 	}
-	// };
-
 	const videoRef = useRef<HTMLVideoElement | null>(null);
-	const [currentVideo, setCurrentVideo] = useState("");
+	const [currentVideo, setCurrentVideo] = useState(
+		course.Videos[indexVideo].youtubeId
+	);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		setLoading(false);
 	}, [currentVideo]);
 
-	useEffect(() => {
-		if (videoRef.current) {
-			const player = videojs(videoRef.current);
-
-			// Get the download URL for the current video
-			const downloadUrl = getDownloadURL(ref(storage, currentVideo));
-
-			// Set the source of the video player
-			player.src({type: "video/mp4", src: downloadUrl});
-
-			player.on("ended", handleVideoEnd);
-
-			return () => {
-				player.dispose();
-			};
-		}
-	}, [currentVideo, storage]); // Include storage in the dependency array
-
-	// Handle video end (for automatic switching between videos, etc.)
 	const handleVideoEnd = () => {
 		console.log("Video ended");
-		// Logic for next video can be placed here
 	};
 
 	useEffect(() => {
@@ -123,13 +62,9 @@ const CoursesView: React.FC = () => {
 					},
 				],
 			});
-
 			player.on("ended", handleVideoEnd);
-
-			// Once the video is loaded, stop showing the loader
 			player.on("loadeddata", () => setLoading(false));
 
-			// Cleanup the player on unmount
 			return () => {
 				if (player) {
 					player.dispose();
@@ -180,7 +115,7 @@ const CoursesView: React.FC = () => {
 							<>
 								<div
 									role="status"
-									className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center"
+									className="w-full max-h-svh space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center"
 								>
 									<div className="flex items-center justify-center w-full h-48 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
 										<svg
@@ -205,53 +140,13 @@ const CoursesView: React.FC = () => {
 								</div>
 							</>
 						) : (
-							// <Spin
-							// 	className="flex justify-center items-center"
-							// 	indicator={<LoadingOutlined style={{fontSize: 48}} spin />}
-							// />
-							<div className="video-container max-w-screen-2xl h-96 bg-black">
-								{/* <div
-									role="status"
-									className="max-w-4xl animate-pulse w-screen h-auto"
-								>
-									<div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-									<div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
-									<div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-									<div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
-									<div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
-									<div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-									<span className="sr-only">Loading...</span>
-								</div> */}
-								{/* <video
-									ref={videoRef}
-									className="video-js vjs-default-skin"
-									width="100%"
-									height="auto"
-									controls
-
-								/> */}
-								{/* <iframe
-									width="100%"
-									height="100%"
-									src="https://www.youtube.com/embed/3JZ_D3ELwOQ"
-									// src={currentVideo}
-									title="YouTube video player"
-									frameBorder="0"
-									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-									allowFullScreen
-								></iframe> */}
-
-								<video className="w-full" autoPlay controls>
-									<source
-										// src="https://www.youtube.com/embed/3JZ_D3ELwOQ"
-										src={mvideo}
-										type="video/mp4"
-									/>
-									Your browser does not support the video tag.
+							<div className="video-container bg-black">
+								<video className="w-full max-h-svh" autoPlay controls>
+									<source src={currentVideo} type="video/mp4" />
 								</video>
 							</div>
 						)}
-						<div className="flex mt-24 min-h-[50px] !p-0 mb-5 w-full bg-gray-800">
+						<div className="flex mt-0 min-h-[50px] !p-0 mb-5 w-full bg-gray-800">
 							<div className="flex text-center items-center justify-center ml-10 h-full">
 								<SearchOutlined
 									onClick={() => setSearchVisible(!searchVisible)}

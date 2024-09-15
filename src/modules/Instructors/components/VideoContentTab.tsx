@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from "react";
 import TextArea from "antd/es/input/TextArea";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
+import {storage} from "../../../Firebase";
+import {message, Progress} from "antd";
 
 interface VideoContentTabProps {
 	formData: {
+		Title: string;
 		Content: {Title: string; Lectures: string[]}[];
 		Videos: {
 			id: number;
@@ -21,6 +25,10 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 	onUpdateData,
 }) => {
 	const [localFormData, setLocalFormData] = useState(formData);
+	// const [uploadProgress, setUploadProgress] = useState();
+	const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>(
+		{}
+	);
 
 	const handleInputChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -74,12 +82,34 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 	};
 
 	const uploadVideo = async (file: File): Promise<string> => {
-		// Implement the actual upload logic here
-		// For now, return a dummy URL
-		return new Promise(resolve => {
-			setTimeout(() => {
-				resolve(`https://storage.example.com/${file.name}`);
-			}, 1000);
+		return new Promise((resolve, reject) => {
+			const storageRef = ref(
+				storage,
+				`courses/${formData.Title}/videos/${file.name}`
+			);
+			const uploadTask = uploadBytesResumable(storageRef, file);
+
+			uploadTask.on(
+				"state_changed",
+				snapshot => {
+					const progress =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					setUploadProgress(prevProgress => ({
+						...prevProgress,
+						[file.name]: progress,
+					}));
+					console.log(`Upload is ${progress}% done`);
+				},
+				error => {
+					console.error("Error uploading file:", error);
+					reject(error);
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+						resolve(downloadURL);
+					});
+				}
+			);
 		});
 	};
 
@@ -92,7 +122,16 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 			<h2 className="mb-2 mt-0 font-bold text-xl md:text-xl">
 				Video Content Section
 			</h2>
-
+			{uploadProgress && (
+				<div className="mt-4">
+					{Object.keys(uploadProgress).map(fileName => (
+						<div key={fileName} className="mb-2">
+							<p>{fileName}</p>
+							<Progress percent={uploadProgress[fileName]} />
+						</div>
+					))}
+				</div>
+			)}
 			{[0, 1].map(index => (
 				<div className="flex flex-col md:flex-row gap-6 py-4" key={index}>
 					<div className="flex-1">

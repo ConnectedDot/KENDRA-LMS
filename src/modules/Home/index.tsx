@@ -8,7 +8,6 @@ import {Testimonials} from "../../components/Cards/Testimonials";
 import LearnersAreViewing from "../../components/Cards/LearnersViewing";
 import {featuredCourses, learnersAreViewing, testimonials} from "../../Data";
 import {CarouselImages} from "../../components/CarouselComponent/CarouselImages";
-import ReviewCarousel from "../../components/ReviewCardss";
 
 const Home = () => {
 	return (
@@ -89,9 +88,7 @@ const Home = () => {
 					</div>
 				</div>
 
-				<>
-					<ReviewCarousel />
-				</>
+				<></>
 
 				{/* import ReviewCarousel from "../../components/ReviewCard"; */}
 

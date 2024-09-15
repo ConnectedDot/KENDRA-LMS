@@ -23,7 +23,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import {auth, db} from "../../Firebase";
 import {userProps} from "../../interface";
-import {setLoginToken, setStoredUser} from "../../storage";
+import {setLoginToken, setStoredFireUser, setStoredUser} from "../../storage";
 import {PrivatePaths} from "../../routes/path";
 import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
 import {GoogleAuthProvider} from "firebase/auth";
@@ -53,6 +53,7 @@ export function useFirebaseLogin() {
 		);
 
 		const user = userCredential.user;
+		setStoredFireUser(user as any);
 
 		if (user) {
 			const userDocRef = doc(db, "KLMS-USER", user.uid);
@@ -229,6 +230,9 @@ export function useFirebaseRegister() {
 
 		if (user) {
 			await sendEmailVerification(user);
+			await updateProfile(user, {
+				photoURL: formData.role,
+			});
 
 			// console.log("Email verification sent to:", user);
 

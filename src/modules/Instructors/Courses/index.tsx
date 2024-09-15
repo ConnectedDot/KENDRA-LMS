@@ -26,7 +26,7 @@ interface Course {
 	Questions: {question: string; answer: string}[];
 	Content: {Title: string; Lectures: string[]}[];
 	id?: string;
-	instructorId?: string;
+	instructorId?: any;
 	Videos: {
 		id: number;
 		title: string;
@@ -48,15 +48,9 @@ const CourseRegForm = () => {
 	const {
 		handleSubmit,
 		isLoading,
-		uploadProgress,
-		uploadPercentage,
-		processor,
 	}: {
 		handleSubmit: Function;
 		isLoading: boolean;
-		uploadProgress: {[key: string]: number};
-		uploadPercentage: any;
-		processor: any;
 	} = useCourseForm();
 
 	useEffect(() => {
@@ -81,8 +75,9 @@ const CourseRegForm = () => {
 			{Title: "", Lectures: [""]},
 		],
 		Videos: [],
-		instructorId: "",
+		instructorId: {},
 	});
+	console.log(formData, "formData");
 
 	const handleUpdateData = (data: Partial<Course>) => {
 		setFormData(prevData => ({...prevData, ...data}));
@@ -94,15 +89,15 @@ const CourseRegForm = () => {
 		handleSubmit(formData);
 	};
 
-	useEffect(() => {
-		Object.keys(uploadProgress).forEach(videoTitle => {
-			message.success(`${videoTitle}: ${uploadProgress[videoTitle]}%`);
-		});
-	}, [uploadProgress]);
-	console.log(uploadPercentage, "uploadPercentage");
-	console.log(uploadProgress, "uploadProgress");
-	console.log(formData, "formData");
-	console.log(processor, "Process management");
+	// useEffect(() => {
+	// 	Object.keys(uploadProgress).forEach(videoTitle => {
+	// 		message.success(`${videoTitle}: ${uploadProgress[videoTitle]}%`);
+	// 	});
+	// }, [uploadProgress]);
+	// console.log(uploadPercentage, "uploadPercentage");
+	// console.log(uploadProgress, "uploadProgress");
+	// console.log(formData, "formData");
+	// console.log(processor, "Process management");
 
 	const items: TabsProps["items"] = [
 		{
@@ -159,11 +154,11 @@ const CourseRegForm = () => {
 						New Course Details
 					</h1>
 				</div>
-				<div className="flex">
+				{/* <div className="flex">
 					<Flex vertical gap="small" style={{width: 300}}>
 						<Progress percent={progress} size="small" />
 					</Flex>
-				</div>
+				</div> */}
 				{/* <div className="flex">
 					{Object.keys(uploadProgress).map(videoTitle => (
 						<div key={videoTitle}>

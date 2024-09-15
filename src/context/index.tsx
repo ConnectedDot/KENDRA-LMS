@@ -1,14 +1,11 @@
 import {createContext, useEffect, useState} from "react";
-import {queryKeys} from "../react-query/constants";
 import {
 	getLoginToken,
 	getStoredCart,
+	getStoredFireUser,
 	getStoredUser,
 	setStoredUser,
 } from "../storage";
-// import { getDecodedJWT, isAuthenticated } from '../utils';
-import {useAuthenticatedUser} from "./hooks";
-import {useQueryClient} from "@tanstack/react-query";
 import {ChildProps, userProps} from "../interface";
 
 export const AuthContext = createContext({
@@ -23,15 +20,8 @@ export const AuthContext = createContext({
 function AuthContextProvider({children}: ChildProps) {
 	const [authToken, setAuthToken] = useState<string | undefined>(undefined);
 	const [user, setUser] = useState<userProps | undefined>(undefined);
+	const [fireUser, setFireUser] = useState<userProps | undefined>(undefined);
 	const [cart, setCart] = useState<userProps[]>([]);
-	const userDetails = useAuthenticatedUser();
-	const queryClient = useQueryClient();
-
-	// useEffect(() => {
-	//   if (!isAuthenticated()) {
-	//     logout();
-	//   }
-	// }, []);
 
 	useEffect(() => {
 		const data = getLoginToken();
@@ -41,8 +31,14 @@ function AuthContextProvider({children}: ChildProps) {
 	}, []);
 
 	useEffect(() => {
+		const data = getStoredFireUser();
+		if (data) {
+			setFireUser(data);
+		}
+	}, []);
+
+	useEffect(() => {
 		const data = getStoredUser();
-		// console.log(data, "data");
 		if (data) {
 			setUser(data);
 		}
@@ -55,17 +51,10 @@ function AuthContextProvider({children}: ChildProps) {
 		}
 	}, []);
 
-	// useEffect(() => {
-	//   if (userDetails) {
-	//     setUser(userDetails);
-	//   }
-	// }, [userDetails]);
-
 	function logout() {
 		setUser(undefined);
 		setAuthToken(undefined);
 		localStorage.clear();
-		// queryClient.invalidateQueries([queryKeys.user]);
 	}
 	function updateUser(data: userProps) {
 		setUser(data);
@@ -73,8 +62,6 @@ function AuthContextProvider({children}: ChildProps) {
 
 	function authenticate(data: string) {
 		setAuthToken(data);
-		// const decoded = getDecodedJWT();
-
 		const userObj: userProps = {
 			id: "id" || "",
 			firstName: "firstName" || "",
@@ -103,6 +90,7 @@ function AuthContextProvider({children}: ChildProps) {
 
 	const value = {
 		user: user,
+		fireUser: fireUser,
 		token: authToken,
 		isAuthenticated: !!authToken,
 		authenticate: authenticate,

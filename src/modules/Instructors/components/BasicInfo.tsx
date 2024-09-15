@@ -17,7 +17,7 @@ interface BasicInfoTabProps {
 		category: {id: string; title: string}[];
 		subcategoryId: {id: string; title: string}[];
 		id?: string;
-		instructorId?: string;
+		instructorId?: any;
 	};
 	onUpdateData: (data: any) => void;
 }

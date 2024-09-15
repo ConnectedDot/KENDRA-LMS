@@ -210,10 +210,11 @@ const Login = () => {
 										<span className="ml-3">
 											{isLoading && (
 												<LoadingOutlined
+													className="text-white hover:text-black"
 													style={{
 														fontSize: 16,
 														fontWeight: "500",
-														color: "black",
+														// color: "black",
 													}}
 													spin
 												/>

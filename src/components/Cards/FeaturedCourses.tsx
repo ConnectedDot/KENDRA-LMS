@@ -33,7 +33,7 @@ const FeaturedCourses = ({courses}: {courses: any[]}) => {
 			//   borderRadius: "0px",
 			//   padding: "20px",
 			// }}
-			className=" py-6 mb-8 border-2 px-20 border-black rounded-3xl"
+			className=" py-6 mb-8 px-0"
 		>
 			<h2 className="text-4xl font-semibold mb-4">
 				Expand your career opportunities with Python
