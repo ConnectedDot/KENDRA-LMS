@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 interface Course {
 	id: string;
@@ -27,25 +28,29 @@ const CourseCards: React.FC<CourseCardProps> = ({course, onClick}) => {
 			className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 			onClick={onClick}
 		>
-			<a href="#">
+			<button
+				type="button"
+				onClick={onClick}
+				className="text-blue-500 underline"
+			>
 				{image ? (
-					<img className="p-8 rounded-t-lg" src={image} alt="course image" />
+					<img className="p-8 rounded-t-lg" src={image} alt="" />
 				) : (
 					<video className="p-8 rounded-t-lg" controls>
 						<source src={videoUrl} type="video/mp4" />
 						Your browser does not support the video tag.
 					</video>
 				)}
-			</a>
+			</button>
 			<div className="px-5 pb-5">
-				<a href="#">
+				<Link to="#">
 					<h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
 						{Title}
 					</h5>
-					<h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-						{category.title}
+					<h5 className="text-xl font-semibold tracking-tight text-white00 dark:text-gray-600">
+						{category?.title || ""}
 					</h5>
-				</a>
+				</Link>
 				<div className="flex items-center mt-2.5 mb-5">
 					<div className="flex items-center space-x-1 rtl:space-x-reverse">
 						<svg

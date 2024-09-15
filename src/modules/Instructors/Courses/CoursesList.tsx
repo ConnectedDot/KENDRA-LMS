@@ -21,6 +21,12 @@ const CoursesList = () => {
 		navigate(`${PrivatePaths.INSTRUCTOR}courses-new`);
 	};
 
+	const HandleViewCourses = (course: Course) => {
+		navigate(`${PrivatePaths.INSTRUCTOR}courses-view/${course.id}`, {
+			state: {course},
+		});
+	};
+
 	console.log(courses, "courses");
 
 	return (
@@ -46,7 +52,7 @@ const CoursesList = () => {
 					<CourseCards
 						key={course.id}
 						course={course}
-						onClick={() => setSelectedCourse(course)}
+						onClick={() => HandleViewCourses(course)}
 					/>
 				))}
 			</div>

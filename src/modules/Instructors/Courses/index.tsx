@@ -7,7 +7,7 @@ import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {IoMdBusiness} from "react-icons/io";
 import {GiBriefcase} from "react-icons/gi";
 import {TbSortAscending} from "react-icons/tb";
-import {Flex, Progress, TabsProps} from "antd";
+import {Flex, message, Progress, TabsProps} from "antd";
 import BasicInfoTab from "../components/BasicInfo";
 import {DocumentArrowUpIcon} from "@heroicons/react/24/outline";
 import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
@@ -50,11 +50,13 @@ const CourseRegForm = () => {
 		isLoading,
 		uploadProgress,
 		uploadPercentage,
+		processor,
 	}: {
 		handleSubmit: Function;
 		isLoading: boolean;
 		uploadProgress: {[key: string]: number};
 		uploadPercentage: any;
+		processor: any;
 	} = useCourseForm();
 
 	useEffect(() => {
@@ -91,6 +93,16 @@ const CourseRegForm = () => {
 		e.preventDefault();
 		handleSubmit(formData);
 	};
+
+	useEffect(() => {
+		Object.keys(uploadProgress).forEach(videoTitle => {
+			message.success(`${videoTitle}: ${uploadProgress[videoTitle]}%`);
+		});
+	}, [uploadProgress]);
+	console.log(uploadPercentage, "uploadPercentage");
+	console.log(uploadProgress, "uploadProgress");
+	console.log(formData, "formData");
+	console.log(processor, "Process management");
 
 	const items: TabsProps["items"] = [
 		{
@@ -152,7 +164,7 @@ const CourseRegForm = () => {
 						<Progress percent={progress} size="small" />
 					</Flex>
 				</div>
-				<div className="flex">
+				{/* <div className="flex">
 					{Object.keys(uploadProgress).map(videoTitle => (
 						<div key={videoTitle}>
 							<p>
@@ -161,7 +173,7 @@ const CourseRegForm = () => {
 							<p>{uploadPercentage}</p>
 						</div>
 					))}
-				</div>
+				</div> */}
 			</div>
 
 			<div className="flex flex-row">
@@ -219,7 +231,7 @@ const CourseRegForm = () => {
 								<button
 									disabled={isLoading}
 									onClick={HandleSubmission}
-									className="w-[10%] rounded-md bg-black text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
+									className="w-[10%] rounded-md bg-gray-400 text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
 								>
 									<span className="mr-2 text-xs">
 										<span className="ml-3">

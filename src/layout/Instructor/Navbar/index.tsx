@@ -30,6 +30,7 @@ const Navbarin: React.FC<{children: any}> = ({children}) => {
 		<>
 			<Navbar />
 			<div className=" mx-auto max-w-7xl py-4 md:px-8 px-2 sm:px-6 lg:px-8 mt-4">
+				{/* <div className="  mt-4"> */}
 				{children}
 			</div>
 		</>

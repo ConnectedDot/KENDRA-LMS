@@ -18,10 +18,10 @@ const privateRoutes = [
 		path: "/courses-view",
 		element: lazy(() => import("../modules/Instructors/Courses/CoursesList")),
 	},
-	// {
-	// 	path: "/courses-view/:id",
-	// 	element: lazy(() => import("../modules/Instructors/Courses/CoursesView")),
-	// },
+	{
+		path: "/courses-view/:id",
+		element: lazy(() => import("../modules/Instructors/Courses/CoursesView")),
+	},
 	{
 		path: "*",
 		element: lazy(() => import("../modules/NotFound")),

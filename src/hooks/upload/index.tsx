@@ -9,12 +9,15 @@ import {
 import {doc, setDoc} from "firebase/firestore";
 import {db, storage} from "../../Firebase";
 import {message} from "antd";
+import {useNavigate} from "react-router-dom";
 
 const useCourseForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [uploadProgress, setUploadProgress] = useState({});
 	const [uploadPercentage, setUploadPercentage] = useState({});
+	const [processor, setProcessor] = useState<[string, any][]>([]);
+	const navigate = useNavigate();
 
 	const handleSubmit = async (formData: any) => {
 		setIsLoading(true);
@@ -54,7 +57,7 @@ const useCourseForm = () => {
 					`courses/${courseId}/videos/${video.title}`
 				);
 				const uploadTask = uploadBytesResumable(videoRef, video.file);
-
+				setProcessor([video.title, uploadTask]);
 				uploadTask.on("state_changed", snapshot => {
 					const progress =
 						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -94,6 +97,7 @@ const useCourseForm = () => {
 			// Reset form data after submission
 			resetForm();
 			message.success("Course added successfully!");
+			navigate(`/instructor/dashboard`);
 		} catch (error) {
 			console.error("Error adding course:", error);
 			message.error("Error uploading videos or adding course.");
@@ -112,6 +116,7 @@ const useCourseForm = () => {
 		isLoading,
 		uploadProgress,
 		uploadPercentage,
+		processor,
 	};
 };
 
