@@ -80,9 +80,7 @@ const CoursesView: React.FC = () => {
 	// };
 
 	const videoRef = useRef<HTMLVideoElement | null>(null);
-	const [currentVideo, setCurrentVideo] = useState(
-		"https://firebasestorage.googleapis.com/v0/b/kendra-lms.appspot.com/o/courses%2Fcourse_1726339084612%2Fvideos%2FNode.js%20Tutorial%20-%202%20-%20ECMAScript.mkv?alt=media&token=c44a5fa1-cc92-418b-89b8-42bd39da0486"
-	);
+	const [currentVideo, setCurrentVideo] = useState("");
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		setLoading(false);
@@ -230,7 +228,7 @@ const CoursesView: React.FC = () => {
 									width="100%"
 									height="auto"
 									controls
-                  
+
 								/> */}
 								{/* <iframe
 									width="100%"

@@ -3,40 +3,13 @@ import {Link, useNavigate} from "react-router-dom";
 import {PublicPaths} from "../../routes/path";
 import Footer from "../../components/Footer";
 import HomeLayout from "../../layout/Home";
-import CategoryTabs from "../../components/Cards/CategortTabs";
 import FeaturedCourses from "../../components/Cards/FeaturedCourses";
 import {Testimonials} from "../../components/Cards/Testimonials";
 import LearnersAreViewing from "../../components/Cards/LearnersViewing";
-import {
-	categories,
-	featuredCourses,
-	learnersAreViewing,
-	testimonials,
-} from "../../Data";
-import {ReviewCarousel} from "../../components/ReviewCardss";
+import {featuredCourses, learnersAreViewing, testimonials} from "../../Data";
 import {CarouselImages} from "../../components/CarouselComponent/CarouselImages";
-// import { ReviewCarousel } from "../../components/ReviewCard";
-// import ReviewCarousel from "../../components/ReviewCard";
-// import { Footer } from 'antd/es/layout/layout';
-// import { Dialog, DialogPanel } from '@headlessui/react';
-// import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const Home = () => {
-	const navigate = useNavigate();
-
-	const handleLogin = () => {
-		navigate("/login");
-	};
-
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-	const handlePatSignup = () => {
-		navigate(PublicPaths.REGISTER);
-	};
-
-	// const handleDocSignup = () => {
-	//   navigate(PublicPaths.DOCTOR_REG);
-	// };
-
 	return (
 		<HomeLayout>
 			<div className="bg-white">

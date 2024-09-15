@@ -147,7 +147,7 @@ const Dashboard = () => {
 									}
 									description={course.Description}
 									imageUrl={course.image} // Ensure this field exists in your course object
-									link={`${PrivatePaths.USER}/courses-view/${course.id}`} // Adjust the link as necessary
+									link={`${PrivatePaths.USER}course-details/${course.id}`} // Adjust the link as necessary
 								/>
 							))}
 						</div>
