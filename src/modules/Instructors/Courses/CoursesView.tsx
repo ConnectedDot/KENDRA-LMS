@@ -14,6 +14,7 @@ import {Course} from "../../../interface";
 import {getStorage, ref, getDownloadURL} from "firebase/storage"; // Import Firebase Storage functions
 import "video.js/dist/video-js.css"; // Import video.js CSS
 import Navbarin from "../../../layout/Instructor/Navbar";
+import mvideo from "../../../assets/rec.mp4";
 
 interface CoursesViewProps {
 	course: Course;
@@ -229,6 +230,7 @@ const CoursesView: React.FC = () => {
 									width="100%"
 									height="auto"
 									controls
+                  
 								/> */}
 								{/* <iframe
 									width="100%"
@@ -244,7 +246,7 @@ const CoursesView: React.FC = () => {
 								<video className="w-full" autoPlay controls>
 									<source
 										// src="https://www.youtube.com/embed/3JZ_D3ELwOQ"
-										src={currentVideo}
+										src={mvideo}
 										type="video/mp4"
 									/>
 									Your browser does not support the video tag.

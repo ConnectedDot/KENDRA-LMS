@@ -485,6 +485,8 @@ export const DataCourse: Course = {
 	price: "",
 	fullbrief: "",
 	id: "",
+	students: 0,
+	instuctor: "",
 };
 
 //  <Checkbox

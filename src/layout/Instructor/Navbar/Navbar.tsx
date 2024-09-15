@@ -19,30 +19,6 @@ interface NavigationItem {
 	current: boolean;
 }
 
-const navigation: NavigationItem[] = [
-	{
-		name: "Dashboard",
-		href: `${PrivatePaths.INSTRUCTOR}dashboard`,
-		current: true,
-	},
-	{
-		name: "My Courses",
-		href: `${PrivatePaths.INSTRUCTOR}courses-view`,
-		current: false,
-	},
-	{
-		name: "Mentor",
-		href: `${PrivatePaths.INSTRUCTOR}mentorships`,
-		current: false,
-	},
-	{name: "Group", href: `${PrivatePaths.INSTRUCTOR}groups`, current: false},
-	{
-		name: "Programs",
-		href: `${PrivatePaths.INSTRUCTOR}programs-view`,
-		current: false,
-	},
-];
-
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(" ");
 }
@@ -79,6 +55,152 @@ const Navbar = () => {
 		// Handle the search functionality here
 		// console.log("Searching for:", searchQuery);
 	};
+
+	// const navigation: NavigationItem[] = [
+	// 	{
+	// 		name: "Dashboard",
+	// 		href: `${PrivatePaths.INSTRUCTOR}dashboard`,
+	// 		current: true,
+	// 	},
+	// 	{
+	// 		name: "My Courses",
+	// 		href: `${PrivatePaths.INSTRUCTOR}courses-view`,
+	// 		current: false,
+	// 	},
+	// 	{
+	// 		name: "Mentor",
+	// 		href: `${PrivatePaths.INSTRUCTOR}mentorships`,
+	// 		current: false,
+	// 	},
+	// 	{ name: "Group", href: `${PrivatePaths.INSTRUCTOR}groups`, current: false },
+	// 	{
+	// 		name: "Programs",
+	// 		href: `${PrivatePaths.INSTRUCTOR}programs-view`,
+	// 		current: false,
+	// 	},
+	// ];
+
+	// if (user?.role === "admin") {
+	// 	navigation.push({
+	// 		name: "Admin Panel",
+	// 		href: `${PrivatePaths.INSTRUCTOR}admin-panel`,
+	// 		current: false,
+	// 	});
+	// }
+
+	// if (user?.role === "manager") {
+	// 	navigation.push({
+	// 		name: "Manager Panel",
+	// 		href: `${PrivatePaths.INSTRUCTOR}manager-panel`,
+	// 		current: false,
+	// 	});
+	// }
+
+	const adminNavigation: NavigationItem[] = [
+		{
+			name: "Manage Courses",
+			href: `${PrivatePaths.ADMIN}courses-view`,
+			current: false,
+		},
+		{
+			name: "Mentor",
+			href: `${PrivatePaths.ADMIN}mentorships`,
+			current: false,
+		},
+		{name: "Groups", href: `${PrivatePaths.ADMIN}groups`, current: false},
+		{
+			name: "Programs",
+			href: `${PrivatePaths.ADMIN}programs-view`,
+			current: false,
+		},
+		{
+			name: "Admin Panel",
+			href: `${PrivatePaths.ADMIN}admin-panel`,
+			current: false,
+		},
+		{
+			name: "User Management",
+			href: `${PrivatePaths.ADMIN}user-management`,
+			current: false,
+		},
+		{
+			name: "Reports",
+			href: `${PrivatePaths.ADMIN}reports`,
+			current: false,
+		},
+	];
+
+	const instructorNavigation: NavigationItem[] = [
+		{
+			name: "My Courses",
+			href: `${PrivatePaths.INSTRUCTOR}courses-view`,
+			current: false,
+		},
+		{
+			name: "Mentor",
+			href: `${PrivatePaths.INSTRUCTOR}mentorships`,
+			current: false,
+		},
+		{name: "Groups", href: `${PrivatePaths.INSTRUCTOR}groups`, current: false},
+		{
+			name: "Programs",
+			href: `${PrivatePaths.INSTRUCTOR}programs-view`,
+			current: false,
+		},
+		{
+			name: "Assignments",
+			href: `${PrivatePaths.INSTRUCTOR}assignments`,
+			current: false,
+		},
+		{
+			name: "Messages",
+			href: `${PrivatePaths.INSTRUCTOR}messages`,
+			current: false,
+		},
+	];
+
+	const userNavigation: NavigationItem[] = [
+		{
+			name: "My Courses",
+			href: `${PrivatePaths.USER}courses-view`,
+			current: false,
+		},
+		{
+			name: "Community",
+			href: `${PrivatePaths.USER}community`,
+			current: false,
+		},
+		{
+			name: "Progress",
+			href: `${PrivatePaths.USER}progress`,
+			current: false,
+		},
+		{
+			name: "Assignments",
+			href: `${PrivatePaths.USER}assignments`,
+			current: false,
+		},
+		{
+			name: "Messages",
+			href: `${PrivatePaths.USER}messages`,
+			current: false,
+		},
+		{
+			name: "Certificates",
+			href: `${PrivatePaths.USER}certificates`,
+			current: false,
+		},
+	];
+
+	let navigation: NavigationItem[] = [];
+
+	if (user?.role === "Admin") {
+		navigation = adminNavigation;
+	} else if (user?.role === "Instructor") {
+		navigation = instructorNavigation;
+	} else if (user?.role === "User") {
+		navigation = userNavigation;
+	}
 
 	return (
 		<Disclosure as="nav" className="navbar bg-black text-white h-16">

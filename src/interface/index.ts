@@ -184,6 +184,8 @@ export interface Course {
 	image?: any;
 	Description: string;
 	fullbrief: string;
+	students: number;
+	instuctor: string;
 	Rating: number;
 	ReviewsCount: number;
 	price: string;
