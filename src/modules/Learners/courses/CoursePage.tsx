@@ -40,9 +40,9 @@ const CoursePage = () => {
 		});
 
 	return (
-		<Navbarin>
+		<Navbarin title={`${course.Title} - Kendra LMS`}>
 			{" "}
-			<div className="container mx-auto p-4">
+			<div className="mt-6 container mx-auto p-4">
 				{/* Top Section */}
 				<div className="md:flex md:justify-between">
 					{/* Left Section */}

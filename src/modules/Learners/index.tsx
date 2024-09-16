@@ -44,7 +44,7 @@ const Dashboard = () => {
 
 	return (
 		<>
-			<Navbarin>
+			<Navbarin title={"Learner's Dashboard- Kendra LMS"}>
 				<section className="px-0 md:mx-0  mx-auto mb-6 mt-6">
 					<div className="flex items-center">
 						{" "}

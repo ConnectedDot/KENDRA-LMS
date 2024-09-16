@@ -1,8 +1,14 @@
 "use client";
 import Navbar from "./Navbar";
 import React, {useEffect} from "react";
+import {Helmet} from "react-helmet";
 
-const Navbarin: React.FC<{children: any}> = ({children}) => {
+interface NavbarinProps {
+	title: string;
+	children: React.ReactNode;
+}
+
+const Navbarin: React.FC<NavbarinProps> = ({title, children}) => {
 	useEffect(() => {
 		const debounce = (fn: Function) => {
 			let frame: number;
@@ -26,11 +32,15 @@ const Navbarin: React.FC<{children: any}> = ({children}) => {
 
 		storeScroll();
 	}, []);
+
 	return (
 		<>
+			<Helmet>
+				<title>{title || ""}</title>
+			</Helmet>
 			<Navbar />
-			<div className=" mx-auto max-w-7xl py-4 md:px-8 px-2 sm:px-6 lg:px-8 mt-4">
-				{/* <div className="  mt-4"> */}
+
+			<div className="mx-auto max-w-7xl md:px-8 px-2 sm:px-6 lg:px-8">
 				{children}
 			</div>
 		</>

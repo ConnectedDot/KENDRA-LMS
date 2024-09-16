@@ -203,7 +203,7 @@ const ProfilePageAll = () => {
 	};
 
 	return (
-		<>
+		<div className="mt-12">
 			<div className="flex">
 				<button
 					className="flex  items-center text-sm gap-3 font-medium text-gray-700 bg-gray-100 rounded-full py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -317,7 +317,7 @@ const ProfilePageAll = () => {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

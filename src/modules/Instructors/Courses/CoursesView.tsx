@@ -9,9 +9,10 @@ import videojs from "video.js";
 import CourseOverview from "../../Learners/components/Overview";
 import CourseQnA from "../../Learners/components/FAQ";
 import DecriptionTab from "../../Learners/components/DecriptionTab";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Course} from "../../../interface";
 import Navbarin from "../../../layout/Instructor/Navbar";
+import {MdArrowBack} from "react-icons/md";
 
 interface CoursesViewProps {
 	course: Course;
@@ -44,6 +45,11 @@ const CoursesView: React.FC = () => {
 
 	const handleVideoEnd = () => {
 		console.log("Video ended");
+	};
+
+	const navigate = useNavigate();
+	const handleGoBack = () => {
+		navigate(-1);
 	};
 
 	useEffect(() => {
@@ -104,7 +110,22 @@ const CoursesView: React.FC = () => {
 	];
 
 	return (
-		<Navbarin>
+		<Navbarin title={course.Title}>
+			{/* <div className="flex justify-between">
+				<button
+					className="flex  items-center mb-6 text-sm gap-3 font-medium text-gray-700 bg-gray-100 rounded-lg py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+					onClick={handleGoBack}
+				>
+					<MdArrowBack /> Go Back
+				</button>
+				<button
+					className="flex  items-center mb-6 text-sm gap-3 font-medium text-gray-700 bg-gray-100 rounded-lg py-2 px-4 dark:bg-black dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+					onClick={HandleCourses}
+				>
+					<MdLibraryBooks /> Add New Course
+				</button>
+			</div> */}
+
 			<div className="overflow-x-hidden ">
 				<Row gutter={[0, 0]} justify="center">
 					<Col xs={24} sm={24} md={19} lg={19}>

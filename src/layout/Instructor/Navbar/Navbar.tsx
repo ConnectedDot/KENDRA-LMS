@@ -56,46 +56,6 @@ const Navbar = () => {
 		// console.log("Searching for:", searchQuery);
 	};
 
-	// const navigation: NavigationItem[] = [
-	// 	{
-	// 		name: "Dashboard",
-	// 		href: `${PrivatePaths.INSTRUCTOR}dashboard`,
-	// 		current: true,
-	// 	},
-	// 	{
-	// 		name: "My Courses",
-	// 		href: `${PrivatePaths.INSTRUCTOR}courses-view`,
-	// 		current: false,
-	// 	},
-	// 	{
-	// 		name: "Mentor",
-	// 		href: `${PrivatePaths.INSTRUCTOR}mentorships`,
-	// 		current: false,
-	// 	},
-	// 	{ name: "Group", href: `${PrivatePaths.INSTRUCTOR}groups`, current: false },
-	// 	{
-	// 		name: "Programs",
-	// 		href: `${PrivatePaths.INSTRUCTOR}programs-view`,
-	// 		current: false,
-	// 	},
-	// ];
-
-	// if (user?.role === "admin") {
-	// 	navigation.push({
-	// 		name: "Admin Panel",
-	// 		href: `${PrivatePaths.INSTRUCTOR}admin-panel`,
-	// 		current: false,
-	// 	});
-	// }
-
-	// if (user?.role === "manager") {
-	// 	navigation.push({
-	// 		name: "Manager Panel",
-	// 		href: `${PrivatePaths.INSTRUCTOR}manager-panel`,
-	// 		current: false,
-	// 	});
-	// }
-
 	const adminNavigation: NavigationItem[] = [
 		{
 			name: "Manage Courses",
@@ -257,7 +217,7 @@ const Navbar = () => {
 										type="text"
 										value={searchQuery}
 										onChange={e => setSearchQuery(e.target.value)}
-										className="border text-sm bg-black border-gray-400 rounded-full pl-4 pr-16 py-1"
+										className="border w-44 md:w-full text-sm bg-black border-gray-400 rounded-full pl-4 pr-12 md:pr-16 py-1"
 										// placeholder="Search..."
 									/>
 									<FaSearch
@@ -272,10 +232,6 @@ const Navbar = () => {
 							</div>
 						</div>
 
-						{/* <Signdialog />
-
-            <Registerdialog /> */}
-
 						<div className="block md:hidden">
 							<Bars3Icon
 								className="block h-6 w-6"
@@ -284,10 +240,12 @@ const Navbar = () => {
 							/>
 						</div>
 
-						{/* DRAWER LINKS DATA */}
-
 						<Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
-							<Drawerdata />
+							<Drawerdata
+								navigation={navigation}
+								handleLinkClick={handleLinkClick}
+								currentLink={currentLink}
+							/>
 						</Drawer>
 					</div>
 				</div>

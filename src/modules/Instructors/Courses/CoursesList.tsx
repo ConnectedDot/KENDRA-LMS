@@ -30,8 +30,8 @@ const CoursesList = () => {
 	console.log(courses, "courses");
 
 	return (
-		<Navbarin>
-			<div className="flex justify-between">
+		<Navbarin title={"Add a New Course - Kendra LMS"}>
+			<div className="flex justify-between mt-6">
 				<button
 					className="flex  items-center mb-6 text-sm gap-3 font-medium text-gray-700 bg-gray-100 rounded-full py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
 					onClick={handleGoBack}

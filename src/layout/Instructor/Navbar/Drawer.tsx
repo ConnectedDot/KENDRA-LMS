@@ -1,6 +1,7 @@
 import React, {ReactNode} from "react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import logo from "../../../assets/Logo/kendra-re.png";
+import {Link} from "react-router-dom";
 
 interface DrawerProps {
 	children: ReactNode;
@@ -20,26 +21,23 @@ const Drawer = ({children, isOpen, setIsOpen}: DrawerProps) => {
 		>
 			<section
 				className={
-					"w-340px max-w-lg left-0 absolute bg-white text-black h-full shadow-xl delay-400 duration-500 ease-in-out transition-all transform " +
+					"w-540px max-w-2xl left-0 absolute bg-white h-full shadow-xl delay-400 duration-500 ease-in-out transition-all transform " +
 					(isOpen ? "translate-x-0" : "-translate-x-full")
 				}
 			>
-				<article className="relative w-270 max-w-lg pb-10 flex flex-col space-y-6 h-full">
+				<article className="relative ml-6 w-[200px] max-w-2xl pb-10 flex flex-col space-y-6 h-full">
 					<header className="p-4 flex items-center justify-between">
-						<img
-							className="h-16 w-16 rounded-full mr-6 hidden md:block"
-							src={logo}
-							alt="Logo"
-							onClick={() => {
-								setIsOpen(false);
-							}}
-						/>
-						<XMarkIcon
-							className="block h-6 w-6"
-							onClick={() => {
-								setIsOpen(false);
-							}}
-						/>
+						<>
+							<Link to="">
+								<img className="h-24 w-24 rounded-full" src={logo} alt="Logo" />
+							</Link>
+							<XMarkIcon
+								className="block h-6 w-6"
+								onClick={() => {
+									setIsOpen(false);
+								}}
+							/>
+						</>
 					</header>
 					<div
 						onClick={() => {

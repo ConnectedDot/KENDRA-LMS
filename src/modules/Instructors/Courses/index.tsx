@@ -2,12 +2,10 @@ import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../../context";
 import {useNavigate} from "react-router-dom";
 import Navbarin from "../../../layout/Instructor/Navbar";
-// import {Course, CourseProps} from "../../../interface";
 import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {IoMdBusiness} from "react-icons/io";
-import {GiBriefcase} from "react-icons/gi";
 import {TbSortAscending} from "react-icons/tb";
-import {Flex, message, Progress, TabsProps} from "antd";
+import {TabsProps} from "antd";
 import BasicInfoTab from "../components/BasicInfo";
 import {DocumentArrowUpIcon} from "@heroicons/react/24/outline";
 import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
@@ -42,7 +40,6 @@ const CourseRegForm = () => {
 	const handleGoBack = () => {
 		navigate(-1);
 	};
-	const [updateLoading, setUpdateLoading] = useState(false);
 	const [currentTabIndex, setcurrentTabIndex] = useState(0);
 	const {user} = useContext(AuthContext);
 	const {
@@ -82,22 +79,11 @@ const CourseRegForm = () => {
 	const handleUpdateData = (data: Partial<Course>) => {
 		setFormData(prevData => ({...prevData, ...data}));
 	};
-	const [progress, setProgress] = useState<number>(0);
 
 	const HandleSubmission = (e?: any) => {
 		e.preventDefault();
 		handleSubmit(formData);
 	};
-
-	// useEffect(() => {
-	// 	Object.keys(uploadProgress).forEach(videoTitle => {
-	// 		message.success(`${videoTitle}: ${uploadProgress[videoTitle]}%`);
-	// 	});
-	// }, [uploadProgress]);
-	// console.log(uploadPercentage, "uploadPercentage");
-	// console.log(uploadProgress, "uploadProgress");
-	// console.log(formData, "formData");
-	// console.log(processor, "Process management");
 
 	const items: TabsProps["items"] = [
 		{
@@ -139,8 +125,8 @@ const CourseRegForm = () => {
 	};
 
 	return (
-		<Navbarin>
-			<div className="flex">
+		<Navbarin title={"Instructor's Dashboard - Kendra LMS"}>
+			<div className="flex mt-6">
 				<button
 					className="flex  items-center text-sm gap-3 font-medium text-gray-700 bg-gray-100 rounded-full py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
 					onClick={handleGoBack}
@@ -154,21 +140,6 @@ const CourseRegForm = () => {
 						New Course Details
 					</h1>
 				</div>
-				{/* <div className="flex">
-					<Flex vertical gap="small" style={{width: 300}}>
-						<Progress percent={progress} size="small" />
-					</Flex>
-				</div> */}
-				{/* <div className="flex">
-					{Object.keys(uploadProgress).map(videoTitle => (
-						<div key={videoTitle}>
-							<p>
-								{videoTitle}: {uploadProgress[videoTitle]}%
-							</p>
-							<p>{uploadPercentage}</p>
-						</div>
-					))}
-				</div> */}
 			</div>
 
 			<div className="flex flex-row">
@@ -204,11 +175,11 @@ const CourseRegForm = () => {
 				<div className="md:w-[75%] mb-12 bg ml-6 mr-6">
 					<div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-lg relative">
 						{items[currentTabIndex].children}
-						<div className="flex justify-between mt-4 mb-4">
+						<div className="flex justify-between mt-4 mb-4 px-4">
 							{currentTabIndex > 0 && (
 								<button
 									onClick={handlePrev}
-									className="w-[10%] bg-gray-500 hover:bg-blue-500 text-white p-2 rounded flex justify-center items-center"
+									className="w-[15%] bg-gray-500 hover:bg-blue-500 text-white p-2 rounded flex justify-center items-center"
 								>
 									<AiFillBackward /> <span className="ml-2 text-xs">Prev</span>
 								</button>
@@ -217,7 +188,7 @@ const CourseRegForm = () => {
 							{currentTabIndex < items.length - 1 ? (
 								<button
 									onClick={handleNext}
-									className="w-[10%] bg-gray-500 hover:bg-blue-500 text-white p-2 rounded flex justify-center items-center"
+									className="w-[15%] bg-gray-500 hover:bg-blue-500 text-white p-2 rounded flex justify-center items-center"
 								>
 									<span className="mr-2 text-xs">Next</span>
 									<AiFillForward />
@@ -226,23 +197,26 @@ const CourseRegForm = () => {
 								<button
 									disabled={isLoading}
 									onClick={HandleSubmission}
-									className="w-[10%] rounded-md bg-gray-400 text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
+									className="w-[15%] rounded-md bg-gray-400 text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 outline-none border-none"
 								>
-									<span className="mr-2 text-xs">
+									<span className="mr-2 text-xs text-black">
 										<span className="ml-3">
 											{isLoading && (
-												<LoadingOutlined
-													style={{
-														fontSize: 16,
-														fontWeight: "500",
-														color: "black",
-													}}
-													spin
-												/>
+												<>
+													<LoadingOutlined
+														style={{
+															fontSize: 16,
+															fontWeight: "500",
+															color: "black",
+														}}
+														spin
+													/>
+												</>
 											)}
 										</span>
 									</span>
 
+									<span className="mr-2 text-xs">Submit</span>
 									<UploadOutlined />
 								</button>
 							)}

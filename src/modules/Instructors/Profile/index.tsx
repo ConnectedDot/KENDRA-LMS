@@ -4,7 +4,7 @@ import ProfilePageAll from "./components";
 
 const Profile = () => {
 	return (
-		<Navbarin>
+		<Navbarin title={"Profile Page - Kendra LMS"}>
 			<ProfilePageAll />
 		</Navbarin>
 	);
