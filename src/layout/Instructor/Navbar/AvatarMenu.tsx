@@ -1,17 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {PrivatePaths} from "../../../routes/path";
 import {useFullLogout} from "../../../context/hooks";
+import {AuthContext} from "../../../context";
+import {instructorProps} from "../../../interface";
+import {getStoredUser} from "../../../storage";
 
-export const AvatarMenu = ({user}: {user: any}) => {
+export const AvatarMenu = () => {
 	const [open, setOpen] = useState(false);
-	const [userData, setUserData] = useState(user);
+	// const [user, setuser] = useState<instructorProps>(
+	// 	{} as instructorProps
+	// );
+	// const {user} = useContext(AuthContext);
+	const user = getStoredUser();
 
-	useEffect(() => {
-		if (user) {
-			setUserData(user);
-		}
-	}, [user]);
+	// useEffect(() => {
+	// 	if (user) {
+	// 		setuser(user as unknown as instructorProps);
+	// 	}
+	// }, [user]);
 
 	const getPathPrefix = (role: string) => {
 		switch (role) {
@@ -32,7 +39,7 @@ export const AvatarMenu = ({user}: {user: any}) => {
 		fullLogout();
 	};
 
-	const pathPrefix = getPathPrefix(userData?.role);
+	const pathPrefix = getPathPrefix(user?.role as any);
 
 	const dropdownItems = [
 		{
@@ -40,17 +47,23 @@ export const AvatarMenu = ({user}: {user: any}) => {
 			href: `${pathPrefix}dashboard`,
 			current: true,
 		},
+		{name: "Profile", href: `${pathPrefix}profile`, current: false},
 		{
 			name: "Settings",
 			href: `${pathPrefix}settings`,
 			current: false,
 		},
-		{
-			name: "Earnings",
-			href: `${pathPrefix}earnings`,
-			current: false,
-		},
-		{name: "Profile", href: `${pathPrefix}profile`, current: false},
+
+		...(user?.role === "Instructor"
+			? [
+					{
+						name: "Earnings",
+						href: `${pathPrefix}earnings`,
+						current: false,
+					},
+			  ]
+			: []),
+
 		{
 			name: "Sign Out",
 			href: "#",
@@ -86,15 +99,15 @@ export const AvatarMenu = ({user}: {user: any}) => {
 						aria-haspopup="true"
 					>
 						<span className="sr-only">Open user menu</span>
-						{userData?.photo ? (
+						{user?.photo ? (
 							<img
 								className="w-8 h-8 rounded-full"
-								src={userData?.photo}
-								alt={userData?.firstName}
+								src={user?.photo}
+								alt={user?.firstName}
 							/>
 						) : (
 							<div className="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold">
-								{getInitials(userData?.firstName, userData?.lastName)}
+								{getInitials(user?.firstName, user?.lastName)}
 							</div>
 						)}
 					</button>
@@ -105,13 +118,13 @@ export const AvatarMenu = ({user}: {user: any}) => {
 						>
 							<div className="px-4 py-3">
 								<span className="block text-sm text-gray-900 dark:text-white">
-									{user?.firstName} {userData?.lastName}
+									{user?.firstName} {user?.lastName}
 								</span>
 								<span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-									{userData?.email}
+									{user?.email}
 								</span>
 							</div>
-							<ul className="py-2" aria-labelledby="userData-menu-button">
+							<ul className="py-2" aria-labelledby="user-menu-button">
 								{dropdownItems.slice(0, -1).map((item, index) => (
 									<li key={index}>
 										<Link

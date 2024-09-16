@@ -24,7 +24,8 @@ interface Course {
 	Questions: {question: string; answer: string}[];
 	Content: {Title: string; Lectures: string[]}[];
 	id?: string;
-	instructorId?: any;
+	instructor?: any;
+	students?: number;
 	Videos: {
 		id: number;
 		title: string;
@@ -50,11 +51,11 @@ const CourseRegForm = () => {
 		isLoading: boolean;
 	} = useCourseForm();
 
-	useEffect(() => {
-		if (user) {
-			setFormData(prevData => ({...prevData, instructorId: user.uid}));
-		}
-	}, [user]);
+	// useEffect(() => {
+	// 	if (user) {
+	// 		setFormData(prevData => ({...prevData, instructorId: user.uid}));
+	// 	}
+	// }, [user]);
 
 	const [formData, setFormData] = useState<Course>({
 		Title: "",
@@ -72,7 +73,8 @@ const CourseRegForm = () => {
 			{Title: "", Lectures: [""]},
 		],
 		Videos: [],
-		instructorId: {},
+		instructor: user,
+		students: 0,
 	});
 	console.log(formData, "formData");
 
@@ -125,7 +127,7 @@ const CourseRegForm = () => {
 	};
 
 	return (
-		<Navbarin title={"Instructor's Dashboard - Kendra LMS"}>
+		<Navbarin title={"Instructor's Dashboard | Kendra LMS"}>
 			<div className="flex mt-6">
 				<button
 					className="flex  items-center text-sm gap-3 font-medium text-gray-700 bg-gray-100 rounded-full py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"

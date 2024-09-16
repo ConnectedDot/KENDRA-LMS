@@ -1,7 +1,8 @@
 import {useState} from "react";
-import {db} from "../../Firebase";
+import {db, storage} from "../../Firebase";
 import {deleteDoc, doc, getDoc, updateDoc} from "firebase/firestore";
 import {message} from "antd";
+import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
 
 // User Management Hooks
 
@@ -21,17 +22,46 @@ export const useUpdateUser = () => {
 			message.error("User does not exist");
 		}
 
+		const update = updatedUserData;
+		const UserId = update.uid;
+
+		let photoURL = "";
+		if (update.photo) {
+			const photoRef = ref(storage, `photos/${UserId}`);
+			await uploadBytes(photoRef, update.photo);
+			photoURL = await getDownloadURL(photoRef);
+		}
+
+		if (update.photo instanceof File) {
+			const storage = getStorage();
+			const photoRef = ref(storage, `photos/${UserId}`);
+			await uploadBytes(photoRef, update.photo);
+			photoURL = await getDownloadURL(photoRef);
+		} else if (typeof update.photo === "string") {
+			photoURL = update.photo;
+		} else if (update.photo?.originFileObj instanceof File) {
+			const storage = getStorage();
+			const photoRef = ref(storage, `photos/${UserId}`);
+			await uploadBytes(photoRef, update.photo.originFileObj);
+			photoURL = await getDownloadURL(photoRef);
+		}
+
+		const UpdatingFiles = {
+			...updatedUserData,
+			photo: photoURL,
+		};
+
 		const currentData = userDoc.data();
 		const gpUserData: Record<string, any> = {
 			...currentData,
-			...updatedUserData,
+			...UpdatingFiles,
 		};
 
 		try {
 			await updateDoc(userRef, gpUserData);
 		} catch (err: any) {
 			setError(err);
-			message.error(`Error updating user data: ${err.message}`);
+			message.error(`Error updating user datass: ${err.message}`);
 		} finally {
 			setIsLoading(false);
 			message.success("User data updated successfully");

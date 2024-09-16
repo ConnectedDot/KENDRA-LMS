@@ -44,8 +44,8 @@ const Dashboard = () => {
 
 	return (
 		<>
-			<Navbarin title={"Learner's Dashboard- Kendra LMS"}>
-				<section className="px-0 md:mx-0  mx-auto mb-6 mt-6">
+			<Navbarin title={"Learner's Dashboard | Kendra LMS"}>
+				<section className="mb-6 mt-6">
 					<div className="flex items-center">
 						{" "}
 						<div className="flex">
@@ -72,7 +72,7 @@ const Dashboard = () => {
 					</div>
 				</section>
 				<section className="px-0 md:mx-0 rounded-3xl bg-white dark:bg-green-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
-					<div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">
+					<div className="py-8 px-4 max-w-screen-xl text-center lg:py-16 z-10 relative">
 						<Link
 							to="#"
 							className="inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg- dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500"
@@ -128,7 +128,7 @@ const Dashboard = () => {
 					</div>
 				</section>
 
-				<section className="px-0 md:mx-0  mx-auto mb-24 mt-14">
+				<section className="mb-24 mt-14">
 					<div className="relative isolate px-6 pt-14 lg:px-8">
 						<div className="text-4xl">A broad selection of courses</div>
 						<div className="text-xl mb-6 ">

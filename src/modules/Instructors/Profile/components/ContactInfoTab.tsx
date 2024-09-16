@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import TextArea from "antd/es/input/TextArea";
 
 interface ContactInfoTabProps {
 	formData: {

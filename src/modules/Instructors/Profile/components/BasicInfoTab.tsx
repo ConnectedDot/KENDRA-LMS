@@ -30,6 +30,12 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 		formData.photo || imageUrl || null
 	);
 
+	useEffect(() => {
+		if (formData.photo) {
+			setPreviewImage(formData.photo);
+		}
+	}, [formData.photo]);
+
 	const [files, setFiles] = useState<string | null>(null);
 
 	const beforeUpload = (file: FileType) => {
@@ -55,39 +61,24 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 		return true;
 	};
 
-	// const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-	//     const files = e.target.files;
-	//     if (files && files.length > 0) {
-	//       setFormData((prevData) => ({ ...prevData, imageUrl: files[0] }));
-	//     }
-	//   };
-
 	const handleFileChange = async (info: any) => {
 		if (uploadError) {
 			return;
 		}
 
-		const file = info.file;
+		const file = info.file.originFileObj;
 		setFiles(file);
 
-		if (info.fileList.length > 0) {
-			const file = info.fileList[0].originFileObj;
-			if (file) {
-				const reader = new FileReader();
-				reader.onload = e => {
-					setPreviewImage(e.target?.result as string);
-				};
-				reader.readAsDataURL(file);
-				onUpdateData({photo: file});
-			} else {
-				setPreviewImage(null);
-			}
-		}
-
-		const formData = new FormData();
-		onUpdateData({photo: file});
-		if (files) {
-			formData.append("photo", files);
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = e => {
+				setPreviewImage(e.target?.result as string);
+			};
+			reader.readAsDataURL(file);
+			onUpdateData({photo: file});
+			console.log(file);
+		} else {
+			setPreviewImage(null);
 		}
 	};
 

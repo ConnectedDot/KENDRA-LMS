@@ -1,31 +1,37 @@
 import React, {useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
-import {message, Spin} from "antd";
-import {getAuth, applyActionCode, confirmPasswordReset} from "firebase/auth";
-import {VerifiedOutlined} from "@ant-design/icons";
+import {useNavigate} from "react-router-dom";
+import {message} from "antd";
+import {getAuth, applyActionCode, onAuthStateChanged} from "firebase/auth";
 import {Loader} from "../../../components";
-import {doc, updateDoc} from "firebase/firestore";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "../../../Firebase";
 import {FirebaseError} from "firebase/app";
-import {MdError, MdOutlineVerified} from "react-icons/md";
+import {MdOutlineVerified} from "react-icons/md";
 
 const VerifyEmail = () => {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [userId, setUserId] = useState<string | null>(null); // Store user ID
 
 	const handleProceed = () => {
 		navigate("/login");
 	};
-	const handleEmailVerification = async (oobCode: string, apiKey: string) => {
+
+	const handleEmailVerification = async (oobCode: string) => {
 		setIsLoading(true);
 		setError(null);
 
 		try {
 			const auth = getAuth();
-			await confirmPasswordReset(auth, oobCode, apiKey);
+			await applyActionCode(auth, oobCode);
 			message.success("Email verified successfully!");
-			navigate("/login"); // Redirect to login after verification
+
+			onAuthStateChanged(auth, async user => {
+				if (user) {
+					setUserId(user.uid);
+				}
+			});
 		} catch (error: any) {
 			console.error("Error verifying email:", error);
 			let errorMessage = "An unexpected error occurred.";
@@ -37,14 +43,10 @@ const VerifyEmail = () => {
 				error !== null &&
 				"response" in error
 			) {
-				const err = error as {
-					response: {data: {error: {message: string}}};
-				};
-				if (err.response && err.response.data && err.response.data.error) {
-					errorMessage = err.response.data.error.message;
-				}
+				// Handle specific error types
 			}
-			message.error(errorMessage);
+
+			setError(errorMessage);
 			setIsLoading(false);
 		}
 	};
@@ -52,17 +54,62 @@ const VerifyEmail = () => {
 	useEffect(() => {
 		const queryParams = new URLSearchParams(window.location.search);
 		const oobCode = queryParams.get("oobCode");
-		const apiKey = queryParams.get("apiKey");
 
-		if (oobCode && apiKey) {
+		if (oobCode) {
 			// Trigger verification immediately
-			handleEmailVerification(oobCode, apiKey);
-			message.success("Email verified successfully");
+			handleEmailVerification(oobCode);
 		} else {
 			message.error("Invalid verification link");
 			navigate("/login");
 		}
-	}, [navigate]);
+	}, []);
+
+	useEffect(() => {
+		const updateUserDoc = async () => {
+			if (userId) {
+				try {
+					const userRef = doc(db, "KLMS-USER", userId);
+
+					// Check if the document exists
+					const docSnap = await getDoc(userRef);
+					if (!docSnap.exists()) {
+						message.error("User document does not exist.");
+						return;
+					}
+
+					// Update the document
+					await updateDoc(userRef, {isVerified: true});
+					message.success(`User with ID: ${userId} has been updated.`);
+
+					// Retrieve the updated document
+					const updatedDocSnap = await getDoc(userRef);
+					message.success(
+						"Updated document: " + JSON.stringify(updatedDocSnap.data())
+					);
+
+					navigate("/login");
+				} catch (error: any) {
+					console.error("Error updating user document:", error);
+					let errorMessage = "An unexpected error occurred.";
+
+					if (error instanceof FirebaseError) {
+						errorMessage = error.message.replace(/^Firebase: /, "");
+					} else if (
+						typeof error === "object" &&
+						error !== null &&
+						"response" in error
+					) {
+						// Handle specific error types
+					}
+
+					setError(errorMessage);
+					setIsLoading(false);
+				}
+			}
+		};
+
+		updateUserDoc();
+	}, [userId, navigate]);
 
 	if (isLoading) {
 		return <Loader />;

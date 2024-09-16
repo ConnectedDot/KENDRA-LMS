@@ -33,6 +33,7 @@ export interface instructorProps {
 	instagram: string;
 	youtube: string;
 	certification: string | null;
+	cart: any[];
 	status: "Pending" | "Active" | "Inactive";
 }
 export interface userProps {

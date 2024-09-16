@@ -1,5 +1,7 @@
-import {Fragment, lazy} from "react";
-import {Route, Routes} from "react-router-dom";
+import {Fragment, lazy, useContext} from "react";
+import {Navigate, Route, Routes} from "react-router-dom";
+import {AuthContext} from "../context";
+import {PublicPaths} from "./path";
 
 const privateRoutes = [
 	{
@@ -29,6 +31,12 @@ const privateRoutes = [
 ];
 
 function User() {
+	// const {user} = useContext(AuthContext);
+
+	// if (!user) {
+	// 	return <Navigate to={PublicPaths.LOGIN} replace />;
+	// }
+
 	return (
 		<Routes>
 			{privateRoutes.map(({path, element: Element}) => (

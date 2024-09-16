@@ -1,24 +1,17 @@
 import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../../../context";
 import {useNavigate} from "react-router-dom";
-import Navbarin from "../../../../layout/Instructor/Navbar";
 import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {IoMdBusiness} from "react-icons/io";
-import {GiBriefcase} from "react-icons/gi";
 import {TbSortAscending} from "react-icons/tb";
 import {Flex, message, Progress, TabsProps} from "antd";
-// import BasicInfoTab from "../components/BasicInfoTab";
-// import ContactInfoTab from "../components/ContactInfoTab";
-// import ProfessionalInfoTab from "../components/ProfessionalInfoTab";
 import {DocumentArrowUpIcon} from "@heroicons/react/24/outline";
 import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
 import {MdArrowBack} from "react-icons/md";
-import useProfileForm from "../../../../hooks/upload";
 import BasicInfoTab from "./BasicInfoTab";
 import ContactInfoTab from "./ContactInfoTab";
 import ProfessionalInfoTab from "./ProfessionalInfoTab";
-import {useUpdateUser} from "../../../../hooks/auth";
-import {useIsMutating} from "react-query";
+import {useUpdateUserData} from "../../../../hooks/auth";
 
 interface Instructor {
 	_id: string;
@@ -63,13 +56,14 @@ const ProfilePageAll = () => {
 	const [updateLoading, setUpdateLoading] = useState(false);
 	const [currentTabIndex, setcurrentTabIndex] = useState(0);
 	const {user} = useContext(AuthContext);
-	const userId = user?.uid;
+	const usersId = user?.uid;
 
 	useEffect(() => {
 		if (user) {
-			setFormData(prevData => ({...prevData, uid: user.uid}));
+			setFormData(user as unknown as Instructor);
 		}
-	}, [user]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const [formData, setFormData] = useState<Instructor>({
 		_id: "",
@@ -105,11 +99,12 @@ const ProfilePageAll = () => {
 		status: "Pending",
 	} as Instructor);
 
+	console.log(formData, "sending this");
 	const handleUpdateData = (data: Partial<Instructor>) => {
 		setFormData(prevData => ({...prevData, ...data}));
 	};
 
-	const {mutate: updateUser} = useUpdateUser();
+	const {mutate: updateUser} = useUpdateUserData();
 	const [progress, setProgress] = useState<number>(0);
 
 	useEffect(() => {
@@ -124,18 +119,15 @@ const ProfilePageAll = () => {
 		setProgress(calculateProgress());
 	}, [formData]);
 
-	useEffect(() => {
-		if (user) {
-			setFormData(user as unknown as Instructor);
-		}
-	}, [user]);
-
 	const handleUpdate = async (e?: any) => {
 		setUpdateLoading(true);
-		if (userId) {
+		if (usersId) {
 			try {
-				await updateUser({userId, updatedData: formData});
-				// message.success("Update successful");
+				await updateUser({
+					userId: usersId,
+					updatedData: formData,
+				});
+				message.success("Update successful");
 			} catch (error) {
 				message.error("Update failed");
 			} finally {
@@ -146,15 +138,6 @@ const ProfilePageAll = () => {
 			setUpdateLoading(false);
 		}
 	};
-
-	// const handleUpdate = () => {
-	// 	if (userId) {
-	// 		updateUser({userId, updatedData: formData});
-	// 		message.info("button clicked");
-	// 	} else {
-	// 		message.warning("User ID is not available");
-	// 	}
-	// };
 
 	const items: TabsProps["items"] = [
 		{
@@ -226,16 +209,6 @@ const ProfilePageAll = () => {
 					</Flex>
 					<span className="ml-3 fontmd font-bold"> Completion</span>
 				</div>
-				{/* <div className="flex">
-					{Object.keys(uploadProgress).map(videoTitle => (
-						<div key={videoTitle}>
-							<p>
-								{videoTitle}: {uploadProgress[videoTitle]}%
-							</p>
-							<p>{uploadPercentage}</p>
-						</div>
-					))}
-				</div> */}
 			</div>
 
 			<div className="flex flex-row">
@@ -271,11 +244,11 @@ const ProfilePageAll = () => {
 				<div className="md:w-[75%] mb-12 bg ml-6 mr-6">
 					<div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-lg relative">
 						{items[currentTabIndex].children}
-						<div className="flex justify-between mt-4 mb-4">
+						<div className="flex justify-between mt-4 mb-4 px-6">
 							{currentTabIndex > 0 && (
 								<button
 									onClick={handlePrev}
-									className="w-[10%] bg-gray-500 hover:bg-blue-500 text-white p-2 rounded flex justify-center items-center"
+									className="w-[15%] bg-gray-500  hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
 								>
 									<AiFillBackward /> <span className="ml-2 text-xs">Prev</span>
 								</button>
@@ -284,7 +257,7 @@ const ProfilePageAll = () => {
 							{currentTabIndex < items.length - 1 ? (
 								<button
 									onClick={handleNext}
-									className="w-[10%] bg-gray-500 hover:bg-blue-500 text-white p-2 rounded flex justify-center items-center"
+									className="w-[15%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
 								>
 									<span className="mr-2 text-xs">Next</span>
 									<AiFillForward />
@@ -293,7 +266,7 @@ const ProfilePageAll = () => {
 								<button
 									disabled={updateLoading}
 									onClick={handleUpdate}
-									className="w-[10%] rounded-md bg-gray-400 text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
+									className="w-[20%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center "
 								>
 									<span className="mr-2 text-xs">
 										<span className="ml-3">
@@ -302,12 +275,13 @@ const ProfilePageAll = () => {
 													style={{
 														fontSize: 16,
 														fontWeight: "500",
-														color: "black",
+														// color: "black",
 													}}
 													spin
 												/>
 											)}
 										</span>
+										<span className="tsxt-sx">Update profile</span>
 									</span>
 
 									<UploadOutlined />

@@ -6,7 +6,7 @@ import {
 	getStoredUser,
 	setStoredUser,
 } from "../storage";
-import {ChildProps, userProps} from "../interface";
+import {ChildProps, instructorProps, userProps} from "../interface";
 
 export const AuthContext = createContext({
 	user: undefined as userProps | undefined,
@@ -22,6 +22,7 @@ function AuthContextProvider({children}: ChildProps) {
 	const [user, setUser] = useState<userProps | undefined>(undefined);
 	const [fireUser, setFireUser] = useState<userProps | undefined>(undefined);
 	const [cart, setCart] = useState<userProps[]>([]);
+	const userDetails = getStoredUser();
 
 	useEffect(() => {
 		const data = getLoginToken();
@@ -38,10 +39,10 @@ function AuthContextProvider({children}: ChildProps) {
 	}, []);
 
 	useEffect(() => {
-		const data = getStoredUser();
-		if (data) {
-			setUser(data);
+		if (userDetails && userDetails) {
+			setUser(userDetails);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -56,32 +57,42 @@ function AuthContextProvider({children}: ChildProps) {
 		setAuthToken(undefined);
 		localStorage.clear();
 	}
+
 	function updateUser(data: userProps) {
-		setUser(data);
+		setUser(prevUser => ({...prevUser, ...data}));
 	}
 
 	function authenticate(data: string) {
 		setAuthToken(data);
-		const userObj: userProps = {
-			id: "id" || "",
-			firstName: "firstName" || "",
-			lastName: "lastName" || "",
-			email: "email" || "",
-			gender: "",
+		const userObj: instructorProps = {
 			_id: "",
+			id: "",
 			uid: undefined,
+			gender: "",
+			email: "",
+			firstName: "",
+			lastName: "",
 			bio: "",
-			photo: "",
 			phone_number: "",
 			courses: [],
 			isVerified: false,
 			imageUrl: "",
+			total_courses: [],
 			twitter: "",
 			linkedin: "",
 			facebook: "",
+			cart: [],
 			status: "Pending",
-			total_courses: [],
-			cart: cart ? [...cart] : [],
+			password: "",
+			token: "",
+			expertise: "",
+			total_students: 0,
+			total_reviews: [],
+			skill_level: [],
+			website: "",
+			instagram: "",
+			youtube: "",
+			certification: null,
 		};
 
 		setUser(userObj);
@@ -96,6 +107,7 @@ function AuthContextProvider({children}: ChildProps) {
 		authenticate: authenticate,
 		logout: logout,
 		updateUser: updateUser,
+		cart: cart,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
