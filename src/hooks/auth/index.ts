@@ -40,90 +40,184 @@ interface User {
 	// Add other properties if necessary
 }
 
-export function useFirebaseLogin() {
-	const navigate = useNavigate();
-	const mutationFn: MutationFunction<
-		{userData: userProps; token: string; user: any},
-		{email: string; password: string}
-	> = async formData => {
-		const userCredential = await signInWithEmailAndPassword(
-			auth,
-			formData.email,
-			formData.password
-		);
+// export function useFirebaseLogin() {
+// 	const navigate = useNavigate();
+// 	const mutationFn: MutationFunction<
+// 		{userData: userProps; token: string; user: any},
+// 		{email: string; password: string}
+// 	> = async formData => {
+// 		const userCredential = await signInWithEmailAndPassword(
+// 			auth,
+// 			formData.email,
+// 			formData.password
+// 		);
 
-		const user = userCredential.user;
-		setStoredFireUser(user as any);
+// 		const user = userCredential.user;
+// 		setStoredFireUser(user as any);
 
-		if (user) {
-			const userDocRef = doc(db, "KLMS-USER", user.uid);
-			const userDoc = await getDoc(userDocRef);
+// 		if (user) {
+// 			const userDocRef = doc(db, "KLMS-USER", user.uid);
+// 			const userDoc = await getDoc(userDocRef);
 
-			if (userDoc.exists()) {
-				const userData = userDoc.data() as userProps;
-				const token = await user.getIdToken();
-				return {userData, token, user};
-			} else {
-				throw new Error("User data not found in Firestore.");
-			}
-		} else {
-			throw new Error("User not authenticated.");
-		}
-	};
+// 			if (userDoc.exists()) {
+// 				const userData = userDoc.data() as userProps;
+// 				const token = await user.getIdToken();
+// 				return {userData, token, user};
+// 			} else {
+// 				throw new Error("User data not found in Firestore.");
+// 			}
+// 		} else {
+// 			throw new Error("User not authenticated.");
+// 		}
+// 	};
 
-	return useMutation({
-		mutationFn,
-		onSuccess: async ({userData, token, user}) => {
-			if (userData.isVerified === false) {
-				message.info(`Please, verify your email address at ${userData.email}`);
-				try {
-					sendEmailVerification(user);
-					message.success("A new verification email has been sent.");
-				} catch (error) {
-					message.error("Failed to send verification email.");
-				}
-				return;
-			} else {
-				setStoredUser(userData);
-				message.success("Logged in successfully");
-				setLoginToken(token);
+// 	return useMutation({
+// 		mutationFn,
+// 		onSuccess: async ({userData, token, user}) => {
+// 			if (userData.isVerified === false) {
+// 				message.info(`Please, verify your email address at ${userData.email}`);
+// 				try {
+// 					sendEmailVerification(user);
+// 					message.success("A new verification email has been sent.");
+// 				} catch (error) {
+// 					message.error("Failed to send verification email.");
+// 				}
+// 				return;
+// 			} else {
+// 				setStoredUser(userData);
+// 				message.success("Logged in successfully");
+// 				setLoginToken(token);
 
-				// Handle role-based redirection
-				if (userData.role === "Admin") {
-					navigate(`${PrivatePaths.ADMIN}dashboard`);
-				} else if (userData.role === "Instructor") {
-					navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
-				} else {
-					navigate(`${PrivatePaths.USER}dashboard`);
-				}
-			}
-		},
-		onError: (error: any) => {
-			let errorMessage = "An unexpected error occurred.";
+// 				// Handle role-based redirection
+// 			// 	if (userData.role === "Admin") {
+// 			// 		navigate(`${PrivatePaths.ADMIN}dashboard`);
+// 			// 	} else if (userData.role === "Instructor") {
+// 			// 		navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
+// 			// 	} else {
+// 			// 		navigate(`${PrivatePaths.USER}dashboard`);
+// 			// 	}
+// 			}
+// 		},
+// 		onError: (error: any) => {
+// 			let errorMessage = "An unexpected error occurred.";
 
-			if (error instanceof FirebaseError) {
-				errorMessage = error.message.replace(/^Firebase: /, "");
-			} else if (
-				typeof error === "object" &&
-				error !== null &&
-				"response" in error
-			) {
-				const err = error as {
-					response: {data: {error: {message: string}}};
-				};
-				if (err.response && err.response.data && err.response.data.error) {
-					errorMessage = err.response.data.error.message;
-				}
-			}
+// 			if (error instanceof FirebaseError) {
+// 				errorMessage = error.message.replace(/^Firebase: /, "");
+// 			} else if (
+// 				typeof error === "object" &&
+// 				error !== null &&
+// 				"response" in error
+// 			) {
+// 				const err = error as {
+// 					response: {data: {error: {message: string}}};
+// 				};
+// 				if (err.response && err.response.data && err.response.data.error) {
+// 					errorMessage = err.response.data.error.message;
+// 				}
+// 			}
 
-			message.info(errorMessage);
-		},
-	});
-}
+// 			message.info(errorMessage);
+// 		},
+// 	});
+// }
+
+// export function useFirebaseGoogleLogin() {
+// 	const navigate = useNavigate();
+// 	const provider = new GoogleAuthProvider();
+
+// 	const mutationFn: MutationFunction<
+// 		{userData: userProps; token: string},
+// 		void
+// 	> = async () => {
+// 		const result = await signInWithPopup(auth, provider);
+// 		const user = result.user;
+// 		// console.log(user, "google user details");
+// 		const token = await user.getIdToken();
+// 		const userDocRef = doc(db, "KLMS-USER", user.uid);
+// 		const userDoc = await getDoc(userDocRef);
+// 		const userId = `user${Date.now()}`;
+
+// 		let userData: userProps;
+
+// 		if (userDoc.exists()) {
+// 			// Existing user
+// 			userData = userDoc.data() as userProps;
+// 		} else {
+// 			// New user, initialize user data
+// 			userData = {
+// 				_id: "",
+// 				id: userId,
+// 				uid: user.uid,
+// 				gender: "",
+// 				email: user.email ?? "",
+// 				role: "User",
+// 				isVerified: user.emailVerified,
+// 				firstName: user.displayName?.split(" ")[1] || "",
+// 				lastName: user.displayName?.split(" ")[0] || "",
+// 				bio: "",
+// 				phone_number: "",
+// 				courses: [],
+// 				total_courses: [],
+// 				twitter: "",
+// 				linkedin: "",
+// 				facebook: "",
+// 				status: "Pending",
+// 				cart: [],
+
+// 				imageUrl: user.photoURL || "",
+
+// 				// Add the remaining properties from the 'userProps' type
+// 			};
+// 			await setDoc(userDocRef, userData);
+// 		}
+
+// 		return {userData, token};
+// 	};
+
+// 	return useMutation({
+// 		mutationFn,
+// 		onSuccess: ({userData, token}) => {
+// 			setStoredUser(userData);
+// 			message.success("Logged in successfully");
+// 			setLoginToken(token);
+
+// 			// Handle role-based redirection
+// 			// if (userData.role === "Admin") {
+// 			// 	navigate(`${PrivatePaths.ADMIN}dashboard`);
+// 			// } else if (userData.role === "Instructor") {
+// 			// 	navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
+// 			// } else {
+// 			// 	navigate(`${PrivatePaths.USER}dashboard`);
+// 			// }
+// 		},
+// 		onError: (error: any) => {
+// 			let errorMessage = "An unexpected error occurred.";
+
+// 			if (error instanceof FirebaseError) {
+// 				errorMessage = error.message.replace(/^Firebase: /, "");
+// 			} else if (
+// 				typeof error === "object" &&
+// 				error !== null &&
+// 				"response" in error
+// 			) {
+// 				const err = error as {
+// 					response: {data: {error: {message: string}}};
+// 				};
+// 				if (err.response && err.response.data && err.response.data.error) {
+// 					errorMessage = err.response.data.error.message;
+// 				}
+// 			}
+
+// 			message.info(errorMessage);
+// 		},
+// 	});
+// }
 
 export function useFirebaseGoogleLogin() {
 	const navigate = useNavigate();
 	const provider = new GoogleAuthProvider();
+	const [userData, setUserData] = useState<userProps | null>(null);
+	const [token, setToken] = useState<string | null>(null);
 
 	const mutationFn: MutationFunction<
 		{userData: userProps; token: string},
@@ -131,7 +225,6 @@ export function useFirebaseGoogleLogin() {
 	> = async () => {
 		const result = await signInWithPopup(auth, provider);
 		const user = result.user;
-		// console.log(user, "google user details");
 		const token = await user.getIdToken();
 		const userDocRef = doc(db, "KLMS-USER", user.uid);
 		const userDoc = await getDoc(userDocRef);
@@ -163,9 +256,7 @@ export function useFirebaseGoogleLogin() {
 				facebook: "",
 				status: "Pending",
 				cart: [],
-
 				imageUrl: user.photoURL || "",
-
 				// Add the remaining properties from the 'userProps' type
 			};
 			await setDoc(userDocRef, userData);
@@ -174,11 +265,36 @@ export function useFirebaseGoogleLogin() {
 		return {userData, token};
 	};
 
-	return useMutation({
+	const {mutate} = useMutation({
 		mutationFn,
 		onSuccess: ({userData, token}) => {
-			setStoredUser(userData);
+			setUserData(userData);
+			setToken(token);
 			message.success("Logged in successfully");
+		},
+		onError: (error: any) => {
+			let errorMessage = "An unexpected error occurred.";
+
+			if (error instanceof FirebaseError) {
+				errorMessage = error.message.replace(/^Firebase: /, "");
+			} else if (
+				typeof error === "object" &&
+				error !== null &&
+				"response" in error
+			) {
+				const err = error as {response: {data: {error: {message: string}}}};
+				if (err.response && err.response.data && err.response.data.error) {
+					errorMessage = err.response.data.error.message;
+				}
+			}
+
+			message.info(errorMessage);
+		},
+	});
+
+	useEffect(() => {
+		if (userData && token) {
+			setStoredUser(userData);
 			setLoginToken(token);
 
 			// Handle role-based redirection
@@ -188,6 +304,62 @@ export function useFirebaseGoogleLogin() {
 				navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
 			} else {
 				navigate(`${PrivatePaths.USER}dashboard`);
+			}
+		}
+	}, [userData, token, navigate]);
+
+	return {mutate};
+}
+
+export function useFirebaseLogin() {
+	const navigate = useNavigate();
+	const [userData, setUserData] = useState<userProps | null>(null);
+	const [token, setToken] = useState<string | null>(null);
+
+	const mutationFn: MutationFunction<
+		{userData: userProps; token: string; user: any},
+		{email: string; password: string}
+	> = async formData => {
+		const userCredential = await signInWithEmailAndPassword(
+			auth,
+			formData.email,
+			formData.password
+		);
+		const user = userCredential.user;
+		setStoredFireUser(user as any);
+
+		if (user) {
+			const userDocRef = doc(db, "KLMS-USER", user.uid);
+			const userDoc = await getDoc(userDocRef);
+
+			if (userDoc.exists()) {
+				const userData = userDoc.data() as userProps;
+				const token = await user.getIdToken();
+				return {userData, token, user};
+			} else {
+				throw new Error("User data not found in Firestore.");
+			}
+		} else {
+			throw new Error("User not authenticated.");
+		}
+	};
+
+	const {mutate} = useMutation({
+		mutationFn,
+		onSuccess: async ({userData, token, user}) => {
+			if (userData.isVerified === false) {
+				message.info(`Please, verify your email address at ${userData.email}`);
+				try {
+					await sendEmailVerification(user);
+					message.success("A new verification email has been sent.");
+				} catch (error) {
+					message.error("Failed to send verification email.");
+				}
+				return;
+			} else {
+				setUserData(userData);
+				setToken(token);
+				message.success("Logged in successfully");
 			}
 		},
 		onError: (error: any) => {
@@ -200,9 +372,7 @@ export function useFirebaseGoogleLogin() {
 				error !== null &&
 				"response" in error
 			) {
-				const err = error as {
-					response: {data: {error: {message: string}}};
-				};
+				const err = error as {response: {data: {error: {message: string}}}};
 				if (err.response && err.response.data && err.response.data.error) {
 					errorMessage = err.response.data.error.message;
 				}
@@ -211,6 +381,24 @@ export function useFirebaseGoogleLogin() {
 			message.info(errorMessage);
 		},
 	});
+
+	useEffect(() => {
+		if (userData && token) {
+			setStoredUser(userData);
+			setLoginToken(token);
+
+			// Handle role-based redirection
+			if (userData.role === "Admin") {
+				navigate(`${PrivatePaths.ADMIN}dashboard`);
+			} else if (userData.role === "Instructor") {
+				navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
+			} else {
+				navigate(`${PrivatePaths.USER}dashboard`);
+			}
+		}
+	}, [userData, token, navigate]);
+
+	return {mutate};
 }
 
 export function useFirebaseRegister() {
@@ -229,13 +417,15 @@ export function useFirebaseRegister() {
 		const user = userCredential.user;
 
 		if (user) {
-			await sendEmailVerification(user);
-			await updateProfile(user, {
-				photoURL: formData.role,
-			});
-
-			// console.log("Email verification sent to:", user);
-
+			try {
+				await sendEmailVerification(user);
+				await updateProfile(user, {
+					displayName: formData.role,
+				});
+				message.success("Profile updated successfully!");
+			} catch (error: any) {
+				message.error("Error updating firebase data:", error);
+			}
 			const userId = `user${Date.now()}`;
 			const {password, ...userData} = formData;
 			const userDocData = {

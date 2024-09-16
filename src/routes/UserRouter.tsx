@@ -1,13 +1,15 @@
-import {Fragment, lazy} from "react";
-import {Route, Routes} from "react-router-dom";
+import {Fragment, lazy, useContext} from "react";
+import {Navigate, Route, Routes} from "react-router-dom";
+import {PublicPaths} from "./path";
+import {AuthContext} from "../context";
 
 const privateRoutes = [
 	{
-		path: "dashboard",
+		path: "/dashboard",
 		element: lazy(() => import("../modules/Learners")),
 	},
 	{
-		path: "profile",
+		path: "/profile",
 		element: lazy(() => import("../modules/Learners/Profile")),
 	},
 	// {
@@ -19,12 +21,26 @@ const privateRoutes = [
 		element: lazy(() => import("../modules/Learners/courses/CoursePage")),
 	},
 	{
+		path: "/courses-enrolled",
+		element: lazy(() => import("../modules/Learners/courses/CoursesList")),
+	},
+	{
+		path: "/courses-enrolled/:id",
+		element: lazy(() => import("../modules/Learners/courses/CoursesView")),
+	},
+	{
 		path: "*",
 		element: lazy(() => import("../modules/NotFound")),
 	},
 ];
 
 function User() {
+	const {user} = useContext(AuthContext);
+
+	// if (!user) {
+	// 	return <Navigate to={PublicPaths.LOGIN} replace />;
+	// }
+
 	return (
 		<Routes>
 			{privateRoutes.map(({path, element: Element}) => (

@@ -17,8 +17,9 @@ import useProfileForm from "../../../../hooks/upload";
 import BasicInfoTab from "./BasicInfoTab";
 import ContactInfoTab from "./ContactInfoTab";
 import ProfessionalInfoTab from "./ProfessionalInfoTab";
-import {useUpdateUser} from "../../../../hooks/auth";
+// import {useUpdateUser} from "../../../../hooks/auth";
 import {useIsMutating} from "react-query";
+import {useUpdateUser} from "../../../../hooks/crud-ops";
 
 interface Instructor {
 	_id: string;
@@ -63,7 +64,7 @@ const ProfilePageAll = () => {
 	const [updateLoading, setUpdateLoading] = useState(false);
 	const [currentTabIndex, setcurrentTabIndex] = useState(0);
 	const {user} = useContext(AuthContext);
-	const userId = user?.uid;
+	const usersId = user?.uid;
 
 	useEffect(() => {
 		if (user) {
@@ -109,7 +110,7 @@ const ProfilePageAll = () => {
 		setFormData(prevData => ({...prevData, ...data}));
 	};
 
-	const {mutate: updateUser} = useUpdateUser();
+	const {updateUser} = useUpdateUser();
 	const [progress, setProgress] = useState<number>(0);
 
 	useEffect(() => {
@@ -132,9 +133,9 @@ const ProfilePageAll = () => {
 
 	const handleUpdate = async (e?: any) => {
 		setUpdateLoading(true);
-		if (userId) {
+		if (usersId) {
 			try {
-				await updateUser({userId, updatedData: formData});
+				await updateUser(usersId, formData);
 				// message.success("Update successful");
 			} catch (error) {
 				message.error("Update failed");

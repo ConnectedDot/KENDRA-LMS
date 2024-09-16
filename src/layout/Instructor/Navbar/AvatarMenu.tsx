@@ -40,17 +40,23 @@ export const AvatarMenu = ({user}: {user: any}) => {
 			href: `${pathPrefix}dashboard`,
 			current: true,
 		},
+		{name: "Profile", href: `${pathPrefix}profile`, current: false},
 		{
 			name: "Settings",
 			href: `${pathPrefix}settings`,
 			current: false,
 		},
-		{
-			name: "Earnings",
-			href: `${pathPrefix}earnings`,
-			current: false,
-		},
-		{name: "Profile", href: `${pathPrefix}profile`, current: false},
+
+		...(userData?.role === "Instructor"
+			? [
+					{
+						name: "Earnings",
+						href: `${pathPrefix}earnings`,
+						current: false,
+					},
+			  ]
+			: []),
+
 		{
 			name: "Sign Out",
 			href: "#",

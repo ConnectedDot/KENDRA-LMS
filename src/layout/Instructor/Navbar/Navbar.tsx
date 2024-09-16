@@ -121,8 +121,8 @@ const Navbar = () => {
 
 	const userNavigation: NavigationItem[] = [
 		{
-			name: "My Courses",
-			href: `${PrivatePaths.USER}courses-view`,
+			name: "Learning Path",
+			href: `${PrivatePaths.USER}courses-enrolled`,
 			current: false,
 		},
 		{
