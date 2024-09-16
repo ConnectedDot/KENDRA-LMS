@@ -50,6 +50,7 @@ export const CoursePlayer: React.FC<CoursePlayerProps> = ({course}) => {
 	const handleVideoEnd = () => {
 		console.log("Video ended");
 	};
+	console.log(course);
 
 	useEffect(() => {
 		if (videoRef.current) {

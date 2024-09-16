@@ -5,7 +5,7 @@ import Navbarin from "../../../layout/Instructor/Navbar";
 import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {IoMdBusiness} from "react-icons/io";
 import {TbSortAscending} from "react-icons/tb";
-import {TabsProps} from "antd";
+import {message, TabsProps} from "antd";
 import BasicInfoTab from "../components/BasicInfo";
 import {DocumentArrowUpIcon} from "@heroicons/react/24/outline";
 import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
@@ -77,6 +77,7 @@ const CourseRegForm = () => {
 		students: 0,
 	});
 	console.log(formData, "formData");
+	console.log(formData, "formData");
 
 	const handleUpdateData = (data: Partial<Course>) => {
 		setFormData(prevData => ({...prevData, ...data}));
@@ -84,6 +85,10 @@ const CourseRegForm = () => {
 
 	const HandleSubmission = (e?: any) => {
 		e.preventDefault();
+		if (!formData.Title) {
+			message.error("Course Title is required");
+			return;
+		}
 		handleSubmit(formData);
 	};
 
@@ -181,7 +186,7 @@ const CourseRegForm = () => {
 							{currentTabIndex > 0 && (
 								<button
 									onClick={handlePrev}
-									className="w-[15%] bg-gray-500 hover:bg-blue-500 text-white p-2 rounded flex justify-center items-center"
+									className="w-[15%] bg-gray-500  hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
 								>
 									<AiFillBackward /> <span className="ml-2 text-xs">Prev</span>
 								</button>
@@ -190,7 +195,7 @@ const CourseRegForm = () => {
 							{currentTabIndex < items.length - 1 ? (
 								<button
 									onClick={handleNext}
-									className="w-[15%] bg-gray-500 hover:bg-blue-500 text-white p-2 rounded flex justify-center items-center"
+									className="w-[15%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
 								>
 									<span className="mr-2 text-xs">Next</span>
 									<AiFillForward />
@@ -199,7 +204,7 @@ const CourseRegForm = () => {
 								<button
 									disabled={isLoading}
 									onClick={HandleSubmission}
-									className="w-[15%] rounded-md bg-gray-400 text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 outline-none border-none"
+									className="w-[20%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center "
 								>
 									<span className="mr-2 text-xs text-black">
 										<span className="ml-3">
@@ -209,7 +214,7 @@ const CourseRegForm = () => {
 														style={{
 															fontSize: 16,
 															fontWeight: "500",
-															color: "black",
+															// color: "black",
 														}}
 														spin
 													/>
@@ -218,7 +223,7 @@ const CourseRegForm = () => {
 										</span>
 									</span>
 
-									<span className="mr-2 text-xs">Submit</span>
+									<span className="mr-2 text-xs">Upload Course</span>
 									<UploadOutlined />
 								</button>
 							)}

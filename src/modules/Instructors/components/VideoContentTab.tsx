@@ -4,6 +4,7 @@ import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import {storage} from "../../../Firebase";
 import {message, Progress, Modal, Button} from "antd";
 import {Link} from "react-router-dom";
+import {AiFillForward} from "react-icons/ai";
 
 interface VideoContentTabProps {
 	formData: {
@@ -277,7 +278,7 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 				onCancel={() => setOpen(false)}
 				footer={
 					<Button size="small" type="primary" onClick={handleModalClose}>
-						Submit
+						Proceed <AiFillForward />
 					</Button>
 				}
 			>
