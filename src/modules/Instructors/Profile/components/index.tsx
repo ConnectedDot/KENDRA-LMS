@@ -11,7 +11,9 @@ import {MdArrowBack} from "react-icons/md";
 import BasicInfoTab from "./BasicInfoTab";
 import ContactInfoTab from "./ContactInfoTab";
 import ProfessionalInfoTab from "./ProfessionalInfoTab";
-import {useUpdateUserData} from "../../../../hooks/auth";
+// import {useUpdateUser} from "../../../../hooks/auth";
+import {useIsMutating} from "react-query";
+import {useUpdateUser} from "../../../../hooks/crud-ops";
 
 interface Instructor {
 	_id: string;
@@ -104,7 +106,7 @@ const ProfilePageAll = () => {
 		setFormData(prevData => ({...prevData, ...data}));
 	};
 
-	const {mutate: updateUser} = useUpdateUserData();
+	const {updateUser} = useUpdateUser();
 	const [progress, setProgress] = useState<number>(0);
 
 	useEffect(() => {
@@ -123,11 +125,8 @@ const ProfilePageAll = () => {
 		setUpdateLoading(true);
 		if (usersId) {
 			try {
-				await updateUser({
-					userId: usersId,
-					updatedData: formData,
-				});
-				message.success("Update successful");
+				await updateUser(usersId, formData);
+				// message.success("Update successful");
 			} catch (error) {
 				message.error("Update failed");
 			} finally {

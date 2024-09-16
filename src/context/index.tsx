@@ -7,6 +7,8 @@ import {
 	setStoredUser,
 } from "../storage";
 import {ChildProps, instructorProps, userProps} from "../interface";
+import {ChildProps, userProps} from "../interface";
+import {useObservingUser} from "./hooks";
 
 export const AuthContext = createContext({
 	user: undefined as userProps | undefined,
@@ -22,7 +24,27 @@ function AuthContextProvider({children}: ChildProps) {
 	const [user, setUser] = useState<userProps | undefined>(undefined);
 	const [fireUser, setFireUser] = useState<userProps | undefined>(undefined);
 	const [cart, setCart] = useState<userProps[]>([]);
-	const userDetails = getStoredUser();
+
+	//trying to refcth userupdateddata frequesntly
+
+	// useEffect(() => {
+	// 	const fetchUserData = async () => {
+	// 		try {
+	// 			const data = await getCurrentUserData();
+	// 			// setUser(data as any);
+	// 			console.log(data, "Data im refreshing");
+	// 		} catch (err: any) {
+	// 			// setError(err.message);
+	// 			console.log(err);
+	// 		}
+	// 	};
+
+	// 	fetchUserData();
+	// }, []);
+
+	const [databaseUsers, users] = useObservingUser();
+	console.log(databaseUsers, "Data from firestore");
+	console.log(users, "userdata from firebase");
 
 	useEffect(() => {
 		const data = getLoginToken();
