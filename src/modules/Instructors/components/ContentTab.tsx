@@ -21,6 +21,20 @@ const ContentTab: React.FC<ContentTabProps> = ({formData, onUpdateData}) => {
 		onUpdateData({[name]: value});
 	};
 
+	// const handleQuestionChange = (
+	// 	index: number,
+	// 	field: "question" | "answer",
+	// 	value: string
+	// ) => {
+	// 	setLocalFormData(prevData => {
+	// 		const updatedQuestions = [...prevData.Questions];
+	// 		updatedQuestions[index][field] = value;
+	// 		const updatedFormData = {...prevData, Questions: updatedQuestions};
+	// 		onUpdateData({Questions: updatedQuestions});
+	// 		return updatedFormData;
+	// 	});
+	// };
+
 	const handleQuestionChange = (
 		index: number,
 		field: "question" | "answer",
@@ -29,31 +43,13 @@ const ContentTab: React.FC<ContentTabProps> = ({formData, onUpdateData}) => {
 		setLocalFormData(prevData => {
 			const updatedQuestions = [...prevData.Questions];
 			updatedQuestions[index][field] = value;
-			const updatedFormData = {...prevData, Questions: updatedQuestions};
-			onUpdateData({Questions: updatedQuestions});
-			return updatedFormData;
+			return {...prevData, Questions: updatedQuestions};
 		});
 	};
 
-	const handleContentChange = (
-		index: number,
-		field: "Title" | "Lectures",
-		value: string
-	) => {
-		setLocalFormData(prevData => {
-			const updatedContent = [...prevData.Content];
-			if (field === "Title") {
-				updatedContent[index][field] = value;
-			} else {
-				updatedContent[index].Lectures = value
-					.split(",")
-					.map(lecture => lecture.trim());
-			}
-			const updatedFormData = {...prevData, Content: updatedContent};
-			onUpdateData({Content: updatedContent});
-			return updatedFormData;
-		});
-	};
+	useEffect(() => {
+		onUpdateData({Questions: localFormData.Questions});
+	}, [localFormData.Questions]);
 
 	useEffect(() => {
 		setLocalFormData(formData);

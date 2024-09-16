@@ -11,10 +11,7 @@ import CourseQnA from "../../Learners/components/FAQ";
 import DecriptionTab from "../../Learners/components/DecriptionTab";
 import {useLocation} from "react-router-dom";
 import {Course} from "../../../interface";
-import {getStorage, ref, getDownloadURL} from "firebase/storage"; // Import Firebase Storage functions
-// import "video.js/dist/video-js.css"; // Import video.js CSS
 import Navbarin from "../../../layout/Instructor/Navbar";
-import mvideo from "../../../assets/rec.mp4";
 
 interface CoursesViewProps {
 	course: Course;
