@@ -12,6 +12,8 @@ import {AuthContext} from "../../../context";
 import {AvatarMenu} from "./AvatarMenu";
 import {FaSearch} from "react-icons/fa";
 import {PrivatePaths} from "../../../routes/path";
+import {CartDrawer} from "../../Home/components/Cartdrawer";
+import {MdShoppingCart} from "react-icons/md";
 
 interface NavigationItem {
 	name: string;
@@ -43,13 +45,18 @@ const CustomLink = ({
 
 const Navbar = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
+	const [open, setOpen] = React.useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const {user} = useContext(AuthContext);
 	const [currentLink, setCurrentLink] = useState("/");
+	const cartCount = 5;
 
 	const handleLinkClick = (href: string) => {
 		setCurrentLink(href);
 	};
+
+	const handleOpen = () => setOpen(true);
+	const handleClose = () => setOpen(false);
 
 	const handleSearch = () => {
 		// Handle the search functionality here
@@ -231,6 +238,14 @@ const Navbar = () => {
 								<AvatarMenu
 								// user={user}
 								/>
+							</div>
+							<div onClick={handleOpen} className="flex relative">
+								<MdShoppingCart style={{fontSize: "20px"}} />
+								<span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-1.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+									{cartCount}
+								</span>
+								{/* <CartDrawer /> */}
+								<CartDrawer open={open} setOpen={handleClose} />
 							</div>
 						</div>
 
