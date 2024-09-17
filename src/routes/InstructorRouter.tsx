@@ -12,18 +12,15 @@ const privateRoutes = [
 		path: "/profile",
 		element: lazy(() => import("../modules/Instructors/Profile")),
 	},
-	{
-		path: "/courses-new",
-		element: lazy(() => import("../modules/Instructors/courses")),
-	},
+	// {
+	// 	path: "/courses-new",
+	// 	element: lazy(() => import("../modules/Instructors/courses")),
+	// },
 	{
 		path: "/courses-view",
 		element: lazy(() => import("../modules/Instructors/courses/CoursesList")),
 	},
-	{
-		path: "/courses",
-		element: lazy(() => import("../modules/Instructors/courses")),
-	},
+
 	{
 		path: "/courses-view/:id",
 		element: lazy(() => import("../modules/Instructors/courses/CoursesView")),
@@ -34,7 +31,7 @@ const privateRoutes = [
 	},
 ];
 
-function User() {
+function Instructor() {
 	// const {user} = useContext(AuthContext);
 
 	// if (!user) {
@@ -52,4 +49,4 @@ function User() {
 	);
 }
 
-export default User;
+export default Instructor;
