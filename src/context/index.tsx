@@ -93,6 +93,7 @@ function AuthContextProvider({children}: ChildProps) {
 			instagram: "",
 			youtube: "",
 			certification: null,
+			isApproved: false,
 		};
 
 		setUser(userObj);

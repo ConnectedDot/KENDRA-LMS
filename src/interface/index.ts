@@ -14,6 +14,7 @@ export interface instructorProps {
 	photoURL?: string;
 	emailVerified?: string;
 	// user: any[];
+	isApproved: boolean;
 	firstName: string;
 	lastName: string;
 	bio: string;

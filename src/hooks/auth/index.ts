@@ -22,7 +22,7 @@ import {
 } from "firebase/firestore";
 import {useNavigate} from "react-router-dom";
 import {auth, db} from "../../Firebase";
-import {userProps} from "../../interface";
+import {instructorProps, userProps} from "../../interface";
 import {setLoginToken, setStoredFireUser, setStoredUser} from "../../storage";
 import {PrivatePaths} from "../../routes/path";
 import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
@@ -314,11 +314,11 @@ export function useFirebaseGoogleLogin() {
 
 export function useFirebaseLogin() {
 	const navigate = useNavigate();
-	const [userData, setUserData] = useState<userProps | null>(null);
+	const [userData, setUserData] = useState<instructorProps | null>(null);
 	const [token, setToken] = useState<string | null>(null);
 
 	const mutationFn: MutationFunction<
-		{userData: userProps; token: string; user: any},
+		{userData: instructorProps; token: string; user: any},
 		{email: string; password: string}
 	> = async formData => {
 		const userCredential = await signInWithEmailAndPassword(
@@ -334,7 +334,7 @@ export function useFirebaseLogin() {
 			const userDoc = await getDoc(userDocRef);
 
 			if (userDoc.exists()) {
-				const userData = userDoc.data() as userProps;
+				const userData = userDoc.data() as instructorProps;
 				const token = await user.getIdToken();
 				return {userData, token, user};
 			} else {
@@ -348,7 +348,11 @@ export function useFirebaseLogin() {
 	const {mutate} = useMutation({
 		mutationFn,
 		onSuccess: async ({userData, token, user}) => {
-			if (userData.isVerified === false) {
+			if (userData.role === "Admin") {
+				setUserData(userData as instructorProps);
+				setToken(token);
+				message.success("Logged in successfully");
+			} else if (userData.isVerified === false) {
 				message.info(`Please, verify your email address at ${userData.email}`);
 				try {
 					await sendEmailVerification(user);
@@ -357,6 +361,11 @@ export function useFirebaseLogin() {
 					message.error("Failed to send verification email.");
 				}
 				return;
+			} else if (
+				userData.role === "Instructor" &&
+				userData.isApproved === false
+			) {
+				navigate(`${PrivatePaths.INSTRUCTOR}approval`);
 			} else {
 				setUserData(userData);
 				setToken(token);
