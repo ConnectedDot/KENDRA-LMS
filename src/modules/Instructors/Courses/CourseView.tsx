@@ -8,7 +8,7 @@ interface CoursesViewProps {
 	course: Course;
 }
 
-const CoursesView: React.FC = () => {
+const Coursesview: React.FC = () => {
 	const location = useLocation();
 	const {course} = location.state as CoursesViewProps;
 
@@ -19,4 +19,4 @@ const CoursesView: React.FC = () => {
 	);
 };
 
-export default CoursesView;
+export default Coursesview;

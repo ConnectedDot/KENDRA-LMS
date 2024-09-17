@@ -23,7 +23,7 @@ const privateRoutes = [
 
 	{
 		path: "/courses-view/:id",
-		element: lazy(() => import("../modules/Instructors/courses/CourseView")),
+		element: lazy(() => import("../modules/Instructors/courses/Courseview")),
 	},
 	{
 		path: "*",
