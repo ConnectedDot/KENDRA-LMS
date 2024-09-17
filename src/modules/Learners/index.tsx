@@ -6,8 +6,6 @@ import {Link, useNavigate} from "react-router-dom";
 import FeaturedCourse from "./courses/components/FeaturedCourse";
 import {useFetchCourses} from "../../hooks/Querry";
 import {Course} from "../../interface";
-import {useFirebaseUserSignedIn, useObserveAuthState} from "../../hooks/auth";
-// import {useObserveAuthState} from "../../hooks/auth";
 
 const Dashboard = () => {
 	const navigate = useNavigate();

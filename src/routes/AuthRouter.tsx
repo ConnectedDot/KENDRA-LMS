@@ -43,10 +43,12 @@ const paths = [
 			() => import("../modules/Auth/VerifyEmail/VerificationDialog")
 		),
 	},
-	// {
-	//   path: "/teaching/join",
-	//   element: lazy(() => import("../modules/Auth/Instructor-Register")),
-	// },
+	{
+		path: "/approval",
+		element: lazy(
+			() => import("../modules/Auth/Instructor-Register/approvalPage")
+		),
+	},
 	{
 		path: "/forget-password",
 		element: lazy(() => import("../modules/Auth/ForgotPassword")),
