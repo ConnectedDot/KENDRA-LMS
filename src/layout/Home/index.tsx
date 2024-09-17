@@ -88,7 +88,6 @@ const HomeLayout: React.FC<AdminLayoutProps> = ({
                 </div>
               </div> */}
 						</div>
-						{/* <CartDrawer /> */}
 					</div>
 				</div>
 			</div>
