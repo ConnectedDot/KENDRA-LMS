@@ -26,9 +26,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 	onUpdateData,
 }) => {
 	const [uploadError, setUploadError] = useState<any>({});
-	const [previewImage, setPreviewImage] = useState<string | null>(
-		formData.photo || imageUrl || null
-	);
+	const [previewImage, setPreviewImage] = useState<string | null>(imageUrl);
 
 	useEffect(() => {
 		if (formData.photo) {
@@ -189,7 +187,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 						showUploadList={false}
 						beforeUpload={beforeUpload}
 					>
-						<div className="relative w-100 h-60">
+						<div className="relative w-200 h-60">
 							{previewImage ? (
 								<img
 									src={previewImage}

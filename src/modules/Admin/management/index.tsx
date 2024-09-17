@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-import {AuthContext} from "../../../../context";
 import {useNavigate} from "react-router-dom";
 import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {IoMdBusiness} from "react-icons/io";
@@ -8,168 +7,38 @@ import {Flex, message, Progress, TabsProps} from "antd";
 import {DocumentArrowUpIcon} from "@heroicons/react/24/outline";
 import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
 import {MdArrowBack} from "react-icons/md";
-import BasicInfoTab from "./BasicInfoTab";
-import ContactInfoTab from "./ContactInfoTab";
-import ProfessionalInfoTab from "./ProfessionalInfoTab";
-// import {useUpdateUser} from "../../../../hooks/auth";
-import {useIsMutating} from "react-query";
-import {useUpdateUser} from "../../../../hooks/crud-ops";
+import UserManagementTabs from "./components/UserManagement";
+import CourseManagementTabs from "./components/CoursesManagement";
+import PaymentManagementTabs from "./components/PaymentManagement";
 
-interface Instructor {
-	_id: string;
-	id: string;
-	uid: string | undefined;
-	gender: string;
-	email: string;
-	password: string;
-	role?: string;
-	token: string;
-	photo?: string;
-	photoURL?: string;
-	emailVerified?: string;
-	firstName: string;
-	lastName: string;
-	bio: string;
-	phone_number: string;
-	expertise: string;
-	courses: string[];
-	isVerified: boolean;
-	imageUrl: string;
-	total_students: number;
-	total_courses: any[];
-	total_reviews: any[];
-	skill_level: any[];
-	website: string;
-	twitter: string;
-	linkedin: string;
-	facebook: string;
-	instagram: string;
-	youtube: string;
-	certification: string | null;
-	status: "Pending" | "Active" | "Inactive";
-}
-
-const ProfilePageAll = () => {
+const UserManagement = () => {
 	const navigate = useNavigate();
 	const handleGoBack = () => {
 		navigate(-1);
 	};
-
 	const [updateLoading, setUpdateLoading] = useState(false);
 	const [currentTabIndex, setcurrentTabIndex] = useState(0);
-	const {user} = useContext(AuthContext);
-	const usersId = user?.uid;
-
-	useEffect(() => {
-		if (user) {
-			setFormData(user as unknown as Instructor);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	const [formData, setFormData] = useState<Instructor>({
-		_id: "",
-		id: "",
-		uid: undefined,
-		gender: "",
-		email: "",
-		password: "",
-		role: "",
-		token: "",
-		photo: "",
-		photoURL: "",
-		emailVerified: "",
-		firstName: "",
-		lastName: "",
-		bio: "",
-		phone_number: "",
-		expertise: "",
-		courses: [],
-		isVerified: false,
-		imageUrl: "",
-		total_students: 0,
-		total_courses: [],
-		total_reviews: [],
-		skill_level: [],
-		website: "",
-		twitter: "",
-		linkedin: "",
-		facebook: "",
-		instagram: "",
-		youtube: "",
-		certification: null,
-		status: "Pending",
-	} as Instructor);
-
-	console.log(formData, "sending this");
-	const handleUpdateData = (data: Partial<Instructor>) => {
-		setFormData(prevData => ({...prevData, ...data}));
-	};
-
-	const {updateUser} = useUpdateUser();
-	const [progress, setProgress] = useState<number>(0);
-
-	useEffect(() => {
-		const calculateProgress = () => {
-			const totalFields = Object.keys(formData).length;
-			const filledFields = Object.values(formData).filter(
-				value => value !== "" && value !== null && value !== undefined
-			).length;
-			return Math.round((filledFields / totalFields) * 100);
-		};
-
-		setProgress(calculateProgress());
-	}, [formData]);
-
-	const handleUpdate = async (e?: any) => {
-		setUpdateLoading(true);
-		if (usersId) {
-			try {
-				await updateUser(usersId, formData);
-				// message.success("Update successful");
-			} catch (error) {
-				message.error("Update failed");
-			} finally {
-				setUpdateLoading(false);
-			}
-		} else {
-			message.warning("User ID is not available");
-			setUpdateLoading(false);
-		}
-	};
 
 	const items: TabsProps["items"] = [
 		{
 			key: "1",
 			label: "Basic Information",
 			icon: <DocumentArrowUpIcon />,
-			children: (
-				<BasicInfoTab onUpdateData={handleUpdateData} formData={formData} />
-			),
+			children: <UserManagementTabs />,
 		},
 		{
 			key: "2",
 			label: "Contact Information",
 			icon: <TbSortAscending />,
-			children: (
-				<ContactInfoTab onUpdateData={handleUpdateData} formData={formData} />
-			),
+			children: <CourseManagementTabs />,
 		},
-		...(user?.role === "Instructor"
-			? [
-					{
-						key: "3",
-						label: "Professional Information",
-						icon: <IoMdBusiness />,
-						children: (
-							<ProfessionalInfoTab
-								onUpdateData={handleUpdateData}
-								formData={formData}
-							/>
-						),
-					},
-			  ]
-			: []),
+
+		{
+			key: "3",
+			label: "Professional Information",
+			icon: <IoMdBusiness />,
+			children: <PaymentManagementTabs />,
+		},
 	];
 
 	const handleNext = () => {
@@ -197,23 +66,9 @@ const ProfilePageAll = () => {
 			<div className="flex flex-col justify-center items-center mb-4">
 				<div className="flex">
 					<h1 className="mb-4 mx-8 text-3xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-4xl">
-						{user?.role === "Instructor"
-							? "Instructor's Profile"
-							: user?.role === "Student"
-							? "Student's Profile"
-							: user?.role === "Admin"
-							? "Admin's Profile"
-							: "User's Profile"}
+						User Managemrnt
 					</h1>
 				</div>
-				{user?.role === "Instructor" && (
-					<div className="flex items-center">
-						<Flex vertical gap="small" style={{width: 200}}>
-							<Progress percent={progress} size="small" />
-						</Flex>
-						<span className="ml-3 fontmd font-bold"> Completion</span>
-					</div>
-				)}
 			</div>
 
 			<div className="flex flex-row">
@@ -246,7 +101,7 @@ const ProfilePageAll = () => {
 					</div>
 				</div>
 
-				<div className="md:w-[75%] mb-12 bg ml-6 mr-6">
+				{/* <div className="md:w-[75%] mb-12 bg ml-6 mr-6">
 					<div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-lg relative">
 						{items[currentTabIndex].children}
 						<div className="flex justify-between mt-4 mb-4 px-6">
@@ -270,7 +125,7 @@ const ProfilePageAll = () => {
 							) : (
 								<button
 									disabled={updateLoading}
-									onClick={handleUpdate}
+									// onClick={handleUpdate}
 									className="w-[20%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center "
 								>
 									<span className="mr-2 text-xs">
@@ -294,10 +149,10 @@ const ProfilePageAll = () => {
 							)}
 						</div>{" "}
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);
 };
 
-export default ProfilePageAll;
+export default UserManagement;

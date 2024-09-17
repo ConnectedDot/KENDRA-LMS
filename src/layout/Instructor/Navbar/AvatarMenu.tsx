@@ -1,24 +1,12 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {PrivatePaths} from "../../../routes/path";
 import {useFullLogout} from "../../../context/hooks";
-import {AuthContext} from "../../../context";
-import {instructorProps} from "../../../interface";
 import {getStoredUser} from "../../../storage";
 
 export const AvatarMenu = () => {
 	const [open, setOpen] = useState(false);
-	// const [user, setuser] = useState<instructorProps>(
-	// 	{} as instructorProps
-	// );
-	// const {user} = useContext(AuthContext);
 	const user = getStoredUser();
-
-	// useEffect(() => {
-	// 	if (user) {
-	// 		setuser(user as unknown as instructorProps);
-	// 	}
-	// }, [user]);
 
 	const getPathPrefix = (role: string) => {
 		switch (role) {
@@ -53,7 +41,6 @@ export const AvatarMenu = () => {
 			href: `${pathPrefix}settings`,
 			current: false,
 		},
-
 		...(user?.role === "Instructor"
 			? [
 					{
@@ -63,7 +50,6 @@ export const AvatarMenu = () => {
 					},
 			  ]
 			: []),
-
 		{
 			name: "Sign Out",
 			href: "#",
@@ -83,17 +69,14 @@ export const AvatarMenu = () => {
 	};
 
 	return (
-		<nav
-			className="relative top-0 left-0 right-0 z-50"
-			// Add the "z-50" class to make sure the menu appears on top of other elements
-		>
-			<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+		<nav className="relative z-40">
+			<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 ">
 				<div className="flex items-center space-x-3 rtl:space-x-reverse"></div>
 				<div className="relative flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
 					<button
 						onClick={() => setOpen(!open)}
 						type="button"
-						className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+						className="flex text-sm bg-gray-800 rounded-full md:me-0 outline-none border-none"
 						id="user-menu-button"
 						aria-expanded={open}
 						aria-haspopup="true"
@@ -113,7 +96,7 @@ export const AvatarMenu = () => {
 					</button>
 					{open && (
 						<div
-							className="absolute -right-12 top-12 w-48 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700 dark:divide-gray-600"
+							className="absolute -left-20 top-12 w-48 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700 dark:divide-gray-600"
 							id="user-dropdown"
 						>
 							<div className="px-4 py-3">
@@ -139,8 +122,6 @@ export const AvatarMenu = () => {
 									<button
 										className="block w-full items-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
 										onClick={dropdownItems[dropdownItems.length - 1].onClick}
-
-										// onClick={useFullLogout}
 									>
 										{dropdownItems[dropdownItems.length - 1].name}
 									</button>

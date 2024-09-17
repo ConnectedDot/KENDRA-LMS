@@ -54,7 +54,6 @@ export function clearLocalStorage() {
 		bio: "",
 		phone_number: "",
 		courses: [],
-		imageUrl: "",
 		total_courses: [],
 		twitter: "",
 		linkedin: "",

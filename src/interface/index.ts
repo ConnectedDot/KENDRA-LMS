@@ -52,12 +52,12 @@ export interface userProps {
 	photo?: string | File;
 	courses: string[];
 	isVerified: boolean;
-	imageUrl: string;
 	total_courses: any[];
 	twitter: string;
 	linkedin: string;
 	facebook: string;
 	cart: any[];
+	// photo: string;
 
 	status: "Pending" | "Active" | "Inactive";
 }

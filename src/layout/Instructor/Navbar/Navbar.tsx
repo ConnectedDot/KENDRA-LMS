@@ -70,17 +70,6 @@ const Navbar = () => {
 			current: false,
 		},
 		{
-			name: "Mentor",
-			href: `${PrivatePaths.ADMIN}mentorships`,
-			current: false,
-		},
-		{name: "Groups", href: `${PrivatePaths.ADMIN}groups`, current: false},
-		{
-			name: "Programs",
-			href: `${PrivatePaths.ADMIN}programs-view`,
-			current: false,
-		},
-		{
 			name: "Admin Panel",
 			href: `${PrivatePaths.ADMIN}admin-panel`,
 			current: false,
@@ -93,6 +82,17 @@ const Navbar = () => {
 		{
 			name: "Reports",
 			href: `${PrivatePaths.ADMIN}reports`,
+			current: false,
+		},
+		{
+			name: "Mentor",
+			href: `${PrivatePaths.ADMIN}mentorships`,
+			current: false,
+		},
+		{name: "Groups", href: `${PrivatePaths.ADMIN}groups`, current: false},
+		{
+			name: "Programs",
+			href: `${PrivatePaths.ADMIN}programs-view`,
 			current: false,
 		},
 	];
@@ -224,7 +224,7 @@ const Navbar = () => {
 										type="text"
 										value={searchQuery}
 										onChange={e => setSearchQuery(e.target.value)}
-										className="border w-44 md:w-full text-sm bg-black border-gray-400 rounded-full pl-4 pr-12 md:pr-16 py-1"
+										className="border w-44 md:w-[70px] text-sm bg-black border-gray-400 rounded-full pl-4 pr-12 md:pr-16 py-1"
 										// placeholder="Search..."
 									/>
 									<FaSearch
@@ -234,19 +234,22 @@ const Navbar = () => {
 									/>
 								</div>
 							</div>
-							<div className="flex">
+							<div className="flex relative">
 								<AvatarMenu
 								// user={user}
 								/>
 							</div>
-							<div onClick={handleOpen} className="flex relative">
-								<MdShoppingCart style={{fontSize: "20px"}} />
-								<span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-1.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
-									{cartCount}
-								</span>
-								{/* <CartDrawer /> */}
-								<CartDrawer open={open} setOpen={handleClose} />
-							</div>
+
+							{user?.role === "User" && (
+								<div onClick={handleOpen} className="flex relative">
+									<MdShoppingCart style={{fontSize: "20px"}} />
+									<span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-1.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+										{cartCount}
+									</span>
+									{/* <CartDrawer /> */}
+									<CartDrawer open={open} setOpen={handleClose} />
+								</div>
+							)}
 						</div>
 
 						<div className="block md:hidden">

@@ -8,10 +8,22 @@ const privateRoutes = [
 		path: "/dashboard",
 		element: lazy(() => import("../modules/Admin")),
 	},
+	{
+		path: "/admin-panel",
+		element: lazy(
+			() => import("../modules/Admin/management/components/UserManagement")
+		),
+	},
 	// {
 	//   path: '/profile',
 	//   element: lazy(() => import('../modules/Admin/components/profile')),
 	// },
+	{
+		path: "/user-management",
+		element: lazy(
+			() => import("../modules/Admin/management/components/BulkUpload")
+		),
+	},
 
 	{
 		path: "*",

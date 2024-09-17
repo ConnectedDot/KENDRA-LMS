@@ -55,6 +55,7 @@ export const totalLogout = async () => {
 export function useFirebaseGoogleLogin() {
 	const navigate = useNavigate();
 	const provider = new GoogleAuthProvider();
+	provider.addScope("email");
 	const [userData, setUserData] = useState<userProps | null>(null);
 	const [token, setToken] = useState<string | null>(null);
 
@@ -64,6 +65,7 @@ export function useFirebaseGoogleLogin() {
 	> = async () => {
 		const result = await signInWithPopup(auth, provider);
 		const user = result.user;
+		console.log("User:", user);
 		const token = await user.getIdToken();
 		const userDocRef = doc(db, "KLMS-USER", user.uid);
 		const userDoc = await getDoc(userDocRef);
@@ -81,7 +83,7 @@ export function useFirebaseGoogleLogin() {
 				id: userId,
 				uid: user.uid,
 				gender: "",
-				email: user.email ?? "",
+				email: user.email || "",
 				role: "User",
 				isVerified: user.emailVerified,
 				firstName: user.displayName?.split(" ")[1] || "",
@@ -95,7 +97,7 @@ export function useFirebaseGoogleLogin() {
 				facebook: "",
 				status: "Pending",
 				cart: [],
-				imageUrl: user.photoURL || "",
+				photo: user.photoURL || "",
 				// Add the remaining properties from the 'userProps' type
 			};
 			await setDoc(userDocRef, userData);
