@@ -1,12 +1,26 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useState} from "react";
 import type {GetProp, UploadProps} from "antd";
 import {message, Upload} from "antd";
 import {TiCameraOutline} from "react-icons/ti";
 import imageUrl from "../../../assets/background/overlay_2.jpg";
 import {ConfigProvider, Popover} from "antd";
-import {AuthContext} from "../../../context";
-import TextArea from "antd/es/input/TextArea";
 import {category} from "../../../Data";
+import {
+	EditorProvider,
+	Editor,
+	Toolbar,
+	BtnBold,
+	BtnItalic,
+	BtnUnderline,
+	BtnBulletList,
+	BtnNumberedList,
+	BtnLink,
+	BtnStrikeThrough,
+	BtnClearFormatting,
+	BtnRedo,
+	BtnUndo,
+	ContentEditableEvent,
+} from "react-simple-wysiwyg";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 interface BasicInfoTabProps {
@@ -93,6 +107,11 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 		const {name, value} = e.target;
 		onUpdateData({[name]: value});
 	};
+	const handleEditorChange = (name: string, content: string) => {
+		// const plainText = convert(content, { wordwrap: 130 });
+		console.log(content, "content");
+		onUpdateData({[name]: content});
+	};
 
 	const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const selectedCatId = e.target.value;
@@ -152,7 +171,28 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 					/>
 				</div>
 				<div className="flex-1">
-					<label htmlFor="Description" className="sr-only">
+					<EditorProvider>
+						<Editor
+							value={formData.Description}
+							onChange={(event: ContentEditableEvent) =>
+								handleEditorChange("Description", event.target.value)
+							}
+						>
+							<Toolbar>
+								<BtnBold />
+								<BtnItalic />
+								<BtnUnderline />
+								<BtnStrikeThrough />
+								<BtnBulletList />
+								<BtnNumberedList />
+								<BtnLink />
+								<BtnClearFormatting />
+								<BtnUndo />
+								<BtnRedo />
+							</Toolbar>
+						</Editor>
+					</EditorProvider>
+					{/* <label htmlFor="Description" className="sr-only">
 						Description
 					</label>
 					<input
@@ -162,7 +202,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 						onChange={handleInputChange}
 						className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
 						placeholder="Description"
-					/>
+					/> */}
 				</div>
 			</div>
 

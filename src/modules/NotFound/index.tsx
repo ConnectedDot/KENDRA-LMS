@@ -1,5 +1,4 @@
-import {FrownOutlined} from "@ant-design/icons";
-import {MdError, MdNotificationsPaused} from "react-icons/md";
+import {MdError} from "react-icons/md";
 import {useNavigate} from "react-router-dom";
 
 const NotFound = () => {
@@ -24,7 +23,7 @@ const NotFound = () => {
 				<div className="mt-10 flex items-center justify-center gap-x-6">
 					<button
 						type="button"
-						className="text-sm font-semibold rounded-md bg-primary-100 bg-black text-white hover:text-black hover:bg-slate-300 hover:text-primary-100 px-3.5 py-2.5 shadow-sm outline-none border-none"
+						className="flex items-center text-sm gap-3 font-medium text-gray-700 bg-gray-100 rounded-md py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
 						onClick={handleGoBack}
 					>
 						Go back

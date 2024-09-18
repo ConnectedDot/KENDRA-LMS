@@ -61,9 +61,9 @@ const TableComponent = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [open, setOpen] = React.useState(false);
 	const [isOpen, setIsOpen] = React.useState(false);
-	const loading = useIsFetching();
+	// const loading = useIsFetching();
 
-	const isLoading = useIsMutating();
+	// const isLoading = useIsMutating();
 	const [form] = Form.useForm();
 
 	const [showCalendar, setShowCalendar] = useState(false);
@@ -79,7 +79,7 @@ const TableComponent = () => {
 		name: "",
 	});
 
-	const DatabaseUsers = useFetchUsers();
+	const {allUsers: DatabaseUsers, isLoading} = useFetchUsers();
 
 	console.log(DatabaseUsers, "users");
 
@@ -531,7 +531,7 @@ const TableComponent = () => {
 						dataSource={DatabaseUsers}
 						size="small"
 						rowKey="_id"
-						loading={!!loading}
+						loading={!!isLoading}
 						onChange={onChange}
 						pagination={{
 							pageSizeOptions: ["5", "10", "15"],
@@ -708,7 +708,7 @@ const TableComponent = () => {
 													"linear-gradient(89.46deg, #39462D 13.05%, #658127 107.23%)",
 												color: "white",
 											}}
-											loading={isLoading > 0}
+											loading={isLoading}
 										>
 											Submit
 										</Button>

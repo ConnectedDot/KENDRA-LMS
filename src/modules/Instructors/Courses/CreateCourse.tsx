@@ -25,6 +25,7 @@ interface Course {
 	Content: {Title: string; Lectures: string[]}[];
 	id?: string;
 	instructor?: any;
+	isApproved?: boolean;
 	students?: number;
 	Videos: {
 		id: number;
@@ -64,6 +65,7 @@ const CourseRegForm = () => {
 		category: [],
 		subcategoryId: [],
 		Fullbrief: "",
+		isApproved: false,
 		Questions: [
 			{question: "", answer: ""},
 			{question: "", answer: ""},

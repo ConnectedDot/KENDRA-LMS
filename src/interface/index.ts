@@ -187,6 +187,7 @@ export interface Course {
 	instuctor: string;
 	Rating: number;
 	ReviewsCount: number;
+	isApproved: boolean;
 	price: string;
 	LearningPoints: string[];
 	Content: Lecture[];

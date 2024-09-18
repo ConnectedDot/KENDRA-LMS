@@ -105,22 +105,26 @@ interface User {
 // };
 
 export function useFetchUsers() {
-	const [allUsers, setAllUser] = useState([]);
+	const [allUsers, setAllUsers] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		async function getAllUsers() {
+			setIsLoading(true);
 			try {
 				const userCollection = collection(db, "KLMS-USER");
 				const snapshot = await getDocs(userCollection);
 				const KLMSUsers = snapshot.docs.map(doc => doc.data());
-				setAllUser(KLMSUsers as any);
+				setAllUsers(KLMSUsers as any);
 			} catch (error) {
 				console.error("Error fetching users:", error);
+			} finally {
+				setIsLoading(false);
 			}
 		}
 
 		getAllUsers();
 	}, []);
 
-	return allUsers;
+	return {allUsers, isLoading};
 }

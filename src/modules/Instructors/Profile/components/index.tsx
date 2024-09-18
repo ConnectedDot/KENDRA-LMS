@@ -11,8 +11,6 @@ import {MdArrowBack} from "react-icons/md";
 import BasicInfoTab from "./basicinfotab";
 import ContactInfoTab from "./contactinfotab";
 import ProfessionalInfoTab from "./professionaiInfotab";
-// import {useUpdateUser} from "../../../../hooks/auth";
-import {useIsMutating} from "react-query";
 import {useUpdateUser} from "../../../../hooks/crud-ops";
 
 interface Instructor {
