@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import {OfflinePage} from "./offlinepage";
+import {OfflinePageUpdate} from ".";
 
-const Offlinepagefunction = () => {
+const OfflineFunction = () => {
 	const [isOnline, setIsOnline] = useState(navigator.onLine);
 
 	const updateOnlineStatus = () => {
@@ -19,10 +19,10 @@ const Offlinepagefunction = () => {
 	}, []);
 
 	if (!isOnline) {
-		return <OfflinePage />;
+		return <OfflinePageUpdate />;
 	}
 
 	return null;
 };
 
-export default Offlinepagefunction;
+export default OfflineFunction;

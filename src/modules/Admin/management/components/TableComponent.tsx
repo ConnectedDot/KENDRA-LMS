@@ -23,7 +23,7 @@ import type {
 import eye from "../../../../assets/icons/Vector (3).png";
 import trash from "../../../../assets/icons/material-symbols_delete-outline.png";
 import {useIsFetching, useIsMutating} from "@tanstack/react-query";
-import {CloseOutlined} from "@ant-design/icons";
+import {CloseOutlined, SearchOutlined} from "@ant-design/icons";
 import type {TimePickerProps} from "antd";
 import {Dayjs} from "dayjs";
 import {useFetchUsers} from "../../hooks/querry";
@@ -46,6 +46,32 @@ const TableComponent = () => {
 	const [userData, setuserData] = React.useState<CombinedUserProps | null>(
 		null
 	);
+	const [filteredData, setFilteredData] = React.useState<CombinedUserProps[]>(
+		[]
+	);
+	const [searchQuery, setSearchQuery] = React.useState("");
+
+	const {allUsers: DatabaseUsers, isLoading, refetch} = useFetchUsers();
+
+	useEffect(() => {
+		setFilteredData(DatabaseUsers);
+	}, [DatabaseUsers]);
+
+	// useEffect(() => {
+	// 	if (searchQuery) {
+	// 		const filtered = DatabaseUsers.filter(user =>
+	// 			user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+	// 			user.firstName.toLowerCase().includes(searchQuery.toLowerCase())
+	// 		);
+	// 		setFilteredData(filtered);
+	// 	} else {
+	// 		setFilteredData(DatabaseUsers);
+	// 	}
+	// }, [searchQuery, DatabaseUsers]);
+
+	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchQuery(e.target.value);
+	};
 	const [modalVisible, setModalVisible] = useState(false);
 	const [open, setOpen] = React.useState(false);
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -80,8 +106,6 @@ const TableComponent = () => {
 		isLoading: isDeletingUser,
 		error: deleteUserError,
 	} = useDeleteUser();
-
-	const {allUsers: DatabaseUsers, isLoading, refetch} = useFetchUsers();
 
 	const handleSelectChange = (value: any, field: string) => {
 		setFormData(prevState => ({
@@ -309,19 +333,7 @@ const TableComponent = () => {
 					extra={
 						<div className="border flex border-gray-950 rounded-lg relative outline-none">
 							<div className=" absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
-								<svg
-									className="w-5 h-5 text-gray-500 dark:text-gray-400"
-									aria-hidden="true"
-									fill="currentColor"
-									viewBox="0 0 20 20"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										fill-rule="evenodd"
-										d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-										clip-rule="evenodd"
-									></path>
-								</svg>
+								<SearchOutlined className="text-gray-400" />
 							</div>
 							<div className="flex justify-center">
 								<input

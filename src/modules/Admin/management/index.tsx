@@ -100,56 +100,6 @@ const UserManagement = () => {
 							))}
 					</div>
 				</div>
-
-				{/* <div className="md:w-[75%] mb-12 bg ml-6 mr-6">
-					<div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-lg relative">
-						{items[currentTabIndex].children}
-						<div className="flex justify-between mt-4 mb-4 px-6">
-							{currentTabIndex > 0 && (
-								<button
-									onClick={handlePrev}
-									className="w-[15%] bg-gray-500  hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
-								>
-									<AiFillBackward /> <span className="ml-2 text-xs">Prev</span>
-								</button>
-							)}
-
-							{currentTabIndex < items.length - 1 ? (
-								<button
-									onClick={handleNext}
-									className="w-[15%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
-								>
-									<span className="mr-2 text-xs">Next</span>
-									<AiFillForward />
-								</button>
-							) : (
-								<button
-									disabled={updateLoading}
-									// onClick={handleUpdate}
-									className="w-[20%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center "
-								>
-									<span className="mr-2 text-xs">
-										<span className="ml-3">
-											{updateLoading && (
-												<LoadingOutlined
-													style={{
-														fontSize: 16,
-														fontWeight: "500",
-														// color: "black",
-													}}
-													spin
-												/>
-											)}
-										</span>
-										<span className="tsxt-sx">Update profile</span>
-									</span>
-
-									<UploadOutlined />
-								</button>
-							)}
-						</div>{" "}
-					</div>
-				</div> */}
 			</div>
 		</div>
 	);
