@@ -87,7 +87,6 @@ const Navbar = () => {
 			href: `${PrivatePaths.ADMIN}mentorships`,
 			current: false,
 		},
-		{name: "Groups", href: `${PrivatePaths.ADMIN}groups`, current: false},
 		{
 			name: "Programs",
 			href: `${PrivatePaths.ADMIN}programs-view`,

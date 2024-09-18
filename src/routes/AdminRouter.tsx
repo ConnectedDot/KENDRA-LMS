@@ -1,7 +1,5 @@
-import {Fragment, lazy, useContext} from "react";
-import {Navigate, Route, Routes} from "react-router-dom";
-import {PublicPaths} from "./path";
-import {AuthContext} from "../context";
+import {Fragment, lazy} from "react";
+import {Route, Routes} from "react-router-dom";
 
 const privateRoutes = [
 	{
@@ -9,15 +7,27 @@ const privateRoutes = [
 		element: lazy(() => import("../modules/Admin")),
 	},
 	{
+		path: "/profile",
+		element: lazy(() => import("../modules/Admin/profile")),
+	},
+	{
 		path: "/admin-panel",
 		element: lazy(
 			() => import("../modules/Admin/management/components/usermanagement")
 		),
 	},
-	// {
-	//   path: '/profile',
-	//   element: lazy(() => import('../modules/Admin/components/profile')),
-	// },
+	{
+		path: "/reports",
+		element: lazy(() => import("../modules/Admin/management/report")),
+	},
+	{
+		path: "/mentorships",
+		element: lazy(() => import("../modules/Admin/management/mentoship")),
+	},
+	{
+		path: "/programs-view",
+		element: lazy(() => import("../modules/Admin/management/programs")),
+	},
 	{
 		path: "/user-management",
 		element: lazy(

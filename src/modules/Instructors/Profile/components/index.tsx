@@ -153,7 +153,7 @@ const ProfilePageAll = () => {
 				<ContactInfoTab onUpdateData={handleUpdateData} formData={formData} />
 			),
 		},
-		...(user?.role === "Instructor"
+		...(user?.role === "Instructor" || user?.role === "Admin"
 			? [
 					{
 						key: "3",
