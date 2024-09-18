@@ -4,7 +4,7 @@ import {Fragment, Suspense} from "react";
 import AuthGuard from "./AuthGuard";
 import NotFound from "../modules/NotFound";
 import Loader from "../components/Loader";
-import Offlinepagefunction from "./offlinepagefunction";
+import Offlinepagefunction from "../components/offlinepagefunction";
 
 interface RouteConfig {
 	path: string;

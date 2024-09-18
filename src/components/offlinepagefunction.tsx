@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {OfflinePage} from "../components/offlinepage";
+import {OfflinePage} from "./offlinepage";
 
 const Offlinepagefunction = () => {
 	const [isOnline, setIsOnline] = useState(navigator.onLine);
