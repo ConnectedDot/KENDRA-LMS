@@ -9,7 +9,6 @@ interface Course {
 	image: string;
 	category: {id: string; title: string};
 	Videos: {youtubeId: string}[]; // Assuming Videos is an array of objects with youtubeId
-	// Add other course fields as needed
 }
 
 interface CourseCardProps {
