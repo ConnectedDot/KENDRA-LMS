@@ -17,6 +17,18 @@ const privateRoutes = [
 		),
 	},
 	{
+		path: "/user-management",
+		element: lazy(
+			() => import("../modules/Admin/management/components/usermanagement")
+		),
+	},
+	{
+		path: "/courses-view",
+		element: lazy(
+			() => import("../modules/Admin/management/components/coursesmanagement")
+		),
+	},
+	{
 		path: "/reports",
 		element: lazy(() => import("../modules/Admin/management/report")),
 	},

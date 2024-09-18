@@ -330,6 +330,7 @@ const TableComponent = () => {
 
 			<div className="mb-24" style={{overflowX: "auto"}}>
 				<Card
+					className="border  border-gray-950"
 					title="User List"
 					extra={
 						<div className="border flex border-gray-950 rounded-lg relative outline-none">
@@ -349,7 +350,7 @@ const TableComponent = () => {
 					}
 				>
 					<Table
-						className=""
+						className="border-gray-950"
 						columns={columns}
 						dataSource={filteredData}
 						size="small"
