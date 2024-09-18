@@ -114,6 +114,7 @@ export function useFirebaseGoogleLogin() {
 				website: "",
 				instagram: "",
 				youtube: "",
+				displayName: user.displayName || "",
 			};
 			await setDoc(userDocRef, userData);
 			await updateDoc(userDocRef, {isVerified: true});
@@ -267,6 +268,14 @@ export function useFirebaseLogin() {
 			} else {
 				setUserData(userData);
 				setToken(token);
+				// Handle role-based redirection
+				if (userData.role === "Admin") {
+					navigate(`${PrivatePaths.ADMIN}dashboard`);
+				} else if (userData.role === "Instructor") {
+					navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
+				} else {
+					navigate(`${PrivatePaths.USER}dashboard`);
+				}
 				message.success("Logged in successfully");
 			}
 		},

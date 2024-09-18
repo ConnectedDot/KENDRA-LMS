@@ -101,6 +101,7 @@ function AuthContextProvider({children}: ChildProps) {
 			photoURL: "",
 			role: "",
 			emailVerified: "",
+			displayName: "",
 		};
 
 		setUser(userObj);

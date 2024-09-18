@@ -61,7 +61,7 @@ export const useUpdateUser = () => {
 			await updateDoc(userRef, gpUserData);
 		} catch (err: any) {
 			setError(err);
-			message.error(`Error updating user datass: ${err.message}`);
+			message.error(`Error updating user datasssssss: ${err.message}`);
 		} finally {
 			setIsLoading(false);
 			message.success("User data updated successfully");

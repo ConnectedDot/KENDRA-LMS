@@ -60,6 +60,7 @@ export function clearLocalStorage() {
 		facebook: "",
 		status: "Pending",
 		cart: [],
+		displayName: "",
 	});
 	setLoginToken("");
 	setStoredFireUser({} as userProps);

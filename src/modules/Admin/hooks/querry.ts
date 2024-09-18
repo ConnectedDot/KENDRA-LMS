@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {
 	collection,
 	deleteDoc,
@@ -104,27 +104,77 @@ interface User {
 // 	return {users, error, isLoading};
 // };
 
+// export function useFetchUsers() {
+// 	const [allUsers, setAllUsers] = useState([]);
+// 	const [isLoading, setIsLoading] = useState(true);
+
+// 	useEffect(() => {
+// 		async function getAllUsers() {
+// 			setIsLoading(true);
+// 			try {
+// 				const userCollection = collection(db, "KLMS-USER");
+// 				const snapshot = await getDocs(userCollection);
+// 				const KLMSUsers = snapshot.docs.map(doc => doc.data());
+// 				setAllUsers(KLMSUsers as any);
+// 			} catch (error) {
+// 				console.error("Error fetching users:", error);
+// 			} finally {
+// 				setIsLoading(false);
+// 			}
+// 		}
+
+// 		getAllUsers();
+// 	}, []);
+
+// 	return {allUsers, isLoading};
+// }
+
 export function useFetchUsers() {
 	const [allUsers, setAllUsers] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		async function getAllUsers() {
-			setIsLoading(true);
-			try {
-				const userCollection = collection(db, "KLMS-USER");
-				const snapshot = await getDocs(userCollection);
-				const KLMSUsers = snapshot.docs.map(doc => doc.data());
-				setAllUsers(KLMSUsers as any);
-			} catch (error) {
-				console.error("Error fetching users:", error);
-			} finally {
-				setIsLoading(false);
-			}
+	const getAllUsers = useCallback(async () => {
+		setIsLoading(true);
+		try {
+			const userCollection = collection(db, "KLMS-USER");
+			const snapshot = await getDocs(userCollection);
+			const KLMSUsers = snapshot.docs.map(doc => doc.data());
+			setAllUsers(KLMSUsers as any);
+		} catch (error) {
+			console.error("Error fetching users:", error);
+		} finally {
+			setIsLoading(false);
 		}
-
-		getAllUsers();
 	}, []);
 
-	return {allUsers, isLoading};
+	useEffect(() => {
+		getAllUsers();
+	}, [getAllUsers]);
+
+	return {allUsers, isLoading, refetch: getAllUsers};
+}
+
+export function useFetchCourses() {
+	const [allCourses, setAllCourses] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	const getAllCourses = useCallback(async () => {
+		setIsLoading(true);
+		try {
+			const courseCollection = collection(db, "courses");
+			const snapshot = await getDocs(courseCollection);
+			const courses = snapshot.docs.map(doc => doc.data());
+			setAllCourses(courses as any);
+		} catch (error) {
+			console.error("Error fetching courses:", error);
+		} finally {
+			setIsLoading(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		getAllCourses();
+	}, [getAllCourses]);
+
+	return {allCourses, isLoading, refetch: getAllCourses};
 }

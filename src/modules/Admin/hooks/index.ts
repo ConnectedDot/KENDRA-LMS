@@ -101,6 +101,14 @@ export const useDeleteUser = () => {
 	return {deleteUser, isLoading, error};
 };
 
+// Destructuring all the functions to use
+// const { updateUser, isLoading: isUpdatingUser, error: updateUserError } = useUpdateUser();
+// const { deleteUser, isLoading: isDeletingUser, error: deleteUserError } = useDeleteUser();
+// const { updateCourse, isLoading: isUpdatingCourse, error: updateCourseError } = useUpdateCourse();
+// const { deleteCourse, isLoading: isDeletingCourse, error: deleteCourseError } = useDeleteCourse();
+
+// Now you can use these functions in your component
+
 // Course Management Hooks
 
 // 1. Update Course Data

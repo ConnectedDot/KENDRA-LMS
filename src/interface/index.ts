@@ -54,6 +54,7 @@ export interface userProps {
 	twitter: string;
 	linkedin: string;
 	facebook: string;
+	displayName: string;
 	cart: any[];
 	status: "Pending" | "Active" | "Inactive";
 }

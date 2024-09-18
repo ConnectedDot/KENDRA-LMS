@@ -12,6 +12,7 @@ import {
 	Avatar,
 	Card,
 	Select,
+	message,
 } from "antd";
 import type {
 	DatePickerProps,
@@ -26,71 +27,80 @@ import {CloseOutlined} from "@ant-design/icons";
 import type {TimePickerProps} from "antd";
 import {Dayjs} from "dayjs";
 import {useFetchUsers} from "../../hooks/querry";
+import {CombinedUserProps} from "../../../../interface";
+import {useDeleteUser, useUpdateUser} from "../../hooks";
+import {useUpdateUserData} from "../../../../hooks/auth";
 
-interface FormData {
-	commodity: any;
-	previous_price: string;
-	new_price: string;
-	effective_date: string;
-	effective_time: string;
-	reason_for_change: string;
-	tags: string[];
-	name: any;
-}
 interface DataType {
-	email: string;
-	firstName: string;
-	lastName: string;
 	role: string;
 	isVerified: boolean;
-	password: string;
-	gender: string;
-	photo: string;
-	registeredAt?: Date | string;
+	status: string;
+	isApproved: boolean;
+	firstName: string;
+	lastName: string;
+	email: string;
 }
 
 const TableComponent = () => {
 	const [confirmLoading, setConfirmLoading] = React.useState(false);
-	const [configuration, setConfiguration] = React.useState<DataType | null>(
+	const [userData, setuserData] = React.useState<CombinedUserProps | null>(
 		null
 	);
-
-	const [mappedData, setMappedData] = useState<DataType[]>([]);
-	const [filterData, setFilterData] = useState<DataType[]>([]);
-
 	const [modalVisible, setModalVisible] = useState(false);
 	const [open, setOpen] = React.useState(false);
 	const [isOpen, setIsOpen] = React.useState(false);
-	// const loading = useIsFetching();
-
-	// const isLoading = useIsMutating();
+	const [userId, setUserId] = useState<string | null>(null);
 	const [form] = Form.useForm();
 
-	const [showCalendar, setShowCalendar] = useState(false);
-
-	const [formData, setFormData] = useState<FormData>({
-		commodity: "",
-		previous_price: "",
-		new_price: "",
-		effective_date: "",
-		effective_time: "",
-		reason_for_change: "",
-		tags: [],
-		name: "",
+	const [formData, setFormData] = useState<DataType>({
+		role: userData?.role || "",
+		isVerified: userData?.isVerified || false,
+		status: userData?.status || "",
+		isApproved: userData?.isApproved || false,
+		firstName: userData?.firstName || "",
+		lastName: userData?.lastName || "",
+		email: userData?.email || "",
 	});
 
-	const {allUsers: DatabaseUsers, isLoading} = useFetchUsers();
+	useEffect(() => {
+		form.setFieldsValue({
+			role: userData?.role,
+			isVerified: userData?.isVerified,
+			status: userData?.status,
+			isApproved: userData?.isApproved,
+			firstName: userData?.firstName,
+			lastName: userData?.lastName,
+			email: userData?.email,
+		});
+	}, [userData, form]);
 
-	console.log(DatabaseUsers, "users");
+	const {updateUser, isLoading: updateLoading} = useUpdateUser();
+	const {
+		deleteUser,
+		isLoading: isDeletingUser,
+		error: deleteUserError,
+	} = useDeleteUser();
 
-	const handleEyeClick = (record: DataType) => {
-		setConfiguration(record);
+	const {allUsers: DatabaseUsers, isLoading, refetch} = useFetchUsers();
+
+	const handleSelectChange = (value: any, field: string) => {
+		setFormData(prevState => ({
+			...prevState,
+			[field]: value,
+		}));
+	};
+
+	const handleEyeClick = (record: CombinedUserProps) => {
+		setuserData(record);
+		setUserId(record.uid || null);
+		setFormData(record as DataType);
 		setIsOpen(true);
 		setModalVisible(true);
 	};
 
-	const showPopconfirm = (record: DataType) => {
-		setConfiguration(record);
+	const showPopconfirm = (record: CombinedUserProps) => {
+		setuserData(record);
+		setUserId(record.uid || null);
 		setOpen(true);
 	};
 
@@ -98,57 +108,39 @@ const TableComponent = () => {
 		setOpen(false);
 	};
 
-	const handleOk = () => {
+	const handleOk = async () => {
 		setConfirmLoading(true);
-		setTimeout(() => {
-			setOpen(false);
-			setConfirmLoading(false);
-		}, 2000);
-		if (configuration) {
-			setOpen(false);
-			// Delete(configuration?._id);
+		if (userId) {
+			try {
+				await deleteUser(userId);
+				setOpen(false);
+				refetch();
+			} catch (error) {}
 		}
+		setConfirmLoading(false);
 	};
 
-	useEffect(() => {
-		if (DatabaseUsers) {
-			setMappedData(DatabaseUsers);
-		}
-	}, []);
-
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const {name, value} = e.target;
-		setFormData({...formData, [name]: value});
+	const handleClose = () => {
+		setModalVisible(false);
 	};
 
-	const handleDateInput = (
-		value: DatePickerProps["value"],
-		dateString: string | string[]
-	) => {
-		if (typeof dateString === "string") {
-			setFormData({
-				...formData,
-				effective_date: dateString ? dateString : "",
-			});
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (userId) {
+			try {
+				await updateUser(userId, formData);
+				refetch();
+				handleClose();
+			} catch (error) {}
+		} else {
 		}
+		form.resetFields();
 	};
-	const handleTimeChange = (
-		value: TimePickerProps["value"],
-		timeString: string | string[]
-	) => {
-		if (typeof timeString === "string") {
-			setFormData({
-				...formData,
-				effective_time: timeString ? timeString : "",
-			});
-		}
-	};
-
 	const [tableProps, setTableProps] = useState<TablePaginationConfig>({
 		pageSize: 5,
 	});
 
-	const onChange: TableProps<DataType>["onChange"] = (
+	const onChange: TableProps<CombinedUserProps>["onChange"] = (
 		pagination,
 		filters,
 		sorter,
@@ -157,178 +149,7 @@ const TableComponent = () => {
 		setTableProps(pagination);
 	};
 
-	// const columns: TableColumnsType<DataType> = [
-	//   {
-	//     title: "S/N",
-	//     dataIndex: "number",
-	//     width: 80,
-	//     key: "number",
-	//     align: "center",
-	//     render: (text, record, index) => {
-	//       const pageNumber = tableProps.current || 1;
-	//       const pageSize = tableProps.pageSize || 5;
-	//       return (pageNumber - 1) * pageSize + index + 1;
-	//     },
-	//   },
-	//   {
-	//     title: "Commodity",
-	//     dataIndex: ["commodity", "commodityId", "name"],
-	//     align: "left",
-	//     key: "name",
-	//     width: 150,
-	//     render: text => (
-	//       <div style={{height: "40px", display: "flex", alignItems: "center"}}>
-	//         {text}
-	//       </div>
-	//     ),
-	//     filters: mappedData
-	//       ?.map((c: any) => c?.commodity?.commodityId?.name)
-	//       ?.filter(
-	//         (value: string, index: number, self: string[]) =>
-	//           self.indexOf(value) === index
-	//       )
-	//       .map((name: string) => ({
-	//         text: name,
-	//         value: name,
-	//       })),
-	//     filterMode: "menu",
-	//     filterSearch: true,
-	//     onFilter: (value: React.Key | boolean, record: DataType) => {
-	//       if (typeof value === "string") {
-	//         return record?.commodity?.commodityId?.name?.includes(value);
-	//       }
-	//       return false;
-	//     },
-	//   },
-	//   {
-	//     title: "Previous Price",
-	//     dataIndex: "previous_price",
-	//     align: "left",
-	//     key: "previous_price",
-	//     width: 150,
-	//     render: text => (
-	//       <div style={{height: "40px", display: "flex", alignItems: "center"}}>
-	//         {text?.toLocaleString()}
-	//       </div>
-	//     ),
-	//   },
-	//   {
-	//     title: "Current Price",
-	//     dataIndex: "new_price",
-	//     align: "left",
-	//     key: "current_price",
-	//     width: 150,
-	//     render: text => (
-	//       <div style={{height: "40px", display: "flex", alignItems: "center"}}>
-	//         {text?.toLocaleString()}
-	//       </div>
-	//     ),
-	//   },
-	//   {
-	//     title: "Effective Date",
-	//     dataIndex: "effective_date",
-	//     align: "left",
-	//     width: 150,
-	//     key: "effective_date",
-	//     render: text => (
-	//       <div style={{height: "40px", display: "flex", alignItems: "center"}}>
-	//         {text}
-	//       </div>
-	//     ),
-	//   },
-	//   {
-	//     title: "Effective Time",
-	//     dataIndex: "effective_time",
-	//     align: "left",
-	//     key: "effective_time",
-	//     width: 150,
-	//     render: text => {
-	//       const [hours, minutes] = text?.split(":");
-	//       const hourNumber = Number(hours);
-	//       const formattedTime = `${
-	//         hourNumber > 12 ? hourNumber - 12 : hourNumber
-	//       }:${minutes} ${hourNumber >= 12 ? "PM" : "AM"}`;
-
-	//       return (
-	//         <div style={{height: "40px", display: "flex", alignItems: "center"}}>
-	//           {formattedTime}
-	//         </div>
-	//       );
-	//     },
-	//   },
-	//   {
-	//     title: "Status",
-	//     dataIndex: "status",
-	//     align: "left",
-	//     key: "status",
-	//     width: 150,
-	//     render: status => {
-	//       let color;
-	//       if (status === "Pending") {
-	//         color = "red";
-	//       } else if (status === "Completed") {
-	//         color = "green";
-	//       } else {
-	//         color = "red";
-	//       }
-	//       return <Tag color={color}>{status.toUpperCase()}</Tag>;
-	//     },
-	//     filters: [
-	//       {
-	//         text: "Pending",
-	//         value: "Pending",
-	//       },
-	//       {
-	//         text: "Completed",
-	//         value: "Completed",
-	//       },
-	//     ],
-	//     filterMode: "menu",
-	//     onFilter: (value: React.Key | boolean, record: DataType) => {
-	//       if (typeof value === "string") {
-	//         return record.status === value;
-	//       }
-	//       return false;
-	//     },
-	//   },
-	//   {
-	//     title: "Actions",
-	//     dataIndex: "actions",
-	//     align: "left",
-	//     key: "action",
-	//     width: 150,
-	//     render: (_, record) => (
-	//       <Space size="middle">
-	//         <img
-	//           src={eye}
-	//           alt="View"
-	//           style={{width: "20px", cursor: "pointer"}}
-	//           onClick={() => handleEyeClick(record)}
-	//         />
-	//         <img
-	//           src={trash}
-	//           alt="Delete"
-	//           style={{width: "20px", cursor: "pointer"}}
-	//           onClick={() => showPopconfirm(record)}
-	//         />
-	//       </Space>
-	//     ),
-	//   },
-	//   {
-	//     title: "Avatar",
-	//     dataIndex: "photo",
-	//     align: "left",
-	//     key: "avatar",
-	//     width: 150,
-	//     render: photo => (
-	//       <div style={{height: "40px", display: "flex", alignItems: "center"}}>
-	//         <Avatar src={photo} />
-	//       </div>
-	//     ),
-	//   },
-	// ];
-
-	const columns: TableColumnsType<DataType> = [
+	const columns: TableColumnsType<CombinedUserProps> = [
 		{
 			title: "S/N",
 			dataIndex: "number",
@@ -365,18 +186,7 @@ const TableComponent = () => {
 				</div>
 			),
 		},
-		{
-			title: "Display Name",
-			dataIndex: "displayName",
-			align: "left",
-			key: "displayName",
-			width: 150,
-			render: (text: string | undefined) => (
-				<div style={{height: "40px", display: "flex", alignItems: "center"}}>
-					{text}
-				</div>
-			),
-		},
+
 		{
 			title: "First Name",
 			dataIndex: "firstName",
@@ -402,6 +212,34 @@ const TableComponent = () => {
 			),
 		},
 		{
+			title: "Status",
+			dataIndex: "status",
+			align: "left",
+			key: "status",
+			width: 100,
+			render: (status: any) => (
+				<Tag
+					color={
+						status === "Active"
+							? "green"
+							: status === "Pending"
+							? "orange"
+							: "red"
+					}
+				>
+					{status}
+				</Tag>
+			),
+			filters: [
+				{text: "Pending", value: "Pending"},
+				{text: "Active", value: "Active"},
+				{text: "Inactive", value: "Inactive"},
+			],
+			filterMode: "menu",
+			onFilter: (value: any, record: CombinedUserProps) =>
+				record.status === value,
+		},
+		{
 			title: "Role",
 			dataIndex: "role",
 			align: "left",
@@ -415,10 +253,11 @@ const TableComponent = () => {
 			filters: [
 				{text: "Admin", value: "Admin"},
 				{text: "Instructor", value: "Instructor"},
-				{text: "Student", value: "Student"},
+				{text: "User", value: "User"},
 			],
 			filterMode: "menu",
-			onFilter: (value: any, record: {role: any}) => record.role === value,
+			onFilter: (value: any, record: CombinedUserProps) =>
+				record.role === value,
 		},
 		{
 			title: "Verified",
@@ -458,32 +297,6 @@ const TableComponent = () => {
 		},
 	];
 
-	const handleClose = () => {
-		setModalVisible(false);
-	};
-
-	const handleSubmit = async (e: React.FormEvent) => {
-		const {
-			new_price,
-			effective_date,
-			effective_time,
-
-			reason_for_change,
-		} = formData;
-		const data = new FormData();
-		// data.append("commodity", configuration?._id);
-		// data.append("previous_price", configuration?.previous_price);
-		data.append("new_price", new_price);
-		data.append("effective_date", effective_date);
-		data.append("effective_time", effective_time);
-		data.append("reason_for_change", reason_for_change);
-		// await mutate(data as any);
-		// successAlert("commodity Updated Successfully");
-		handleClose();
-		form.resetFields();
-		setModalVisible(false);
-	};
-
 	return (
 		<div>
 			<div className="! flex gap-4 mb-4 mt-4 text-gray-500 dark:text-gray-400"></div>
@@ -494,10 +307,6 @@ const TableComponent = () => {
 				<Card
 					title="User List"
 					extra={
-						// <Button type="primary" onClick={() => {}}>
-						// 	New
-						// </Button>
-
 						<div className="border flex border-gray-950 rounded-lg relative outline-none">
 							<div className=" absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
 								<svg
@@ -542,20 +351,20 @@ const TableComponent = () => {
 				</Card>
 
 				{modalVisible && (
-					<div className="fixed inset-0 flex items-end justify-end bg-black bg-opacity-50 z-10">
+					<div className="fixed inset-0 flex items-end justify-end bg-black bg-opacity-50 z-40">
 						<div className="bg-white p-12 rounded-md w-[400px] h-screen relative">
 							<CloseOutlined
 								className="absolute text-[12px] top-16 right-8 cursor-pointer"
 								onClick={handleClose}
 							/>
 							<h2 className="mb-5 font-inter font-medium text-xl">
-								User Configuration
+								Modify User Data
 							</h2>
 							<Form
-								name="user-configuration-form"
+								name="user-userData-form"
 								className="bg-white w-full"
 								form={form}
-								// onFinish={mutate}
+								initialValues={formData}
 								requiredMark={false}
 								variant="borderless"
 								layout="vertical"
@@ -574,21 +383,6 @@ const TableComponent = () => {
 									/>
 								</Form.Item>
 
-								<Form.Item
-									name="displayName"
-									label="Display Name"
-									rules={[
-										{required: true, message: "Please input a display name"},
-									]}
-								>
-									<Input
-										onChange={handleInputChange}
-										className="border-gray-300 rounded-none"
-										name="displayName"
-										style={{backgroundColor: "#EBE9E9", marginTop: "-2rem"}}
-									/>
-								</Form.Item>
-
 								<div className="flex">
 									<Form.Item
 										name="firstName"
@@ -599,7 +393,7 @@ const TableComponent = () => {
 										]}
 									>
 										<Input
-											onChange={handleInputChange}
+											readOnly
 											className="border-gray-300 rounded-none"
 											name="firstName"
 											style={{backgroundColor: "#EBE9E9", marginTop: "-2rem"}}
@@ -614,7 +408,7 @@ const TableComponent = () => {
 										]}
 									>
 										<Input
-											onChange={handleInputChange}
+											readOnly
 											className="border-gray-300 rounded-none"
 											name="lastName"
 											style={{backgroundColor: "#EBE9E9", marginTop: "-2rem"}}
@@ -622,61 +416,53 @@ const TableComponent = () => {
 									</Form.Item>
 								</div>
 
-								<Form.Item
-									name="role"
-									label="Role"
-									rules={[{required: true, message: "Please select a role"}]}
-								>
+								<Form.Item name="role" label="Role">
 									<Select
-										onChange={handleInputChange}
+										onChange={value => handleSelectChange(value, "role")}
 										className="border-gray-300 rounded-none"
-										// name="role"
 										style={{backgroundColor: "#EBE9E9", marginTop: "-2rem"}}
 									>
 										<Select.Option value="Admin">Admin</Select.Option>
 										<Select.Option value="Instructor">Instructor</Select.Option>
-										<Select.Option value="Student">Student</Select.Option>
+										<Select.Option value="User">Student</Select.Option>
 									</Select>
 								</Form.Item>
 
-								<Form.Item
-									name="isVerified"
-									label="Verified"
-									rules={[
-										{
-											required: true,
-											message: "Please select verification status",
-										},
-									]}
-								>
-									<Select
-										onChange={handleInputChange}
-										className="border-gray-300 rounded-none"
-										// name="isVerified"
-										style={{backgroundColor: "#EBE9E9", marginTop: "-2rem"}}
+								<div className="flex">
+									<Form.Item
+										name="isApproved"
+										label="Approved"
+										className="mr-5 w-1/2"
 									>
-										<Select.Option value={true}>Verified</Select.Option>
-										<Select.Option value={false}>Not Verified</Select.Option>
-									</Select>
-								</Form.Item>
+										<Select
+											onChange={value =>
+												handleSelectChange(value, "isApproved")
+											}
+											className="border-gray-300 rounded-none"
+											style={{backgroundColor: "#EBE9E9", marginTop: "-2rem"}}
+										>
+											<Select.Option value={true}>Approved</Select.Option>
+											<Select.Option value={false}>Not Approved</Select.Option>
+										</Select>
+									</Form.Item>
 
-								<Form.Item
-									name="registeredAt"
-									label="Registered At"
-									rules={[
-										{
-											required: true,
-											message: "Please select a registration date",
-										},
-									]}
-								>
-									<DatePicker
-										onChange={handleDateInput}
-										className="border-gray-300 rounded-none"
-										name="registeredAt"
-										style={{backgroundColor: "#EBE9E9", marginTop: "-2rem"}}
-									/>
-								</Form.Item>
+									<Form.Item
+										name="isVerified"
+										label="Verified"
+										className="w-1/2"
+									>
+										<Select
+											onChange={value =>
+												handleSelectChange(value, "isVerified")
+											}
+											className="border-gray-300 rounded-none"
+											style={{backgroundColor: "#EBE9E9", marginTop: "-2rem"}}
+										>
+											<Select.Option value={true}>Verified</Select.Option>
+											<Select.Option value={false}>Not Verified</Select.Option>
+										</Select>
+									</Form.Item>
+								</div>
 
 								<Form.Item
 									name="status"
@@ -684,9 +470,8 @@ const TableComponent = () => {
 									rules={[{required: true, message: "Please select a status"}]}
 								>
 									<Select
-										onChange={handleInputChange}
+										onChange={value => handleSelectChange(value, "status")}
 										className="border-gray-300 rounded-none"
-										// name="status"
 										style={{backgroundColor: "#EBE9E9", marginTop: "-2rem"}}
 									>
 										<Select.Option value="Pending">Pending</Select.Option>
@@ -708,7 +493,7 @@ const TableComponent = () => {
 													"linear-gradient(89.46deg, #39462D 13.05%, #658127 107.23%)",
 												color: "white",
 											}}
-											loading={isLoading}
+											loading={updateLoading}
 										>
 											Submit
 										</Button>
@@ -734,10 +519,12 @@ const TableComponent = () => {
 					<div className="mt-5 ">
 						<p className="mb-4">
 							{" "}
-							Do you want to delete commodity{" "}
+							Do you want to delete{" "}
 							<span style={{fontWeight: "bold"}}>
-								{/* {configuration?.commodity?.commodityId?.name} */}
+								{userData?.firstName} {userData?.lastName}
 							</span>
+							<span style={{fontWeight: ""}}>'s account permanently. </span>
+							<span>Please, be aware this cannot be undone.</span>
 						</p>
 					</div>
 				</Modal>
