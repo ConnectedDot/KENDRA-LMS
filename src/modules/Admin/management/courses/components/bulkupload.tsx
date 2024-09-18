@@ -4,7 +4,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import {faker} from "@faker-js/faker";
 import {createUserWithEmailAndPassword} from "firebase/auth";
-import {auth, db} from "../../../../Firebase";
+import {auth, db} from "../../../../../Firebase";
 import {doc, setDoc} from "firebase/firestore";
 import {message} from "antd";
 

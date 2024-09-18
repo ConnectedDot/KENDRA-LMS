@@ -1,7 +1,7 @@
 import React from "react";
-import Navbarin from "../../../layout/Instructor/Navbar";
 import {MdError} from "react-icons/md";
 import {useNavigate} from "react-router-dom";
+import Navbarin from "../../../../layout/Instructor/Navbar";
 
 const Programs = () => {
 	const navigate = useNavigate();

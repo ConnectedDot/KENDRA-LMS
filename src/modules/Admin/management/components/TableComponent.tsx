@@ -7,29 +7,17 @@ import {
 	Form,
 	Modal,
 	Tag,
-	DatePicker,
-	TimePicker,
 	Avatar,
 	Card,
 	Select,
-	message,
 } from "antd";
-import type {
-	DatePickerProps,
-	TableColumnsType,
-	TablePaginationConfig,
-	TableProps,
-} from "antd";
+import type {TableColumnsType, TablePaginationConfig, TableProps} from "antd";
 import eye from "../../../../assets/icons/Vector (3).png";
 import trash from "../../../../assets/icons/material-symbols_delete-outline.png";
-import {useIsFetching, useIsMutating} from "@tanstack/react-query";
 import {CloseOutlined, SearchOutlined} from "@ant-design/icons";
-import type {TimePickerProps} from "antd";
-import {Dayjs} from "dayjs";
 import {useFetchUsers} from "../../hooks/querry";
 import {CombinedUserProps} from "../../../../interface";
 import {useDeleteUser, useUpdateUser} from "../../hooks";
-import {useUpdateUserData} from "../../../../hooks/auth";
 
 interface DataType {
 	role: string;

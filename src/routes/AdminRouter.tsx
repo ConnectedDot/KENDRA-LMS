@@ -13,37 +13,46 @@ const privateRoutes = [
 	{
 		path: "/admin-panel",
 		element: lazy(
-			() => import("../modules/Admin/management/components/usermanagement")
+			() =>
+				import("../modules/Admin/management/courses/components/usermanagement")
 		),
 	},
 	{
 		path: "/user-management",
 		element: lazy(
-			() => import("../modules/Admin/management/components/usermanagement")
+			() =>
+				import("../modules/Admin/management/courses/components/usermanagement")
 		),
 	},
 	{
 		path: "/courses-view",
+		element: lazy(() => import("../modules/Admin/management/courses")),
+	},
+	{
+		path: "/courses-view/:id",
 		element: lazy(
-			() => import("../modules/Admin/management/components/coursesmanagement")
+			() =>
+				import(
+					"../modules/Admin/management/courses/components/singlecourseview"
+				)
 		),
 	},
 	{
 		path: "/reports",
-		element: lazy(() => import("../modules/Admin/management/report")),
+		element: lazy(() => import("../modules/Admin/management/reports")),
 	},
 	{
 		path: "/mentorships",
-		element: lazy(() => import("../modules/Admin/management/mentoship")),
+		element: lazy(() => import("../modules/Admin/management/mentorships")),
 	},
 	{
 		path: "/programs-view",
-		element: lazy(() => import("../modules/Admin/management/programs")),
+		element: lazy(() => import("../modules/Admin/management/program")),
 	},
 	{
 		path: "/user-management",
 		element: lazy(
-			() => import("../modules/Admin/management/components/bulkupload")
+			() => import("../modules/Admin/management/courses/components/bulkupload")
 		),
 	},
 

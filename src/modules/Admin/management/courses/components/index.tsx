@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {IoMdBusiness} from "react-icons/io";
 import {TbSortAscending} from "react-icons/tb";
@@ -7,15 +7,37 @@ import {Flex, message, Progress, TabsProps} from "antd";
 import {DocumentArrowUpIcon} from "@heroicons/react/24/outline";
 import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
 import {MdArrowBack} from "react-icons/md";
-import UserManagementTabs from "./components/usermanagement";
-import CourseManagementTabs from "./components/coursesmanagement";
-import PaymentManagementTabs from "./components/paymentmanagement";
+import UserManagementTabs from "./usermanagement";
+import CourseManagementTabs from "./coursesmanagement";
+import PaymentManagementTabs from "./paymentmanagement";
+import {Course} from "../../../../../interface";
 
-const UserManagement = () => {
+interface CoursesViewProps {
+	course: Course;
+}
+
+interface SingleCourseViewProps {
+	onCourseDetails: (course: Course) => void;
+}
+
+const SingleCourseView: React.FC<SingleCourseViewProps> = ({
+	onCourseDetails,
+}) => {
+	const location = useLocation();
+	const {course} = location.state as CoursesViewProps;
+
+	console.log(course, "course");
 	const navigate = useNavigate();
 	const handleGoBack = () => {
 		navigate(-1);
 	};
+
+	useEffect(() => {
+		if (course) {
+			onCourseDetails(course);
+		}
+	}, [course, onCourseDetails]);
+
 	const [updateLoading, setUpdateLoading] = useState(false);
 	const [currentTabIndex, setcurrentTabIndex] = useState(0);
 
@@ -55,19 +77,15 @@ const UserManagement = () => {
 
 	return (
 		<div className="mt-12">
-			<div className="flex">
-				<button
-					className="flex  items-center text-sm gap-3 font-medium text-gray-700 bg-gray-100 rounded-full py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-					onClick={handleGoBack}
-				>
-					<MdArrowBack /> Go Back
-				</button>{" "}
-			</div>
 			<div className="flex flex-col justify-center items-center mb-4">
 				<div className="flex">
-					<h1 className="mb-4 mx-8 text-3xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-4xl">
-						User Managemrnt
-					</h1>
+					<button
+						className="flex items-center mb-1 text-sm gap-3 font-medium text-gray-700 rounded-xl py-2 px-4 dark:bg-white dark:text-gray-600 dark:hover:text-black"
+						onClick={handleGoBack}
+					>
+						<MdArrowBack /> Go Back
+					</button>
+					<h1 className="mb-4 mx-8 text-3xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-4xl"></h1>
 				</div>
 			</div>
 
@@ -105,4 +123,4 @@ const UserManagement = () => {
 	);
 };
 
-export default UserManagement;
+export default SingleCourseView;

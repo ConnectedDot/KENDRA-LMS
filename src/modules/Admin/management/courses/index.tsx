@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import Navbarin from "../../../../layout/Instructor/Navbar";
-import {MdArrowBack} from "react-icons/md";
 import {Link, useNavigate} from "react-router-dom";
-import TableComponent from "./tablecomponent";
-import {Course} from "../../../../interface";
 import {PrivatePaths} from "../../../../routes/path";
+import Navbarin from "../../../../layout/Instructor/Navbar";
+import {Course} from "../../../../interface";
 import {useFetchCourses} from "../../../../hooks/Querry";
+import {MdArrowBack} from "react-icons/md";
+// import TableComponent from "../../components/tablecomponent";
+// import {useFetchCourses} from "../../../../../hooks/Querry";
 
 const CourseManagementTabs = () => {
 	const navigate = useNavigate();
