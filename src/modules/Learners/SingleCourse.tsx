@@ -1,13 +1,13 @@
 import {Card, Checkbox, Col, List, Row, Spin, TabsProps} from "antd";
 import React, {useState, useEffect, startTransition} from "react";
-import DecriptionTab from "./components/DecriptionTab";
+import DecriptionTab from "./components/decriptiontab";
 import {
 	LoadingOutlined,
 	PlayCircleFilled,
 	SearchOutlined,
 } from "@ant-design/icons";
-import CourseOverview from "./components/Overview";
-import CourseQnA from "./components/FAQ";
+import CourseOverview from "./components/overview";
+import CourseQnA from "./components/faq";
 import videojs from "video.js";
 import {Course} from "../../interface";
 

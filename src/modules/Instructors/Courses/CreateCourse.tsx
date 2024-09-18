@@ -6,12 +6,12 @@ import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {IoMdBusiness} from "react-icons/io";
 import {TbSortAscending} from "react-icons/tb";
 import {message, TabsProps} from "antd";
-import BasicInfoTab from "../components/BasicInfo";
+import BasicInfoTab from "../components/basicinfo";
 import {DocumentArrowUpIcon} from "@heroicons/react/24/outline";
 import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
 import {MdArrowBack} from "react-icons/md";
-import ContentTab from "../components/ContentTab";
-import VideoContentTab from "../components/VideoContentTab";
+import ContentTab from "../components/contenttab";
+import VideoContentTab from "../components/videocontenttab";
 import useCourseForm from "../../../hooks/upload";
 
 interface Course {

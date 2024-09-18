@@ -1,28 +1,27 @@
 export interface ChildProps {
 	children: JSX.Element[] | JSX.Element;
 }
+
+export type CombinedUserProps = instructorProps & userProps;
 export interface instructorProps {
 	_id: string;
 	id: string;
 	uid: string | undefined;
 	gender: string;
 	email: string;
-	password: string;
 	role?: string;
-	token: string;
-	photo?: string;
-	photoURL?: string;
 	emailVerified?: string;
-	// user: any[];
-	isApproved: boolean;
 	firstName: string;
 	lastName: string;
 	bio: string;
 	phone_number: string;
+	photo?: string;
+	token: string;
+	photoURL?: string;
+	// user: any[];
+	isApproved: boolean;
 	expertise: string;
-	courses: string[];
 	isVerified: boolean;
-	imageUrl: string;
 	total_students: number;
 	total_courses: any[];
 	total_reviews: any[];
@@ -34,7 +33,6 @@ export interface instructorProps {
 	instagram: string;
 	youtube: string;
 	certification: string | null;
-	cart: any[];
 	status: "Pending" | "Active" | "Inactive";
 }
 export interface userProps {
@@ -57,8 +55,6 @@ export interface userProps {
 	linkedin: string;
 	facebook: string;
 	cart: any[];
-	// photo: string;
-
 	status: "Pending" | "Active" | "Inactive";
 }
 

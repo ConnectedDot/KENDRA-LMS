@@ -3,7 +3,7 @@ import {PrivatePaths} from "../../routes/path";
 import Navbarin from "../../layout/Instructor/Navbar";
 import {AuthContext} from "../../context";
 import {Link, useNavigate} from "react-router-dom";
-import FeaturedCourse from "./courses/components/FeaturedCourse";
+import FeaturedCourse from "./courses/components/featuredcourse";
 import {useFetchCourses} from "../../hooks/Querry";
 import {Course} from "../../interface";
 

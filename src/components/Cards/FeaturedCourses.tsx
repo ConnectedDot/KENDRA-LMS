@@ -1,5 +1,5 @@
 import React from "react";
-import CourseCard from "./CourseCard";
+import CourseCard from "./coursecard";
 import Carousels from "../Carousel";
 import {Carousel} from "antd";
 import CarouselComponent from "../CarouselComponent";

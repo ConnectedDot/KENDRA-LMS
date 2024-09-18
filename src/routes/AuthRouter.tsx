@@ -30,7 +30,7 @@ const paths = [
 	{
 		path: "/verify-email/:id",
 		element: lazy(
-			() => import("../modules/Auth/VerifyEmail/VerificationDialog")
+			() => import("../modules/Auth/VerifyEmail/verificationdialog")
 		),
 	},
 	// {
@@ -40,13 +40,13 @@ const paths = [
 	{
 		path: "/email-dalogue/*",
 		element: lazy(
-			() => import("../modules/Auth/VerifyEmail/VerificationDialog")
+			() => import("../modules/Auth/VerifyEmail/verificationdialog")
 		),
 	},
 	{
 		path: "/approval",
 		element: lazy(
-			() => import("../modules/Auth/Instructor-Register/approvalPage")
+			() => import("../modules/Auth/Instructor-Register/approvalpage")
 		),
 	},
 	{

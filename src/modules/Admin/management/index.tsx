@@ -7,9 +7,9 @@ import {Flex, message, Progress, TabsProps} from "antd";
 import {DocumentArrowUpIcon} from "@heroicons/react/24/outline";
 import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
 import {MdArrowBack} from "react-icons/md";
-import UserManagementTabs from "./components/UserManagement";
-import CourseManagementTabs from "./components/CoursesManagement";
-import PaymentManagementTabs from "./components/PaymentManagement";
+import UserManagementTabs from "./components/usermanagement";
+import CourseManagementTabs from "./components/coursesmanagement";
+import PaymentManagementTabs from "./components/paymentmanagement";
 
 const UserManagement = () => {
 	const navigate = useNavigate();

@@ -2,18 +2,16 @@ import {Disclosure} from "@headlessui/react";
 // import Link from 'next/link';
 import React, {useContext, useState} from "react";
 import {Bars3Icon} from "@heroicons/react/24/outline";
-import Drawer from "./Drawer";
-import Drawerdata from "./Drawerdata";
-import Signdialog from "../../../components/Forms/Signdialog";
-import Registerdialog from "../../../components/Forms/Registerdialog";
 import {Link} from "react-router-dom";
 import logo from "../../../assets/Logo/kendra-re.png";
 import {AuthContext} from "../../../context";
-import {AvatarMenu} from "./AvatarMenu";
 import {FaSearch} from "react-icons/fa";
 import {PrivatePaths} from "../../../routes/path";
-import {CartDrawer} from "../../Home/components/Cartdrawer";
+import {CartDrawer} from "../../Home/components/cartdrawer";
 import {MdShoppingCart} from "react-icons/md";
+import Drawer from "./drawer";
+import {AvatarMenu} from "./avatarmenu";
+import Drawerdata from "./drawerdata";
 
 interface NavigationItem {
 	name: string;

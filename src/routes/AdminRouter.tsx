@@ -11,7 +11,7 @@ const privateRoutes = [
 	{
 		path: "/admin-panel",
 		element: lazy(
-			() => import("../modules/Admin/management/components/UserManagement")
+			() => import("../modules/Admin/management/components/usermanagement")
 		),
 	},
 	// {
@@ -21,7 +21,7 @@ const privateRoutes = [
 	{
 		path: "/user-management",
 		element: lazy(
-			() => import("../modules/Admin/management/components/BulkUpload")
+			() => import("../modules/Admin/management/components/bulkupload")
 		),
 	},
 

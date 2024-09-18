@@ -4,7 +4,7 @@ import {Fragment, Suspense} from "react";
 import AuthGuard from "./AuthGuard";
 import NotFound from "../modules/NotFound";
 import Loader from "../components/Loader";
-import OfflineNotifier from "./OfflinePageFunc";
+import Offlinepagefunction from "./offlinepagefunc";
 
 interface RouteConfig {
 	path: string;
@@ -17,7 +17,7 @@ interface RouteConfig {
 const RoutesWrapper = () => {
 	return (
 		<BrowserRouter>
-			<OfflineNotifier />
+			<Offlinepagefunction />
 
 			<Routes>
 				{BaseRoutes.map(route => (

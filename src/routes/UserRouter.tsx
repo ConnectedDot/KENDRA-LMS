@@ -10,7 +10,7 @@ const privateRoutes = [
 	},
 	{
 		path: "/profile",
-		element: lazy(() => import("../modules/Learners/Profile")),
+		element: lazy(() => import("../modules/Learners/profile")),
 	},
 	// {
 	//   path: '/course-play',
@@ -18,15 +18,15 @@ const privateRoutes = [
 	// },
 	{
 		path: "/course-details/:id",
-		element: lazy(() => import("../modules/Learners/courses/CoursePage")),
+		element: lazy(() => import("../modules/Learners/courses/coursepage")),
 	},
 	{
 		path: "/courses-enrolled",
-		element: lazy(() => import("../modules/Learners/courses/CoursesList")),
+		element: lazy(() => import("../modules/Learners/courses/courseslist")),
 	},
 	{
 		path: "/courses-enrolled/:id",
-		element: lazy(() => import("../modules/Learners/courses/CoursesView")),
+		element: lazy(() => import("../modules/Learners/courses/coursesview")),
 	},
 	{
 		path: "*",

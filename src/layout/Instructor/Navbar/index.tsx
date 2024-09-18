@@ -1,5 +1,5 @@
 "use client";
-import Navbar from "./Navbar";
+import Navbar from "./navbar";
 import React, {useEffect} from "react";
 import {Helmet} from "react-helmet";
 

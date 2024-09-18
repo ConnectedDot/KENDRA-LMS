@@ -1,7 +1,7 @@
 import Navbarin from "../../../../layout/Instructor/Navbar";
 import {MdArrowBack} from "react-icons/md";
 import {useNavigate} from "react-router-dom";
-import TableComponent from "./TableComponent";
+import TableComponent from "./tablecomponent";
 
 const UserManagementTabs = () => {
 	const navigate = useNavigate();

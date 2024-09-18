@@ -23,8 +23,13 @@ import {
 } from "firebase/firestore";
 import {useNavigate} from "react-router-dom";
 import {auth, db} from "../../Firebase";
-import {instructorProps, userProps} from "../../interface";
-import {setLoginToken, setStoredFireUser, setStoredUser} from "../../storage";
+import {CombinedUserProps} from "../../interface";
+import {
+	setLoginToken,
+	setStoredCart,
+	setStoredFireUser,
+	setStoredUser,
+} from "../../storage";
 import {PrivatePaths, PublicPaths} from "../../routes/path";
 import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
 import {GoogleAuthProvider} from "firebase/auth";
@@ -56,26 +61,27 @@ export function useFirebaseGoogleLogin() {
 	const navigate = useNavigate();
 	const provider = new GoogleAuthProvider();
 	provider.addScope("email");
-	const [userData, setUserData] = useState<userProps | null>(null);
+	const [userData, setUserData] = useState<CombinedUserProps | null>(null);
 	const [token, setToken] = useState<string | null>(null);
 
 	const mutationFn: MutationFunction<
-		{userData: userProps; token: string},
+		{userData: CombinedUserProps; token: string},
 		void
 	> = async () => {
 		const result = await signInWithPopup(auth, provider);
 		const user = result.user;
+		setStoredFireUser(user as any);
 		console.log("User:", user);
 		const token = await user.getIdToken();
 		const userDocRef = doc(db, "KLMS-USER", user.uid);
 		const userDoc = await getDoc(userDocRef);
 		const userId = `user${Date.now()}`;
 
-		let userData: userProps;
+		let userData: CombinedUserProps;
 
 		if (userDoc.exists()) {
 			// Existing user
-			userData = userDoc.data() as userProps;
+			userData = userDoc.data() as CombinedUserProps;
 		} else {
 			// New user, initialize user data
 			userData = {
@@ -97,8 +103,17 @@ export function useFirebaseGoogleLogin() {
 				facebook: "",
 				status: "Pending",
 				cart: [],
+				certification: null,
 				photo: user.photoURL || "",
-				// Add the remaining properties from the 'userProps' type
+				token: "",
+				isApproved: false,
+				expertise: "",
+				total_students: 0,
+				total_reviews: [],
+				skill_level: [],
+				website: "",
+				instagram: "",
+				youtube: "",
 			};
 			await setDoc(userDocRef, userData);
 			await updateDoc(userDocRef, {isVerified: true});
@@ -109,10 +124,39 @@ export function useFirebaseGoogleLogin() {
 
 	const {mutate} = useMutation({
 		mutationFn,
-		onSuccess: ({userData, token}) => {
-			setUserData(userData);
-			setToken(token);
-			message.success("Logged in successfully");
+		onSuccess: async ({userData, token}) => {
+			if (userData.status === "Inactive") {
+				message.info("Your account is currently on hold.");
+				return;
+			} else if (userData.status === "Pending") {
+				message.info(
+					"Your account is going through verification for misconduct."
+				);
+				return;
+			} else if (userData.status === "Active") {
+				setStoredUser(userData);
+				setStoredCart(userData.cart as any);
+				setLoginToken(token);
+				message.success("Logged in successfully");
+
+				// Handle role-based redirection
+				if (userData.role === "Admin") {
+					navigate(`${PrivatePaths.ADMIN}dashboard`);
+				} else if (userData.role === "Instructor") {
+					navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
+				} else {
+					navigate(`${PrivatePaths.USER}dashboard`);
+				}
+			}
+
+			// Update the Firebase user displayName
+			const auth = getAuth();
+			const user = auth.currentUser;
+			if (user) {
+				await updateProfile(user, {
+					displayName: `${userData.firstName} ${userData.lastName}`,
+				});
+			}
 		},
 		onError: (error: any) => {
 			let errorMessage = "An unexpected error occurred.";
@@ -134,32 +178,32 @@ export function useFirebaseGoogleLogin() {
 		},
 	});
 
-	useEffect(() => {
-		if (userData && token) {
-			setStoredUser(userData);
-			setLoginToken(token);
+	// useEffect(() => {
+	// 	if (userData && token) {
+	// 		setStoredUser(userData);
+	// 		setLoginToken(token);
 
-			// Handle role-based redirection
-			if (userData.role === "Admin") {
-				navigate(`${PrivatePaths.ADMIN}dashboard`);
-			} else if (userData.role === "Instructor") {
-				navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
-			} else {
-				navigate(`${PrivatePaths.USER}dashboard`);
-			}
-		}
-	}, [userData, token, navigate]);
+	// 		// Handle role-based redirection
+	// 		if (userData.role === "Admin") {
+	// 			navigate(`${PrivatePaths.ADMIN}dashboard`);
+	// 		} else if (userData.role === "Instructor") {
+	// 			navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
+	// 		} else {
+	// 			navigate(`${PrivatePaths.USER}dashboard`);
+	// 		}
+	// 	}
+	// }, [userData, token, navigate]);
 
 	return {mutate};
 }
 
 export function useFirebaseLogin() {
 	const navigate = useNavigate();
-	const [userData, setUserData] = useState<instructorProps | null>(null);
+	const [userData, setUserData] = useState<CombinedUserProps | null>(null);
 	const [token, setToken] = useState<string | null>(null);
 
 	const mutationFn: MutationFunction<
-		{userData: instructorProps; token: string; user: any},
+		{userData: CombinedUserProps; token: string; user: any},
 		{email: string; password: string}
 	> = async formData => {
 		const userCredential = await signInWithEmailAndPassword(
@@ -175,8 +219,11 @@ export function useFirebaseLogin() {
 			const userDoc = await getDoc(userDocRef);
 
 			if (userDoc.exists()) {
-				const userData = userDoc.data() as instructorProps;
+				const userData = userDoc.data() as CombinedUserProps;
 				const token = await user.getIdToken();
+
+				// Check user status and role
+
 				return {userData, token, user};
 			} else {
 				throw new Error("User data not found in Firestore.");
@@ -190,9 +237,17 @@ export function useFirebaseLogin() {
 		mutationFn,
 		onSuccess: async ({userData, token, user}) => {
 			if (userData.role === "Admin") {
-				setUserData(userData as instructorProps);
+				setUserData(userData as CombinedUserProps);
 				setToken(token);
 				message.success("Logged in successfully");
+			} else if (userData.status === "Inactive") {
+				message.info("Your account is currently on hold.");
+				throw new Error("Account on hold");
+			} else if (userData.status === "Pending") {
+				message.info(
+					"Your account is going through verification for misconduct."
+				);
+				throw new Error("Account pending verification");
 			} else if (userData.isVerified === false) {
 				message.info(`Please, verify your email address at ${userData.email}`);
 				try {
@@ -201,14 +256,14 @@ export function useFirebaseLogin() {
 				} catch (error) {
 					message.error("Failed to send verification email.");
 				}
-				return;
+				throw new Error("Email not verified");
 			} else if (
 				userData.role === "Instructor" &&
 				userData.isApproved === false
 			) {
 				navigate(`/approval`);
-				// navigate(`${PublicPaths.HOME}/approval`);
 				totalLogout();
+				throw new Error("Instructor not approved");
 			} else {
 				setUserData(userData);
 				setToken(token);
@@ -234,22 +289,6 @@ export function useFirebaseLogin() {
 			message.info(errorMessage);
 		},
 	});
-
-	useEffect(() => {
-		if (userData && token) {
-			setStoredUser(userData);
-			setLoginToken(token);
-
-			// Handle role-based redirection
-			if (userData.role === "Admin") {
-				navigate(`${PrivatePaths.ADMIN}dashboard`);
-			} else if (userData.role === "Instructor") {
-				navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
-			} else {
-				navigate(`${PrivatePaths.USER}dashboard`);
-			}
-		}
-	}, [userData, token, navigate]);
 
 	return {mutate};
 }

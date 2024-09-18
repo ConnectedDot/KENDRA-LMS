@@ -3,11 +3,11 @@ import {Link, useNavigate} from "react-router-dom";
 import {PublicPaths} from "../../routes/path";
 import Footer from "../../components/Footer";
 import HomeLayout from "../../layout/Home";
-import FeaturedCourses from "../../components/Cards/FeaturedCourses";
-import {Testimonials} from "../../components/Cards/Testimonials";
-import LearnersAreViewing from "../../components/Cards/LearnersViewing";
+import FeaturedCourses from "../../components/Cards/featuredcourses";
+import {Testimonials} from "../../components/Cards/testimonials";
+import LearnersAreViewing from "../../components/Cards/learnersviewing";
 import {featuredCourses, learnersAreViewing, testimonials} from "../../Data";
-import {CarouselImages} from "../../components/CarouselComponent/CarouselImages";
+import {CarouselImages} from "../../components/CarouselComponent/carouselimages";
 
 const Home = () => {
 	return (

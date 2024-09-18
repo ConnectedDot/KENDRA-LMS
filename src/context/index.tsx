@@ -6,7 +6,12 @@ import {
 	getStoredUser,
 	setStoredUser,
 } from "../storage";
-import {ChildProps, instructorProps, userProps} from "../interface";
+import {
+	ChildProps,
+	CombinedUserProps,
+	instructorProps,
+	userProps,
+} from "../interface";
 
 export const AuthContext = createContext({
 	user: undefined as userProps | undefined,
@@ -64,7 +69,7 @@ function AuthContextProvider({children}: ChildProps) {
 
 	function authenticate(data: string) {
 		setAuthToken(data);
-		const userObj: instructorProps = {
+		const userObj: CombinedUserProps = {
 			_id: "",
 			id: "",
 			uid: undefined,
@@ -76,14 +81,13 @@ function AuthContextProvider({children}: ChildProps) {
 			phone_number: "",
 			courses: [],
 			isVerified: false,
-			imageUrl: "",
+			photo: "",
 			total_courses: [],
 			twitter: "",
 			linkedin: "",
 			facebook: "",
 			cart: [],
 			status: "Pending",
-			password: "",
 			token: "",
 			expertise: "",
 			total_students: 0,
@@ -94,6 +98,9 @@ function AuthContextProvider({children}: ChildProps) {
 			youtube: "",
 			certification: null,
 			isApproved: false,
+			photoURL: "",
+			role: "",
+			emailVerified: "",
 		};
 
 		setUser(userObj);

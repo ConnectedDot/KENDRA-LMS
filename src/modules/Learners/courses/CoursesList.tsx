@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {MdArrowBack, MdLibraryBooks} from "react-icons/md";
 import {PrivatePaths} from "../../../routes/path";
 import {useFetchCourses} from "../../../hooks/Querry";
-import CourseCards from "../../../components/Cards/CourseCards";
+import CourseCards from "../../../components/Cards/coursecards";
 import {Course} from "../../../interface";
 // import useFetchCourses from "../../../hooks/courses";
 

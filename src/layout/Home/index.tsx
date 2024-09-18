@@ -6,8 +6,8 @@ import {categories} from "./components/menu";
 import Logo from "../../assets/Logo/kendra-re.png";
 
 import {Link} from "react-router-dom";
-import MobileNavigation from "./components/MobileNavigation";
-import {CartDrawer} from "./components/Cartdrawer";
+import MobileNavigation from "./components/mobilenavigation";
+import {CartDrawer} from "./components/cartdrawer";
 
 const HomeLayout: React.FC<AdminLayoutProps> = ({
 	children,

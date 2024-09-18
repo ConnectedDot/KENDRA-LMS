@@ -11,13 +11,12 @@ import {MdFeedback} from "react-icons/md";
 import {GiNotebook, GiSpanner} from "react-icons/gi";
 import {IoMdMicrophone} from "react-icons/io";
 import {Course} from "../../interface";
-import CourseQnA from "./components/FAQ";
-import CourseOverview from "./components/Overview";
-import DecriptionTab from "./components/DecriptionTab";
-import CourseNotes from "./components/Notes";
-import AnnouncementTabs from "./components/Announcement";
-import LearningTabs from "./components/LearniingTools";
-import ReviewTabs from "./components/Reviews";
+import CourseQnA from "./components/faq";
+import CourseOverview from "./components/overview";
+import CourseNotes from "./components/notes";
+import AnnouncementTabs from "./components/announcement";
+import LearningTabs from "./components/learniingtools";
+import ReviewTabs from "./components/reviews";
 
 interface CoursePlayerProps {
 	course: Course;

@@ -14,16 +14,16 @@ const privateRoutes = [
 	},
 	{
 		path: "/courses-new",
-		element: lazy(() => import("../modules/Instructors/courses/CreateCourse")),
+		element: lazy(() => import("../modules/Instructors/courses/createcourse")),
 	},
 	{
 		path: "/courses-view",
-		element: lazy(() => import("../modules/Instructors/courses/CoursesList")),
+		element: lazy(() => import("../modules/Instructors/courses/courseslist")),
 	},
 
 	{
 		path: "/courses-view/:id",
-		element: lazy(() => import("../modules/Instructors/courses/Courseview")),
+		element: lazy(() => import("../modules/Instructors/courses/courseview")),
 	},
 	{
 		path: "*",
