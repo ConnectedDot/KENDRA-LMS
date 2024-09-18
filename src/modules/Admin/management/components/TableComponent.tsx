@@ -57,17 +57,18 @@ const TableComponent = () => {
 		setFilteredData(DatabaseUsers);
 	}, [DatabaseUsers]);
 
-	// useEffect(() => {
-	// 	if (searchQuery) {
-	// 		const filtered = DatabaseUsers.filter(user =>
-	// 			user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-	// 			user.firstName.toLowerCase().includes(searchQuery.toLowerCase())
-	// 		);
-	// 		setFilteredData(filtered);
-	// 	} else {
-	// 		setFilteredData(DatabaseUsers);
-	// 	}
-	// }, [searchQuery, DatabaseUsers]);
+	useEffect(() => {
+		if (searchQuery) {
+			const filtered = DatabaseUsers.filter(
+				(user: CombinedUserProps) =>
+					user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+					user.firstName?.toLowerCase().includes(searchQuery.toLowerCase())
+			);
+			setFilteredData(filtered);
+		} else {
+			setFilteredData(DatabaseUsers);
+		}
+	}, [searchQuery, DatabaseUsers]);
 
 	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchQuery(e.target.value);
@@ -337,6 +338,7 @@ const TableComponent = () => {
 							</div>
 							<div className="flex justify-center">
 								<input
+									onChange={handleSearch}
 									type="text"
 									id="table-search"
 									className="block p-2 ps-10 text-sm rounded-lg w-80"
@@ -349,7 +351,7 @@ const TableComponent = () => {
 					<Table
 						className=""
 						columns={columns}
-						dataSource={DatabaseUsers}
+						dataSource={filteredData}
 						size="small"
 						rowKey="_id"
 						loading={!!isLoading}
