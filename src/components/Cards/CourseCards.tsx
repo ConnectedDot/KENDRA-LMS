@@ -20,7 +20,6 @@ interface CourseCardProps {
 const CourseCards: React.FC<CourseCardProps> = ({course, onClick}) => {
 	const {Title, Description, price, image, category, Videos} = course;
 
-	// Get the first video URL if available
 	const videoUrl = Videos.length > 0 ? Videos[0].youtubeId : "";
 
 	return (
