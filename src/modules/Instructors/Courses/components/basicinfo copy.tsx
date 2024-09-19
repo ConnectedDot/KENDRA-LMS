@@ -1,26 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import type {GetProp, UploadProps} from "antd";
 import {message, Upload} from "antd";
 import {TiCameraOutline} from "react-icons/ti";
-import imageUrl from "../../../assets/background/overlay_2.jpg";
+import imageUrl from "../../../../assets/background/overlay_2.jpg";
 import {ConfigProvider, Popover} from "antd";
-import {category} from "../../../Data";
-import {
-	EditorProvider,
-	Editor,
-	Toolbar,
-	BtnBold,
-	BtnItalic,
-	BtnUnderline,
-	BtnBulletList,
-	BtnNumberedList,
-	BtnLink,
-	BtnStrikeThrough,
-	BtnClearFormatting,
-	BtnRedo,
-	BtnUndo,
-	ContentEditableEvent,
-} from "react-simple-wysiwyg";
+import {category} from "../../../../Data";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 interface BasicInfoTabProps {
@@ -41,6 +25,8 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 	onUpdateData,
 }) => {
 	const [uploadError, setUploadError] = useState<any>({});
+	// const [localFormData, setLocalFormData] = useState(formData);
+
 	const [selectedCategory, setSelectedCategory] = useState(
 		formData.category[0]?.id || ""
 	);
@@ -105,13 +91,23 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 
 	const handleInputChange = (e?: any) => {
 		const {name, value} = e.target;
-		onUpdateData({[name]: value});
+		onUpdateData((prevFormData: any) => ({
+			...prevFormData,
+			[name]: value,
+		}));
 	};
-	const handleEditorChange = (name: string, content: string) => {
-		// const plainText = convert(content, { wordwrap: 130 });
-		console.log(content, "content");
-		onUpdateData({[name]: content});
-	};
+
+	// useEffect(() => {
+	// 	setLocalFormData(formData);
+	// }, [formData]);
+
+	// const handleInputChange = (
+	// 	e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	// ) => {
+	// 	const {name, value} = e.target;
+	// 	setLocalFormData(prevData => ({...prevData, [name]: value}));
+	// 	onUpdateData({[name]: value});
+	// };
 
 	const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const selectedCatId = e.target.value;
@@ -171,28 +167,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 					/>
 				</div>
 				<div className="flex-1">
-					<EditorProvider>
-						<Editor
-							value={formData.Description}
-							onChange={(event: ContentEditableEvent) =>
-								handleEditorChange("Description", event.target.value)
-							}
-						>
-							<Toolbar>
-								<BtnBold />
-								<BtnItalic />
-								<BtnUnderline />
-								<BtnStrikeThrough />
-								<BtnBulletList />
-								<BtnNumberedList />
-								<BtnLink />
-								<BtnClearFormatting />
-								<BtnUndo />
-								<BtnRedo />
-							</Toolbar>
-						</Editor>
-					</EditorProvider>
-					{/* <label htmlFor="Description" className="sr-only">
+					<label htmlFor="Description" className="sr-only">
 						Description
 					</label>
 					<input
@@ -201,8 +176,8 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 						value={formData.Description}
 						onChange={handleInputChange}
 						className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
-						placeholder="Description"
-					/> */}
+						placeholder="Descrbe the course in brief"
+					/>
 				</div>
 			</div>
 

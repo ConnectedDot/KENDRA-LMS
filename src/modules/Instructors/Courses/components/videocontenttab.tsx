@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import TextArea from "antd/es/input/TextArea";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
-import {storage} from "../../../Firebase";
+import {storage} from "../../../../Firebase";
 import {message, Progress, Modal, Button} from "antd";
 import {Link} from "react-router-dom";
 import {AiFillForward} from "react-icons/ai";
@@ -31,6 +31,7 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 	const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>(
 		{}
 	);
+	const [uploadingFiles, setUploadingFiles] = useState();
 	const [open, setOpen] = React.useState<boolean>(false);
 	const [loading, setLoading] = React.useState<boolean>(true);
 
@@ -38,7 +39,6 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 		setOpen(true);
 		setLoading(true);
 
-		// Simple loading mock. You should add cleanup logic in real world.
 		setTimeout(() => {
 			setLoading(false);
 		}, 2000);
@@ -136,17 +136,18 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 	const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setOpen(true);
 		const files = e.target.files;
+		setUploadingFiles(files as any);
 		if (!files) return;
 
 		const uploadPromises = Array.from(files).map(async (file, index) => {
-			const uploadUrl = await uploadVideo(file); // Assume this function uploads the video and returns the URL
-			const playtime = await getVideoDuration(uploadUrl); // Get the video duration
+			const uploadUrl = await uploadVideo(file);
+			const playtime = await getVideoDuration(uploadUrl);
 			return {
 				id: localFormData.Videos.length + index + 1,
 				title: file.name,
 				youtubeId: uploadUrl,
-				thumbnailUrl: "", // You can generate or fetch the thumbnail URL
-				playtime: playtime, // Set the playtime
+				thumbnailUrl: "",
+				playtime: playtime,
 				watched: false,
 			};
 		});
@@ -256,7 +257,7 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 				</div>
 			))}
 
-			<div className="flex flex-col gap-4 mt-4">
+			<div className="flex flex-col gap-4 mt-4 mb-10">
 				<label htmlFor="videoUpload" className="sr-only">
 					Upload Videos
 				</label>
@@ -268,12 +269,39 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 					className="w-full focus:outline-none border py-1 appearance-none h-12 bg-gray-50 block border-gray-200 focus:bg-white focus:border-accent-500 focus:ring-accent-500 placeholder-gray-400 px-3 rounded-xl sm:text-sm text-accent-500"
 				/>
 			</div>
+
+			<div className="p-6 bg-gray-200 rounded-3xl">
+				<h2 className="text-sm font-semibold mb-4">Disclaimer</h2>
+				<div className="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-[18px]">
+					<p className="text-gray-600 flex-1 mb-4 md:mb-0 text-xs">
+						Please note that all courses must undergo a verification process
+						before they can be approved. Once you have completed the
+						verification, your courses will also need to be approved by an admin
+						before being published. This process is designed to ensure the
+						highest quality of content for our learners. Rest assured, we strive
+						to make this process as quick and efficient as possible to better
+						serve you.
+					</p>
+				</div>
+			</div>
+			<Button type="primary" onClick={() => setOpen(true)}>
+				Open Upload Modal
+			</Button>
+
 			<Modal
 				open={open}
-				// loading={loading}
-				// onCancel={handleModalClose}
-				title={`Uploading ${formData.Title}`}
-				// footer={null}
+				title={
+					<div>
+						<div>Uploading {formData.Title}</div>
+						<div className="flex flex-col mt-2 text-sm text-red-500">
+							<p>
+								Please do not close the modal or click outside until the upload
+								is finished.
+							</p>
+							<p>Uploaded videos might be lost.</p>
+						</div>
+					</div>
+				}
 				closable={false}
 				onCancel={() => setOpen(false)}
 				footer={
@@ -291,10 +319,16 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 							>
 								<p className="mr-4 text-sm">{fileName}</p>
 								<Progress
-									className="w-1/2"
+									className="w-36"
 									size={"small"}
 									percent={uploadProgress[fileName]}
 								/>
+								{/* <Button
+									type="link"
+									onClick={() => handleVideoUpload(uploadingFiles as any)}
+								>
+									Retry
+								</Button> */}
 							</div>
 						))}
 					</div>

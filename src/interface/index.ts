@@ -185,9 +185,9 @@ export interface Course {
 	Fullbrief: string;
 	students: number;
 	instructorId?: any;
-	instructor: any;
+	// instructor: any;
 	Rating: number;
-	Level: string;
+	Level: any;
 	Language: string;
 	Thumbnail: string;
 	Tags: string[];
