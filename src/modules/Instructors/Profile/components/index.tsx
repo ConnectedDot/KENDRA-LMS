@@ -215,8 +215,7 @@ const ProfilePageAll = () => {
 			</div>
 
 			<div className="flex flex-row">
-				<div className="w-[60px] md:w-[22%] transition-all duration-300">
-					{" "}
+				<div className="mt-6 w-[15%] md:w-[20%] transition-all duration-300">
 					<div className="flex flex-col space-y-4">
 						{items &&
 							items.map((tab, index) => (
@@ -244,7 +243,7 @@ const ProfilePageAll = () => {
 					</div>
 				</div>
 
-				<div className="md:w-[75%] mb-12 bg ml-6 mr-6">
+				<div className="w-[85%] md:w-[80%] mb-12 bg ml-6 mr-6">
 					<div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-lg relative">
 						{items[currentTabIndex].children}
 						<div className="flex justify-between mt-4 mb-4 px-6">

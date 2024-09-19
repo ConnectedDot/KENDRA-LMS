@@ -167,12 +167,12 @@ interface Video {
 	playtime: string;
 	watched: boolean;
 }
-interface CategioryInfo {
-	id: number;
+interface CategoryInfo {
+	id: string;
 	title: string;
 }
 interface SubCategioryInfo {
-	id: number;
+	id: string;
 	title: string;
 }
 
@@ -182,11 +182,23 @@ export interface Course {
 	Title: string;
 	image?: any;
 	Description: string;
-	fullbrief: string;
+	Fullbrief: string;
 	students: number;
 	instructorId?: any;
-	instuctor: string;
+	instructor: any;
 	Rating: number;
+	Level: string;
+	Language: string;
+	Thumbnail: string;
+	Tags: string[];
+	Reviews: any[];
+	EnrollmentDate: string;
+	LastUpdated: string;
+	Prerequisites: any[];
+	Objectives: any[];
+	Resources: any[];
+	InstructorBio: any;
+	Certificate: any;
 	ReviewsCount: number;
 	isApproved: boolean;
 	price: string;
@@ -194,6 +206,6 @@ export interface Course {
 	Content: Lecture[];
 	Questions: Question[];
 	Videos: Video[];
-	category: CategioryInfo[];
+	category: CategoryInfo[];
 	subcategoryId: SubCategioryInfo[];
 }

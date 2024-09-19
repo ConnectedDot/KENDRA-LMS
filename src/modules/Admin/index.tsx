@@ -26,6 +26,7 @@ const Dashboard = () => {
 			description:
 				"Manage all users, including adding, editing, and removing users.",
 			link: `${PrivatePaths.ADMIN}user-management`,
+			key: "user-management",
 		},
 		{
 			image: coursesimg,
@@ -33,6 +34,7 @@ const Dashboard = () => {
 			description:
 				"Create, edit, and delete courses to keep your content up to date.",
 			link: `${PrivatePaths.ADMIN}courses-view`,
+			key: "course-management",
 		},
 		{
 			image: reportimg,
@@ -40,15 +42,28 @@ const Dashboard = () => {
 			description:
 				"View detailed reports on user activity and course performance.",
 			link: `${PrivatePaths.ADMIN}reports`,
+			key: "reports",
 		},
 	];
 	const {user} = useContext(AuthContext);
 	console.log(user, "user");
 
 	const quickLinks = [
-		{to: `${PrivatePaths.ADMIN}user-management`, text: "Manage Users"},
-		{to: `${PrivatePaths.ADMIN}courses-view`, text: "Manage Courses"},
-		{to: `${PrivatePaths.ADMIN}reports`, text: "View Reports"},
+		{
+			to: `${PrivatePaths.ADMIN}user-management`,
+			text: "Manage Users",
+			key: "manage-users",
+		},
+		{
+			to: `${PrivatePaths.ADMIN}courses-view`,
+			text: "Manage Courses",
+			key: "manage-courses",
+		},
+		{
+			to: `${PrivatePaths.ADMIN}reports`,
+			text: "View Reports",
+			key: "view-reports",
+		},
 	];
 
 	return (

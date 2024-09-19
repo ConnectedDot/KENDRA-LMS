@@ -13,29 +13,7 @@ import {MdArrowBack} from "react-icons/md";
 import ContentTab from "../components/contenttab";
 import VideoContentTab from "../components/videocontenttab";
 import useCourseForm from "../../../hooks/upload";
-
-interface Course {
-	Title: string;
-	Description: string;
-	price: string;
-	category: {id: string; title: string}[];
-	subcategoryId: {id: string; title: string}[];
-	Fullbrief: string;
-	Questions: {question: string; answer: string}[];
-	Content: {Title: string; Lectures: string[]}[];
-	id?: string;
-	instructor?: any;
-	isApproved?: boolean;
-	students?: number;
-	Videos: {
-		id: number;
-		title: string;
-		youtubeId: string;
-		thumbnailUrl: string;
-		playtime: string;
-		watched: boolean;
-	}[];
-}
+import {Course} from "../../../interface";
 
 const CourseRegForm = () => {
 	const navigate = useNavigate();
@@ -58,12 +36,35 @@ const CourseRegForm = () => {
 	// 	}
 	// }, [user]);
 
+	// const [formData, setFormData] = useState<Course>({
+	// 	Title: "",
+	// 	Description: "",
+	// 	price: "",
+	// 	category: [],
+	// 	subcategoryId: [],
+	// 	Fullbrief: "",
+	// 	isApproved: false,
+	// 	Questions: [
+	// 		{question: "", answer: ""},
+	// 		{question: "", answer: ""},
+	// 	],
+	// 	Content: [
+	// 		{Title: "", Lectures: [""]},
+	// 		{Title: "", Lectures: [""]},
+	// 	],
+	// 	Videos: [],
+	// 	instructor: user,
+	// 	students: 0,
+	// });
+
 	const [formData, setFormData] = useState<Course>({
+		_id: "",
+		id: "",
 		Title: "",
 		Description: "",
 		price: "",
-		category: [],
-		subcategoryId: [],
+		category: [{id: "", title: ""}],
+		subcategoryId: [{id: "", title: ""}],
 		Fullbrief: "",
 		isApproved: false,
 		Questions: [
@@ -75,9 +76,28 @@ const CourseRegForm = () => {
 			{Title: "", Lectures: [""]},
 		],
 		Videos: [],
-		instructor: user,
 		students: 0,
+		Level: "Beginner", // or "Intermediate", "Advanced"
+		Language: "English",
+		Thumbnail: "",
+		Tags: [],
+		Rating: 0,
+		Reviews: [],
+		EnrollmentDate: "",
+		LastUpdated: "",
+		Prerequisites: [],
+		Objectives: [],
+		Resources: [],
+		InstructorBio: user,
+		Certificate: {
+			awarded: false,
+			details: "",
+		},
+		ReviewsCount: 0,
+		LearningPoints: [],
+		instructor: user,
 	});
+
 	console.log(formData, "formData");
 	console.log(formData, "formData");
 
@@ -152,8 +172,7 @@ const CourseRegForm = () => {
 			</div>
 
 			<div className="flex flex-row">
-				<div className="w-[60px] md:w-[22%] transition-all duration-300">
-					{" "}
+				<div className="mt-6 w-[15%] md:w-[20%] transition-all duration-300">
 					<div className="flex flex-col space-y-4">
 						{items &&
 							items.map((tab, index) => (
@@ -181,7 +200,7 @@ const CourseRegForm = () => {
 					</div>
 				</div>
 
-				<div className="md:w-[75%] mb-12 bg ml-6 mr-6">
+				<div className="w-[85%] md:w-[80%] mb-12 bg ml-6 mr-6">
 					<div className="max-w-6xl mx-auto p-6 bg-white rounded-3xl shadow-lg relative">
 						{items[currentTabIndex].children}
 						<div className="flex justify-between mt-4 mb-4 px-4">

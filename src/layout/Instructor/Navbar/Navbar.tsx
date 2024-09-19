@@ -17,6 +17,7 @@ interface NavigationItem {
 	name: string;
 	href: string;
 	current: boolean;
+	key?: string;
 }
 
 function classNames(...classes: string[]) {
@@ -56,41 +57,44 @@ const Navbar = () => {
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 
-	const handleSearch = () => {
-		// Handle the search functionality here
-		// console.log("Searching for:", searchQuery);
-	};
+	const handleSearch = () => {};
 
 	const adminNavigation: NavigationItem[] = [
 		{
 			name: "Manage Courses",
 			href: `${PrivatePaths.ADMIN}courses-view`,
 			current: false,
+			key: "manage-courses",
 		},
 		{
 			name: "Admin Panel",
 			href: `${PrivatePaths.ADMIN}admin-panel`,
 			current: false,
+			key: "admin-panel",
 		},
 		{
 			name: "User Management",
 			href: `${PrivatePaths.ADMIN}user-management`,
 			current: false,
+			key: "user-management",
 		},
 		{
 			name: "Reports",
 			href: `${PrivatePaths.ADMIN}reports`,
 			current: false,
+			key: "reports",
 		},
 		{
 			name: "Mentor",
 			href: `${PrivatePaths.ADMIN}mentorships`,
 			current: false,
+			key: "mentor",
 		},
 		{
 			name: "Programs",
 			href: `${PrivatePaths.ADMIN}programs-view`,
 			current: false,
+			key: "programs",
 		},
 	];
 
@@ -99,27 +103,37 @@ const Navbar = () => {
 			name: "My Courses",
 			href: `${PrivatePaths.INSTRUCTOR}courses-view`,
 			current: false,
+			key: "my-courses",
 		},
 		{
 			name: "Mentor",
 			href: `${PrivatePaths.INSTRUCTOR}mentorships`,
 			current: false,
+			key: "mentor",
 		},
-		{name: "Groups", href: `${PrivatePaths.INSTRUCTOR}groups`, current: false},
+		{
+			name: "Groups",
+			href: `${PrivatePaths.INSTRUCTOR}groups`,
+			current: false,
+			key: "groups",
+		},
 		{
 			name: "Programs",
 			href: `${PrivatePaths.INSTRUCTOR}programs-view`,
 			current: false,
+			key: "programs",
 		},
 		{
 			name: "Assignments",
 			href: `${PrivatePaths.INSTRUCTOR}assignments`,
 			current: false,
+			key: "assignments",
 		},
 		{
 			name: "Messages",
 			href: `${PrivatePaths.INSTRUCTOR}messages`,
 			current: false,
+			key: "messages",
 		},
 	];
 
@@ -128,31 +142,37 @@ const Navbar = () => {
 			name: "Learning Path",
 			href: `${PrivatePaths.USER}courses-enrolled`,
 			current: false,
+			key: "learning-path",
 		},
 		{
 			name: "Community",
 			href: `${PrivatePaths.USER}community`,
 			current: false,
+			key: "community",
 		},
 		{
 			name: "Progress",
 			href: `${PrivatePaths.USER}progress`,
 			current: false,
+			key: "progress",
 		},
 		{
 			name: "Assignments",
 			href: `${PrivatePaths.USER}assignments`,
 			current: false,
+			key: "assignments",
 		},
 		{
 			name: "Messages",
 			href: `${PrivatePaths.USER}messages`,
 			current: false,
+			key: "messages",
 		},
 		{
 			name: "Certificates",
 			href: `${PrivatePaths.USER}certificates`,
 			current: false,
+			key: "certificates",
 		},
 	];
 
@@ -166,15 +186,33 @@ const Navbar = () => {
 		navigation = userNavigation;
 	}
 
+	let disclosureClassName = "navbar bg-white text-black h-16"; // default
+	if (user?.role === "Admin") {
+		disclosureClassName = "navbar bg-white dark:bg-black text-white h-16";
+	} else if (user?.role === "Instructor") {
+		disclosureClassName = "navbar bg-white dark:bg-yellow-900 text-white h-16";
+	} else if (user?.role === "User") {
+		disclosureClassName = "navbar bg-white dark:bg-green-900 text-white h-16";
+	}
+
 	return (
-		<Disclosure as="nav" className="navbar bg-black text-white h-16">
+		<Disclosure as="nav" className={disclosureClassName}>
 			<>
 				<div className="mx-auto max-w-7xl px-6 py-4 md:px-8">
 					<div className="relative flex h-8 md:h-8 items-center justify-between">
 						<div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
 							{/* LOGO */}
 
-							<div className="flex flex-shrink-0 items-center">
+							<Link
+								to={
+									user?.role === "Admin"
+										? `${PrivatePaths.ADMIN}dashboard`
+										: user?.role === "Instructor"
+										? `${PrivatePaths.INSTRUCTOR}dashboard`
+										: `${PrivatePaths.USER}dashboard`
+								}
+								className="flex flex-shrink-0 items-center"
+							>
 								<img
 									className="block h-16 w-16 md:hidden"
 									src={logo}
@@ -185,7 +223,7 @@ const Navbar = () => {
 									src={logo}
 									alt="logo"
 								/>
-							</div>
+							</Link>
 
 							{/* LINKS */}
 
@@ -221,13 +259,13 @@ const Navbar = () => {
 										type="text"
 										value={searchQuery}
 										onChange={e => setSearchQuery(e.target.value)}
-										className="border w-44 md:w-[70px] text-sm bg-black border-gray-400 rounded-full pl-4 pr-12 md:pr-16 py-1"
+										className="border w-44 md:w-[70px] text-sm text-gray-500 border-gray-400 rounded-full pl-4 pr-12 md:pr-16 py-1 outline-none"
 										// placeholder="Search..."
 									/>
 									<FaSearch
 										onClick={handleSearch}
 										style={{fontSize: "14px"}}
-										className="absolute right-3 cursor-pointer"
+										className="absolute right-3 cursor-pointer text-gray-500"
 									/>
 								</div>
 							</div>

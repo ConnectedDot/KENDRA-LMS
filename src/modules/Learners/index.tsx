@@ -33,11 +33,27 @@ const Dashboard = () => {
 			.join("");
 		return initials.substring(0, 2).toUpperCase();
 	};
-
 	const quickLinks = [
-		{to: `${PrivatePaths.USER}courses-view`, text: "My Courses"},
-		{to: `${PrivatePaths.USER}tracker`, text: "Track My Progress"},
-		{to: `${PrivatePaths.USER}community`, text: "Community"},
+		{
+			to: `${PrivatePaths.USER}tracker`,
+			text: "Track My Progress",
+			key: "track-progress",
+		},
+		{
+			to: `${PrivatePaths.USER}community`,
+			text: "Community",
+			key: "community",
+		},
+		{
+			to: `${PrivatePaths.USER}tracker`,
+			text: "Track My Progress",
+			key: "track-progress-duplicate",
+		},
+		{
+			to: `${PrivatePaths.USER}community`,
+			text: "Community",
+			key: "community-duplicate",
+		},
 	];
 
 	return (

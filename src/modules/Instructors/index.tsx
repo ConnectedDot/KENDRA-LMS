@@ -13,16 +13,23 @@ const Dashboard = () => {
 
 	const {user} = useContext(AuthContext);
 	console.log(user, "user");
-
 	const quickLinks = [
-		{to: `${PrivatePaths.INSTRUCTOR}courses-view`, text: "Manage Courses"},
-		{to: "/student-progress", text: "Track Student Progress"},
-		{to: "/community", text: "Community"},
+		{
+			to: `${PrivatePaths.INSTRUCTOR}courses-view`,
+			text: "Manage Courses",
+			key: "manage-courses",
+		},
+		{
+			to: "/student-progress",
+			text: "Track Student Progress",
+			key: "track-student-progress",
+		},
+		{to: "/community", text: "Community", key: "community"},
 	];
 
 	return (
 		<Navbarin title={"Instructor's Dashboard | Kendra LMS"}>
-			<section className=" mt-12 px-0 md:mx-0 rounded-3xl bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
+			<section className=" mt-12 px-0 md:mx-0 rounded-3xl bg-white dark:bg-yellow-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
 				<div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">
 					<Link
 						to="#"

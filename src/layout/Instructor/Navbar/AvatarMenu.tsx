@@ -100,10 +100,10 @@ export const AvatarMenu = () => {
 							id="user-dropdown"
 						>
 							<div className="px-4 py-3">
-								<span className="block text-sm text-gray-900 dark:text-white">
+								<span className="block max-w-[85%] text-sm text-gray-900 dark:text-white truncate">
 									{user?.firstName} {user?.lastName}
 								</span>
-								<span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+								<span className="block text-sm  max-w-[85%] truncate text-gray-500 dark:text-gray-400">
 									{user?.email}
 								</span>
 							</div>

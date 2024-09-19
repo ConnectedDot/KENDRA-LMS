@@ -27,7 +27,6 @@ function AuthContextProvider({children}: ChildProps) {
 	const [user, setUser] = useState<userProps | undefined>(undefined);
 	const [fireUser, setFireUser] = useState<userProps | undefined>(undefined);
 	const [cart, setCart] = useState<userProps[]>([]);
-	const userDetails = getStoredUser();
 
 	useEffect(() => {
 		const data = getLoginToken();
@@ -44,17 +43,25 @@ function AuthContextProvider({children}: ChildProps) {
 	}, []);
 
 	useEffect(() => {
-		if (userDetails && userDetails) {
-			setUser(userDetails);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		const fetchUserDetails = async () => {
+			const userDetails = await getStoredUser();
+			if (userDetails) {
+				setUser(userDetails);
+			}
+		};
+
+		fetchUserDetails();
 	}, []);
 
 	useEffect(() => {
-		const data = getStoredCart();
-		if (data) {
-			setCart(data);
-		}
+		const fetchCart = async () => {
+			const data = await getStoredCart();
+			if (data) {
+				setCart(data);
+			}
+		};
+
+		fetchCart();
 	}, []);
 
 	function logout() {

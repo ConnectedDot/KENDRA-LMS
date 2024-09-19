@@ -61,7 +61,7 @@ const CoursePage = () => {
 
 						<p className="text-gray-600">
 							Created by{" "}
-							<span className="text-blue-500">{course.instuctor}</span>
+							<span className="text-blue-500">{course.instructor}</span>
 						</p>
 						<p className="text-gray-500">
 							{/* Last updated {lastUpdated} | Language: {language} */}

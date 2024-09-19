@@ -238,45 +238,71 @@ export function useFirebaseLogin() {
 		mutationFn,
 		onSuccess: async ({userData, token, user}) => {
 			if (userData.role === "Admin") {
-				setUserData(userData as CombinedUserProps);
-				setToken(token);
+				setStoredUser(userData);
+				setStoredCart(userData.cart as any);
+				setLoginToken(token);
 				message.success("Logged in successfully");
-			} else if (userData.status === "Inactive") {
-				message.info("Your account is currently on hold.");
-				throw new Error("Account on hold");
-			} else if (userData.status === "Pending") {
-				message.info(
-					"Your account is going through verification for misconduct."
-				);
-				throw new Error("Account pending verification");
-			} else if (userData.isVerified === false) {
-				message.info(`Please, verify your email address at ${userData.email}`);
-				try {
-					await sendEmailVerification(user);
-					message.success("A new verification email has been sent.");
-				} catch (error) {
-					message.error("Failed to send verification email.");
-				}
-				throw new Error("Email not verified");
-			} else if (
-				userData.role === "Instructor" &&
-				userData.isApproved === false
-			) {
-				navigate(`/approval`);
-				totalLogout();
-				throw new Error("Instructor not approved");
-			} else {
-				setUserData(userData);
-				setToken(token);
-				// Handle role-based redirection
-				if (userData.role === "Admin") {
-					navigate(`${PrivatePaths.ADMIN}dashboard`);
-				} else if (userData.role === "Instructor") {
-					navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
+				navigate(`${PrivatePaths.ADMIN}dashboard`);
+			} else if (userData.role === "Instructor") {
+				if (userData.status === "Inactive") {
+					message.info("Your account is currently on hold.");
+					throw new Error("Account on hold");
+				} else if (userData.status === "Pending") {
+					message.info(
+						"Your account is going through verification for misconduct."
+					);
+					throw new Error("Account pending verification");
+				} else if (userData.isVerified === false) {
+					message.info(
+						`Please, verify your email address at ${userData.email}`
+					);
+					try {
+						await sendEmailVerification(user);
+						message.success("A new verification email has been sent.");
+					} catch (error) {
+						message.error("Failed to send verification email.");
+					}
+					throw new Error("Email not verified");
+				} else if (userData.isApproved === false) {
+					navigate(`/approval`);
+					totalLogout();
+					throw new Error("Instructor not approved");
 				} else {
+					setStoredUser(userData);
+					// setStoredCart(userData.cart as any);
+					setLoginToken(token);
+					message.success("Logged in successfully");
+					navigate(`${PrivatePaths.INSTRUCTOR}dashboard`);
+				}
+			} else if (userData.role === "User") {
+				if (userData.status === "Inactive") {
+					message.info("Your account is currently on hold.");
+					throw new Error("Account on hold");
+				} else if (userData.status === "Pending") {
+					message.info(
+						"Your account is going through verification for misconduct."
+					);
+					throw new Error("Account pending verification");
+				} else if (userData.isVerified === false) {
+					message.info(
+						`Please, verify your email address at ${userData.email}`
+					);
+					try {
+						await sendEmailVerification(user);
+						message.success("A new verification email has been sent.");
+					} catch (error) {
+						message.error("Failed to send verification email.");
+					}
+					throw new Error("Email not verified");
+				} else {
+					setStoredUser(userData);
+					setStoredCart(userData.cart as any);
+					setLoginToken(token);
+					message.success("Logged in successfully");
 					navigate(`${PrivatePaths.USER}dashboard`);
 				}
-				message.success("Logged in successfully");
+			} else {
+				throw new Error("Unknown user role");
 			}
 		},
 		onError: (error: any) => {
@@ -320,9 +346,9 @@ export function useFirebaseRegister() {
 		if (user) {
 			try {
 				await sendEmailVerification(user);
-				await updateProfile(user, {
-					displayName: formData.role,
-				});
+				// await updateProfile(user, {
+				// 	displayName: formData.role,
+				// });
 				message.success("Profile updated successfully!");
 			} catch (error: any) {
 				message.error("Error updating firebase data:", error);
