@@ -115,7 +115,7 @@ const Navbar = () => {
 	const instructorNavigation: NavigationItem[] = [
 		{
 			name: "Dashboard",
-			href: `${PrivatePaths.INSTRUCTOR}dashbaord`,
+			href: `${PrivatePaths.INSTRUCTOR}dashboard`,
 			current: false,
 			key: "dashboard",
 		},

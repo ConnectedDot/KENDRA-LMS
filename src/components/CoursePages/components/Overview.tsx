@@ -1,6 +1,23 @@
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 const CourseOverview = ({course}: {course: any}) => {
+	const [showFullDescription, setShowFullDescription] = useState(false);
+	const [contentHeight, setContentHeight] = useState(0); // Full height of the content
+	const [isHeightSet, setIsHeightSet] = useState(false); // Track if the height has been set
+	const contentRef = useRef<HTMLDivElement>(null);
+
+	// Calculate full height of content once it's rendered
+	useEffect(() => {
+		if (contentRef.current && !isHeightSet) {
+			setContentHeight(contentRef.current.scrollHeight); // Set the full content height
+			setIsHeightSet(true); // Mark the height as set
+		}
+	}, [course?.Fullbrief, isHeightSet]);
+
+	const handleToggleDescription = () => {
+		setShowFullDescription(!showFullDescription);
+	};
+
 	const calculateTotalReviewsAndRating = () => {
 		const totalReviews = course.Videos.reduce(
 			(acc: any, video: {reviewsCount: any}) => acc + video.reviewsCount,
@@ -50,9 +67,30 @@ const CourseOverview = ({course}: {course: any}) => {
 					))}
 				</ul>
 			</div>
-			<div className="mb-4">
+			{/* <div className="mb-4">
 				<h1 className="text-3xl font-bold mb-6 mt-12">Full Description</h1>
-				<h1 className="mb-2">{course?.Fullbrief}</h1>
+				<div dangerouslySetInnerHTML={{__html: course?.Fullbrief}} />
+			</div> */}
+
+			<div className="mb-4">
+				<h1 className="text-3xl font-bold mb-6 mt-12 border-none outline-none">
+					Full Description
+				</h1>
+				<div
+					ref={contentRef}
+					style={{
+						maxHeight: showFullDescription ? `${contentHeight}px` : "200px", // Toggle full or limited height
+						overflow: "hidden", // Hide overflow
+						transition: "max-height 0.5s ease", // Smooth transition for expanding and collapsing
+					}}
+					dangerouslySetInnerHTML={{__html: course?.Fullbrief}} // Ensure the HTML is rendering properly
+				/>
+				<button
+					className="text-blue-500 mt-2 border-none outline-none"
+					onClick={handleToggleDescription}
+				>
+					{showFullDescription ? "See Less" : "See More"}
+				</button>
 			</div>
 		</div>
 	);

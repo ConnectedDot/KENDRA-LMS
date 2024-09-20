@@ -134,6 +134,12 @@ const ContactInfoTab: React.FC<ContactInfoTabProps> = ({
 					placeholder="YouTube"
 				/>
 			</div>
+			<div className="text-transparent">
+				<p>
+					This is a profile page for the user. save the user's information and
+					display it here. The user can also update their information here.
+				</p>
+			</div>
 		</div>
 	);
 };

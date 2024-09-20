@@ -186,7 +186,7 @@ const ProfilePageAll = () => {
 		<div className="mt-12">
 			<div className="flex">
 				<button
-					className="flex  items-center text-sm gap-3 font-medium text-gray-700 bg-gray-100 rounded-full py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+					className="flex items-center text-sm gap-3 font-medium text-gray-700 rounded-xl py-2 px-4 dark:bg-white dark:text-gray-600 dark:hover:text-black"
 					onClick={handleGoBack}
 				>
 					<MdArrowBack /> Go Back
@@ -194,7 +194,7 @@ const ProfilePageAll = () => {
 			</div>
 			<div className="flex flex-col justify-center items-center mb-4">
 				<div className="flex">
-					<h1 className="mb-4 mx-8 text-3xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-4xl">
+					<h1 className="mb-4 mx-8 text-xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-4xl">
 						{user?.role === "Instructor"
 							? "Instructor's Profile"
 							: user?.role === "Student"
@@ -206,10 +206,13 @@ const ProfilePageAll = () => {
 				</div>
 				{user?.role === "Instructor" && (
 					<div className="flex items-center">
-						<Flex vertical gap="small" style={{width: 200}}>
+						<Flex vertical gap="small" className="w-20 md:w-48">
 							<Progress percent={progress} size="small" />
 						</Flex>
-						<span className="ml-3 fontmd font-bold"> Completion</span>
+						<span className="ml-3 font-md text-sm md:text-lg font-bold">
+							{" "}
+							Completion
+						</span>
 					</div>
 				)}
 			</div>
@@ -250,7 +253,7 @@ const ProfilePageAll = () => {
 							{currentTabIndex > 0 && (
 								<button
 									onClick={handlePrev}
-									className="w-[15%] bg-gray-500  hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
+									className="w-[25%] md:w-[15%] bg-gray-500  hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
 								>
 									<AiFillBackward /> <span className="ml-2 text-xs">Prev</span>
 								</button>
@@ -259,7 +262,7 @@ const ProfilePageAll = () => {
 							{currentTabIndex < items.length - 1 ? (
 								<button
 									onClick={handleNext}
-									className="w-[15%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
+									className="w-[25%] md:w-[15%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center"
 								>
 									<span className="mr-2 text-xs">Next</span>
 									<AiFillForward />
@@ -268,10 +271,10 @@ const ProfilePageAll = () => {
 								<button
 									disabled={updateLoading}
 									onClick={handleUpdate}
-									className="w-[20%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center "
+									className="w-[35%] md:w-[20%] bg-gray-500 hover:text-white hover:bg-slate-600 text-black p-2 rounded flex justify-center items-center "
 								>
-									<span className="mr-2 text-xs">
-										<span className="ml-3">
+									<span className="mr-2 text-xs hidden md:block">
+										<span className="ml-3 ">
 											{updateLoading && (
 												<LoadingOutlined
 													style={{

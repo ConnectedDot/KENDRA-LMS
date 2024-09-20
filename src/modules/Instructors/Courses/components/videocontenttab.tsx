@@ -171,11 +171,14 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 			uploadTask.on(
 				"state_changed",
 				snapshot => {
-					const progress =
-						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					const progress = (
+						(snapshot.bytesTransferred / snapshot.totalBytes) *
+						100
+					).toFixed(3);
+
 					setUploadProgress(prevProgress => ({
 						...prevProgress,
-						[file.name]: progress,
+						[file.name]: parseFloat(progress),
 					}));
 					console.log(`Upload is ${progress}% done`);
 				},

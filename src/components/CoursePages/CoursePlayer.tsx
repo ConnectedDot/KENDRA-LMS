@@ -117,7 +117,7 @@ export const CoursePlayer: React.FC<CoursePlayerProps> = ({course}) => {
 
 	return (
 		<>
-			<div className="overflow-x-hidden ">
+			<div className="overflow-x-hidden w-screen md:w-full ">
 				<Row gutter={[0, 0]} justify="center">
 					<Col xs={24} sm={24} md={19} lg={19}>
 						{loading ? (

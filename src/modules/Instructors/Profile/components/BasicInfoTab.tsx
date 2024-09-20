@@ -1,11 +1,9 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import type {GetProp, UploadProps} from "antd";
 import {message, Upload} from "antd";
 import {TiCameraOutline} from "react-icons/ti";
 import imageUrl from "../../../../assets/background/overlay_2.jpg";
-import {ConfigProvider, Popover} from "antd";
 import TextArea from "antd/es/input/TextArea";
-import {AuthContext} from "../../../../context";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -94,12 +92,12 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 	};
 
 	return (
-		<div className="mb-14 px-4">
+		<div className="mb-14 px-4 w-full">
 			<h2 className=" mb-2 mt-0 font-bold text-xl md:text-xl">
 				Basic Information
 			</h2>
 
-			<div className="flex flex-col md:flex-row gap-6 py-4">
+			<div className="flex flex-col md:flex-row gap-6 py-4 w-full">
 				<div className="flex-1">
 					<label htmlFor="firstName" className="sr-only">
 						First Name
@@ -128,7 +126,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 				</div>
 			</div>
 
-			<div className="flex flex-col md:flex-row gap-6 py-4">
+			<div className="flex flex-col md:flex-row gap-6 py-4 w-full">
 				<div className="flex-1">
 					<label htmlFor="gender" className="sr-only">
 						Gender
@@ -161,7 +159,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 				</div>
 			</div>
 
-			<div className="flex flex-col gap-6 py-4">
+			<div className="flex flex-col gap-6 py-4 w-full">
 				<div className="flex-1">
 					<label htmlFor="bio" className="sr-only">
 						Bio
@@ -178,7 +176,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 				</div>
 			</div>
 
-			<div className="flex justify-between items-center min-h-[150px] mb-4 mt-4">
+			<div className="flex justify-between items-center min-h-[150px] mb-4 mt-4 w-full">
 				<div className="flex">
 					<Upload
 						{...props}
@@ -203,6 +201,12 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
 						</div>
 					</Upload>
 				</div>
+			</div>
+			<div className="text-transparent">
+				<p>
+					This is a profile page for the user. save the user's information and
+					display it here. The user can also update their information here.
+				</p>
 			</div>
 		</div>
 	);

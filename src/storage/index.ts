@@ -8,14 +8,6 @@ export function getStoredUser() {
 export function setStoredUser(user: userProps) {
 	localStorage.setItem("user", JSON.stringify(user));
 }
-// export function getStoredFireUser() {
-// 	const storedUser = localStorage.getItem("Fire-user ");
-// 	return storedUser ? JSON.parse(storedUser) : null;
-// }
-
-// export function setStoredFireUser(user: userProps) {
-// 	localStorage.setItem("Fire-user", JSON.stringify(user));
-// }
 
 export function getStoredCart() {
 	const cartData = localStorage.getItem("cart");

@@ -1,6 +1,23 @@
 # Getting Started with Create React App
+# KENDRA-LMS
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Project Structure
+
+```
+/c:/Theophilus/ALX/Projects/KENDRA-LMS/
+├── public/
+│   ├── index.html
+│   └── ...
+├── src/
+│   ├── components/
+│   ├── App.js
+│   ├── index.js
+│   └── ...
+├── package.json
+└── README.md
+```
 
 ## Available Scripts
 
@@ -44,3 +61,40 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+
+
+### Summary
+
+- **Project Structure**: Detailed structure of the project.
+- **Available Scripts**: Instructions on how to run, test, build, and eject the project.
+- **Features**: List of key features of the project.
+- **Installation**: Step-by-step guide to set up the project locally.
+- **Usage**: Instructions on how to start the development server, run tests, and build for production.
+- **Contributing**: Guidelines for contributing to the project.
+- **License**: Information about the project's license.
+- **Contact**: Contact information for the project maintainer.
+
+This README should provide a comprehensive overview of your project and help others understand how to use and contribute to it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
