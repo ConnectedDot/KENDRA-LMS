@@ -18,13 +18,13 @@ const Home = () => {
 						<div className="hidden sm:mb-8 sm:flex sm:justify-center">
 							<div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
 								Exciting new courses{" "}
-								<a
-									href="/"
+								<Link
+									to="/"
 									className="font-semibold text-black hover:text-gray-500"
 								>
 									<span className="absolute inset-0" aria-hidden="true" />
 									Explore now <span aria-hidden="true">&rarr;</span>
-								</a>
+								</Link>
 							</div>
 						</div>
 						<div className="text-center">
@@ -37,18 +37,18 @@ const Home = () => {
 								with ease and on your terms.
 							</p>
 							<div className="mt-10 flex items-center justify-center gap-x-6">
-								<a
-									href="/create-account"
+								<Link
+									to="/create-account"
 									className="rounded-md bg-black text-white hover:text-black hover:bg-slate-300 px-3.5 py-2.5 text-sm font-semibold text-primary-100 shadow-sm hover:bg-primary-100 "
 								>
 									Get started
-								</a>
-								<a
-									href="/about"
+								</Link>
+								<Link
+									to="/about"
 									className="text-md font-semibold leading-6 text-black hover:text-gray-500"
 								>
 									Learn more <span aria-hidden="true">→</span>
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>
@@ -66,11 +66,11 @@ const Home = () => {
 					</div>
 				</div>
 
-				<div className="p-6 mx-auto md:mx-44 w-8xl py-4 sm:py-8 lg:py-16">
+				{/* <div className="p-6 mx-auto md:mx-44 w-8xl py-4 sm:py-8 lg:py-16">
 					<CarouselImages
 						images={featuredCourses.map(course => course.image)}
 					/>
-				</div>
+				</div> */}
 
 				<div className="p-6 mx-auto md:mx-44 w-8xl py-4 sm:py-8 lg:py-16">
 					<div className="relative isolate px-6 pt-14 lg:px-8">

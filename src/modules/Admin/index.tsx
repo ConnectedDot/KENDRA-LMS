@@ -12,6 +12,7 @@ interface CardProps {
 	title: string;
 	description: string;
 	link: string;
+	key: string;
 }
 
 const Dashboard = () => {
@@ -46,7 +47,6 @@ const Dashboard = () => {
 		},
 	];
 	const {user} = useContext(AuthContext);
-	console.log(user, "user");
 
 	const quickLinks = [
 		{
@@ -113,7 +113,7 @@ const Dashboard = () => {
 						<div className="flex justify-center mt-4 space-x-4">
 							{quickLinks.map(link => (
 								<Link
-									key={link.to}
+									key={link.key}
 									to={link.to}
 									className="text-sm font-medium text-gray-700 bg-gray-100 rounded-full py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
 								>
@@ -133,9 +133,9 @@ const Dashboard = () => {
 				</div>
 				<div className="flex flex-wrap justify-center mt-4 space-x-4">
 					{adminFeatures.map((feature: CardProps) => (
-						<Link to={feature.link}>
+						<Link to={feature.link} key={feature.key}>
 							<div
-								key={feature.link}
+								key={feature.key}
 								className="max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 m-4"
 							>
 								<img
@@ -152,10 +152,7 @@ const Dashboard = () => {
 									<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
 										{feature.description}
 									</p>
-									<a
-										href={feature.link}
-										className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-white focus:ring-4 focus:outline-none"
-									>
+									<p className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-white  hover:text-black  focus:ring-4 focus:outline-none">
 										Continue
 										<svg
 											className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
@@ -172,7 +169,7 @@ const Dashboard = () => {
 												d="M1 5h12m0 0L9 1m4 4L9 9"
 											/>
 										</svg>
-									</a>
+									</p>
 								</div>
 							</div>
 						</Link>

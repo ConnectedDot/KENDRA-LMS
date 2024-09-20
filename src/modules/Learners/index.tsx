@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {PrivatePaths} from "../../routes/path";
 import Navbarin from "../../layout/Instructor/Navbar";
 import {AuthContext} from "../../context";
@@ -14,9 +14,18 @@ const Dashboard = () => {
 	};
 	const {courses, error} = useFetchCourses();
 	const {user} = useContext(AuthContext);
+
 	const HandleCourses = () => {
 		navigate(`${PrivatePaths.INSTRUCTOR}courses-new`);
 	};
+
+	const [userData, setUserData] = useState<typeof user | null>(null);
+
+	useEffect(() => {
+		if (user) {
+			setUserData(user);
+		}
+	}, [user]);
 
 	const HandleViewCourses = (course: Course) => {
 		navigate(`${PrivatePaths.USER}course-details/${course.id}`, {
@@ -63,15 +72,15 @@ const Dashboard = () => {
 					<div className="flex items-center">
 						{" "}
 						<div className="flex">
-							{user?.photo ? (
+							{userData?.photo ? (
 								<img
 									className="w-20 h-20 rounded-full"
-									src={user?.photo as any}
-									alt={user?.firstName}
+									src={userData?.photo as any}
+									alt={userData?.firstName}
 								/>
 							) : (
 								<div className="w-20 h-20 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold">
-									{getInitials(user?.firstName, user?.lastName)}
+									{getInitials(userData?.firstName, userData?.lastName)}
 								</div>
 							)}
 						</div>
@@ -80,7 +89,7 @@ const Dashboard = () => {
 							<span className="flex"> Welcome back,</span>
 							<span className="flex font-bold text-2xl">
 								{" "}
-								{user?.firstName}
+								{userData?.firstName}
 							</span>
 						</div>
 					</div>
@@ -130,7 +139,7 @@ const Dashboard = () => {
 							<div className="flex justify-center mt-4 space-x-4">
 								{quickLinks.map(link => (
 									<Link
-										key={link.to}
+										key={link.key}
 										to={link.to}
 										className="text-sm font-medium text-gray-700 bg-gray-100 rounded-full py-2 px-4 dark:bg-white dark:text-green- hover:bg-gray-200 dark:hover:bg-gray-400"
 									>

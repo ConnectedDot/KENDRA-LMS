@@ -227,25 +227,13 @@ const Registration = () => {
 											htmlFor="remember-me"
 										>
 											Creating an account means you’re okay with our{" "}
-											<a
-												className="text-accent-500 hover:text-accent-400"
-												href="/terms"
+											<Link
+												to="/terms"
+												className="font-bold text-accent-800 hover:text-accent-400"
 											>
-												Terms of Service,
-											</a>
-											<a
-												className="text-accent-500 hover:text-accent-400"
-												href="/privacy"
-											>
-												Privacy Policy
-											</a>
-											, and our default{" "}
-											<a
-												className="text-accent-500 hover:text-accent-400"
-												href="/notifications"
-											>
-												Notification Settings.
-											</a>
+												Terms of Service,{" "}
+											</Link>
+											Privacy Policy, and our default Notification Settings.
 										</label>
 									</div>
 								</div>

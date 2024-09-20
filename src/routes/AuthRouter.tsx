@@ -55,21 +55,21 @@ const paths = [
 
 function Auth() {
 	const {user} = useContext(AuthContext);
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
-	useEffect(() => {
-		if (user) {
-			let navigationPath = "/";
-			if (user.role === "Admin") {
-				navigationPath = `${PrivatePaths.ADMIN}dashboard`;
-			} else if (user.role === "Instructor") {
-				navigationPath = `${PrivatePaths.INSTRUCTOR}dashboard`;
-			} else if (user.role === "User") {
-				navigationPath = `${PrivatePaths.USER}dashboard`;
-			}
-			navigate(navigationPath, {replace: true});
-		}
-	}, [user, navigate]);
+	// useEffect(() => {
+	// 	if (user) {
+	// 		let navigationPath = "/";
+	// 		if (user.role === "Admin") {
+	// 			navigationPath = `${PrivatePaths.ADMIN}dashboard`;
+	// 		} else if (user.role === "Instructor") {
+	// 			navigationPath = `${PrivatePaths.INSTRUCTOR}dashboard`;
+	// 		} else if (user.role === "User") {
+	// 			navigationPath = `${PrivatePaths.USER}dashboard`;
+	// 		}
+	// 		navigate(navigationPath, {replace: true});
+	// 	}
+	// }, [user, navigate]);
 
 	return (
 		<React.Suspense fallback={<Loader />}>

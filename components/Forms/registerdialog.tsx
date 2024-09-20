@@ -1,9 +1,8 @@
 import {Dialog, Transition} from "@headlessui/react";
 import {Fragment, useState} from "react";
 import {LockClosedIcon} from "@heroicons/react/20/solid";
-import {Link} from "react-router-dom";
 
-const Signin = () => {
+const Register = () => {
 	let [isOpen, setIsOpen] = useState(false);
 
 	const closeModal = () => {
@@ -16,14 +15,13 @@ const Signin = () => {
 
 	return (
 		<>
-			<div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:pr-0">
+			<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto  sm:pr-0">
 				<div className="hidden lg:block">
 					<button
-						type="button"
-						className="text-lg text-Blueviolet font-medium"
+						className="text-Blueviolet text-lg font-medium ml-9 py-5 px-16 transition duration-150 ease-in-out rounded-full bg-semiblueviolet hover:text-white hover:bg-Blueviolet"
 						onClick={openModal}
 					>
-						Log In
+						Sign up
 					</button>
 				</div>
 			</div>
@@ -63,7 +61,7 @@ const Signin = () => {
 													alt="Your Company"
 												/>
 												<h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-													Sign in to your account
+													Register your account
 												</h2>
 											</div>
 											<form className="mt-8 space-y-6" action="#" method="POST">
@@ -118,21 +116,12 @@ const Signin = () => {
 															Remember me
 														</label>
 													</div>
-
-													<div className="text-sm">
-														<Link
-															to="#"
-															className="font-medium text-indigo-600 hover:text-indigo-500"
-														>
-															Forgot your password?
-														</Link>
-													</div>
 												</div>
 
 												<div>
 													<button
 														type="submit"
-														className="group relative flex w-full justify-center rounded-md border border-transparent bg-Blueviolet py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+														className="group relative flex w-full justify-center rounded-md border border-transparent bg-Blueviolet py-2 px-4 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 													>
 														<span className="absolute inset-y-0 left-0 flex items-center pl-3">
 															<LockClosedIcon
@@ -140,7 +129,7 @@ const Signin = () => {
 																aria-hidden="true"
 															/>
 														</span>
-														Sign in
+														Register Now
 													</button>
 												</div>
 											</form>
@@ -150,7 +139,7 @@ const Signin = () => {
 									<div className="mt-4 flex justify-end">
 										<button
 											type="button"
-											className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+											className="inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-blue-900 "
 											onClick={closeModal}
 										>
 											Got it, thanks!
@@ -166,4 +155,4 @@ const Signin = () => {
 	);
 };
 
-export default Signin;
+export default Register;

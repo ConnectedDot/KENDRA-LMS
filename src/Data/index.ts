@@ -52,41 +52,41 @@ export const testimonials = [
 		text: "One of the best courses on management and leadership I have come across so far. The advice is practical, and examples highly relatable. Would help anyone become a better manager.",
 		author: "Philip W",
 	},
-	{
-		id: 4,
-		text: "The web development course was comprehensive and easy to follow. I now feel confident in my ability to build and deploy web applications.",
-		author: "Sarah K",
-	},
-	{
-		id: 5,
-		text: "Thanks to this course, I was able to switch careers and become a successful mobile app developer. The instructors were knowledgeable and supportive.",
-		author: "James L",
-	},
-	{
-		id: 6,
-		text: "The game development course was a game-changer for me. I learned so much and was able to create my own game from scratch. Highly recommend!",
-		author: "Emily R",
-	},
-	{
-		id: 7,
-		text: "The finance course provided me with the skills I needed to manage my personal finances better. The lessons were clear and practical.",
-		author: "Michael B",
-	},
-	{
-		id: 8,
-		text: "I took the graphic design course and it was fantastic. The projects were engaging and I learned a lot about design principles and tools.",
-		author: "Jessica M",
-	},
-	{
-		id: 9,
-		text: "The SEO course helped me improve my website's ranking on search engines. The tips and strategies were very effective.",
-		author: "David P",
-	},
-	{
-		id: 10,
-		text: "The networking course was very informative. I now have a solid understanding of networking concepts and can troubleshoot network issues with confidence.",
-		author: "Laura T",
-	},
+	// {
+	// 	id: 4,
+	// 	text: "The web development course was comprehensive and easy to follow. I now feel confident in my ability to build and deploy web applications.",
+	// 	author: "Sarah K",
+	// },
+	// {
+	// 	id: 5,
+	// 	text: "Thanks to this course, I was able to switch careers and become a successful mobile app developer. The instructors were knowledgeable and supportive.",
+	// 	author: "James L",
+	// },
+	// {
+	// 	id: 6,
+	// 	text: "The game development course was a game-changer for me. I learned so much and was able to create my own game from scratch. Highly recommend!",
+	// 	author: "Emily R",
+	// },
+	// {
+	// 	id: 7,
+	// 	text: "The finance course provided me with the skills I needed to manage my personal finances better. The lessons were clear and practical.",
+	// 	author: "Michael B",
+	// },
+	// {
+	// 	id: 8,
+	// 	text: "I took the graphic design course and it was fantastic. The projects were engaging and I learned a lot about design principles and tools.",
+	// 	author: "Jessica M",
+	// },
+	// {
+	// 	id: 9,
+	// 	text: "The SEO course helped me improve my website's ranking on search engines. The tips and strategies were very effective.",
+	// 	author: "David P",
+	// },
+	// {
+	// 	id: 10,
+	// 	text: "The networking course was very informative. I now have a solid understanding of networking concepts and can troubleshoot network issues with confidence.",
+	// 	author: "Laura T",
+	// },
 ];
 
 export const learnersAreViewing = [

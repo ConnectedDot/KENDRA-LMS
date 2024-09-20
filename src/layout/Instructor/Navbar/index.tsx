@@ -62,15 +62,3 @@ const Navbarin: React.FC<NavbarinProps> = ({
 };
 
 export default Navbarin;
-
-// <div className="flex flex-col min-h-screen">
-// <div className="flex-grow mx-auto max-w-7xl md:px-8 px-2 sm:px-6 lg:px-8">
-// 	{children}
-// </div>
-
-// {showFooter && (
-// 	<div className="mt-24">
-// 		<Footer />
-// 	</div>
-// )}
-// </div>

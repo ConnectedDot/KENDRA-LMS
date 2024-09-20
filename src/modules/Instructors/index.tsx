@@ -109,7 +109,7 @@ const Dashboard = () => {
 						<div className="flex justify-center mt-4 space-x-4">
 							{quickLinks.map(link => (
 								<Link
-									key={link.to}
+									key={link.key}
 									to={link.to}
 									className="text-sm font-medium text-gray-700 bg-gray-100 rounded-full py-2 px-4 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
 								>

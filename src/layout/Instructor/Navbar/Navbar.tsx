@@ -1,6 +1,6 @@
 import {Disclosure} from "@headlessui/react";
 // import Link from 'next/link';
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Bars3Icon} from "@heroicons/react/24/outline";
 import {Link} from "react-router-dom";
 import logo from "../../../assets/Logo/kendra-re.png";
@@ -47,8 +47,16 @@ const Navbar = () => {
 	const [open, setOpen] = React.useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const {user} = useContext(AuthContext);
+	const [userData, setUserData] = useState<typeof user | null>(null);
+
+	useEffect(() => {
+		if (user) {
+			setUserData(user);
+		}
+	}, [user]);
+
 	const [currentLink, setCurrentLink] = useState("/");
-	const cartCount = 5;
+	const cartCount = userData?.cart || 0;
 
 	const handleLinkClick = (href: string) => {
 		setCurrentLink(href);
@@ -178,20 +186,20 @@ const Navbar = () => {
 
 	let navigation: NavigationItem[] = [];
 
-	if (user?.role === "Admin") {
+	if (userData?.role === "Admin") {
 		navigation = adminNavigation;
-	} else if (user?.role === "Instructor") {
+	} else if (userData?.role === "Instructor") {
 		navigation = instructorNavigation;
-	} else if (user?.role === "User") {
+	} else if (userData?.role === "User") {
 		navigation = userNavigation;
 	}
 
 	let disclosureClassName = "navbar bg-white text-black h-16"; // default
-	if (user?.role === "Admin") {
+	if (userData?.role === "Admin") {
 		disclosureClassName = "navbar bg-white dark:bg-black text-white h-16";
-	} else if (user?.role === "Instructor") {
+	} else if (userData?.role === "Instructor") {
 		disclosureClassName = "navbar bg-white dark:bg-yellow-900 text-white h-16";
-	} else if (user?.role === "User") {
+	} else if (userData?.role === "User") {
 		disclosureClassName = "navbar bg-white dark:bg-green-900 text-white h-16";
 	}
 
@@ -205,9 +213,9 @@ const Navbar = () => {
 
 							<Link
 								to={
-									user?.role === "Admin"
+									userData?.role === "Admin"
 										? `${PrivatePaths.ADMIN}dashboard`
-										: user?.role === "Instructor"
+										: userData?.role === "Instructor"
 										? `${PrivatePaths.INSTRUCTOR}dashboard`
 										: `${PrivatePaths.USER}dashboard`
 								}
@@ -231,7 +239,7 @@ const Navbar = () => {
 								<div className="flex space-x-0">
 									{navigation.map(item => (
 										<CustomLink
-											key={item.name}
+											key={item.key}
 											href={item.href}
 											onClick={() => handleLinkClick(item.href)}
 										>
@@ -271,11 +279,11 @@ const Navbar = () => {
 							</div>
 							<div className="flex relative">
 								<AvatarMenu
-								// user={user}
+								// userData={userData}
 								/>
 							</div>
 
-							{user?.role === "User" && (
+							{userData?.role === "User" && (
 								<div onClick={handleOpen} className="flex relative">
 									<MdShoppingCart style={{fontSize: "20px"}} />
 									<span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-1.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
