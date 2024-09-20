@@ -19,15 +19,15 @@ const CourseDetailsPage = () => {
 		setCart(updatedCart);
 	};
 
-	const handleBuyNow = () => {
-		if (!user) {
-			navigate("/register");
-		} else if (user.enrolledCourses?.includes(course.id)) {
-			navigate(`/course/${course.id}/watch`);
-		} else {
-			navigate(`/course/${course.id}/purchase`);
-		}
-	};
+	// const handleBuyNow = () => {
+	// 	if (!user) {
+	// 		navigate("/register");
+	// 	} else if (user.enrolledCourses?.includes(course.id)) {
+	// 		navigate(`/course/${course.id}/watch`);
+	// 	} else {
+	// 		navigate(`/course/${course.id}/purchase`);
+	// 	}
+	// };
 
 	return (
 		<div className="container mx-auto p-4">
