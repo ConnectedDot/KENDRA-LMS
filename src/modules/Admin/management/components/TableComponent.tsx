@@ -14,10 +14,15 @@ import {
 import type {TableColumnsType, TablePaginationConfig, TableProps} from "antd";
 import eye from "../../../../assets/icons/Vector (3).png";
 import trash from "../../../../assets/icons/material-symbols_delete-outline.png";
-import {CloseOutlined, SearchOutlined} from "@ant-design/icons";
+import {
+	CloseOutlined,
+	PlusCircleFilled,
+	SearchOutlined,
+} from "@ant-design/icons";
 import {useFetchUsers} from "../../hooks/querry";
 import {CombinedUserProps} from "../../../../interface";
 import {useDeleteUser, useUpdateUser} from "../../hooks";
+import SigninModal from "../../../../components/Forms/signdialog";
 
 interface DataType {
 	role: string;
@@ -64,6 +69,7 @@ const TableComponent = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [open, setOpen] = React.useState(false);
 	const [isOpen, setIsOpen] = React.useState(false);
+	const [newIsOpen, setNewIsOpen] = React.useState(false);
 	const [userId, setUserId] = useState<string | null>(null);
 	const [form] = Form.useForm();
 
@@ -135,6 +141,10 @@ const TableComponent = () => {
 
 	const handleClose = () => {
 		setModalVisible(false);
+	};
+
+	const handleCreate = () => {
+		setNewIsOpen(true);
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -312,7 +322,29 @@ const TableComponent = () => {
 		<div>
 			<div className="! flex gap-4 mb-4 mt-4 text-gray-500 dark:text-gray-400"></div>
 
-			<></>
+			<SigninModal
+				isOpen={newIsOpen}
+				openModal={() => setNewIsOpen(true)}
+				closeModal={() => setNewIsOpen(false)}
+			/>
+
+			<div className="flex justify-end items-center mb-3">
+				<Button
+					onClick={handleCreate}
+					name="submit"
+					type="primary"
+					htmlType="submit"
+					className="w-40 rounded bg-blue-500 hover:text-black hover:bg-white text-sm"
+					style={{
+						background:
+							"linear-gradient(89.46deg, #39462D 13.05%, #658127 107.23%)",
+						color: "white",
+					}}
+					// loading={updateLoading}
+				>
+					<PlusCircleFilled /> New user
+				</Button>
+			</div>
 
 			<div className="mb-24" style={{overflowX: "auto"}}>
 				<Card

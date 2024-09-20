@@ -5,6 +5,8 @@ import Navbarin from "../../../../layout/Instructor/Navbar";
 import {Course} from "../../../../interface";
 import {useFetchCourses} from "../../../../hooks/Querry";
 import {MdArrowBack} from "react-icons/md";
+import {Spin} from "antd";
+import {LoadingOutlined} from "@ant-design/icons";
 // import TableComponent from "../../components/tablecomponent";
 // import {useFetchCourses} from "../../../../../hooks/Querry";
 
@@ -15,7 +17,7 @@ const CourseManagementTabs = () => {
 		navigate(-1);
 	};
 
-	const {courses, error} = useFetchCourses();
+	const {courses, error, loading} = useFetchCourses();
 	console.log(courses, "courses");
 
 	const HandleViewCourses = (course: Course) => {
@@ -45,42 +47,50 @@ const CourseManagementTabs = () => {
 				</div>
 			</section>
 			<section className="mt-4">
-				<div className=" mx-auto px-6 grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-					{courses.map((feature: Course) => (
-						<div
-							onClick={() => HandleViewCourses(feature as any)}
-							key={courses.indexOf(feature)}
-							className="cursor-pointer bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-						>
-							{/* {feature.image ? (
-								<img
-									className="p-8 rounded-t-lg"
-									src={feature.image}
-									alt={feature.Title}
-								/>
-							) : ( */}
-							<video className="p-0 rounded-t-lg" controls>
-								<source src={feature.Videos?.[0]?.youtubeId} type="video/mp4" />
-								Your browser does not support the video tag.
-							</video>
-							{/* )} */}
-
-							<div className="p-5">
-								<h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-500 dark:text-white">
-									{feature.Title}
-								</h5>
-								<h5 className="mt-3 mb-2 text-sm tracking-tight text-gray-500 dark:text-white">
-									{feature.Description}
-								</h5>
-
-								<p className="mb-3 font-bold text-gray-700 dark:text-gray-400">
-									{Number(feature.price) === 0 || feature.price === undefined
-										? "Free"
-										: `$${feature.price}`}
-								</p>
-							</div>
+				<div className="mx-auto px-6 grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+					{loading ? (
+						<div className="flex justify-center items-center h-64">
+							<Spin
+								indicator={
+									<LoadingOutlined
+										style={{fontSize: 48, color: "black"}}
+										spin
+									/>
+								}
+							/>
 						</div>
-					))}
+					) : (
+						courses.map(feature => (
+							<div
+								onClick={() => HandleViewCourses(feature)}
+								key={feature.id}
+								className="cursor-pointer bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+							>
+								<video className="p-0 rounded-t-lg" controls>
+									<source
+										src={feature.Videos?.[0]?.youtubeId}
+										type="video/mp4"
+									/>
+									Your browser does not support the video tag.
+								</video>
+
+								<div className="p-4">
+									<h5 className="mb-0 text-lg font-bold tracking-tight text-gray-500 dark:text-white">
+										{feature.Title}
+									</h5>
+									<h5 className="mt-2 mb-2 font-thin text-xs tracking-tight text-gray-500 dark:text-white">
+										{feature.Description}
+									</h5>
+
+									<p className="mb-0 font-bold text-gray-700 dark:text-gray-400 border-white">
+										{Number(feature.price) === 0 || feature.price === undefined
+											? "Free"
+											: `$${feature.price}`}
+									</p>
+								</div>
+							</div>
+						))
+					)}
 				</div>
 			</section>
 

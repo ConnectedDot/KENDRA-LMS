@@ -18,7 +18,7 @@ const privateRoutes = [
 	// },
 	{
 		path: "/course-details/:id",
-		element: lazy(() => import("../modules/Learners/courses/coursepage")),
+		element: lazy(() => import("../modules/Learners/courses/newcoursessingle")),
 	},
 	{
 		path: "/courses-enrolled",

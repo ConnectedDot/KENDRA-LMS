@@ -24,12 +24,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import {auth, db} from "../../Firebase";
 import {CombinedUserProps} from "../../interface";
-import {
-	setLoginToken,
-	setStoredCart,
-	setStoredFireUser,
-	setStoredUser,
-} from "../../storage";
+import {setLoginToken, setStoredCart, setStoredUser} from "../../storage";
 import {PrivatePaths, PublicPaths} from "../../routes/path";
 import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
 import {GoogleAuthProvider} from "firebase/auth";
@@ -70,8 +65,6 @@ export function useFirebaseGoogleLogin() {
 	> = async () => {
 		const result = await signInWithPopup(auth, provider);
 		const user = result.user;
-		setStoredFireUser(user as any);
-		console.log("User:", user);
 		const token = await user.getIdToken();
 		const userDocRef = doc(db, "KLMS-USER", user.uid);
 		const userDoc = await getDoc(userDocRef);
@@ -213,8 +206,6 @@ export function useFirebaseLogin() {
 			formData.password
 		);
 		const user = userCredential.user;
-		setStoredFireUser(user as any);
-
 		if (user) {
 			const userDocRef = doc(db, "KLMS-USER", user.uid);
 			const userDoc = await getDoc(userDocRef);

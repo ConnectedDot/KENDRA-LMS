@@ -1,9 +1,12 @@
 import {useState} from "react";
-import {deleteDoc, doc, getDoc, updateDoc} from "firebase/firestore";
+import {deleteDoc, doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {message} from "antd";
 import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
 import {auth, db, storage} from "../../../Firebase";
-import {deleteUser as firebaseDeleteUser} from "firebase/auth";
+import {
+	createUserWithEmailAndPassword,
+	deleteUser as firebaseDeleteUser,
+} from "firebase/auth";
 
 // User Management Hooks
 
@@ -197,3 +200,79 @@ export const useDeleteCourse = () => {
 
 	return {deleteCourse, isLoading, error};
 };
+
+interface User {
+	email: string;
+	firstName: string;
+	lastName: string;
+	role: string;
+	isVerified: boolean;
+	password: string;
+	photo: string;
+}
+
+const useCreateAndStoreUsers = () => {
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<Error | null>(null);
+
+	const mutate = async (usersData: User[]) => {
+		setLoading(true);
+		setError(null);
+
+		try {
+			const createdUsers: {
+				uid: string;
+				email: string;
+				firstName: string;
+				lastName: string;
+				role: string;
+
+				isVerified: boolean;
+				photo: string;
+			}[] = [];
+
+			for (const userData of usersData) {
+				// Create a new user in Firebase Authentication
+				const userCredential = await createUserWithEmailAndPassword(
+					auth,
+					userData.email,
+					userData.password
+				);
+				const user = userCredential.user;
+
+				// Store user data in Firestore
+				const userDocData = {
+					uid: user.uid,
+					email: userData.email,
+					displayName: `${userData.firstName} ${userData.lastName}`,
+					role: userData.role,
+					isVerified: userData.isVerified,
+					photo: userData.photo,
+					firstName: userData.firstName,
+					lastName: userData.lastName,
+				};
+
+				if (user) {
+					await setDoc(doc(db, "KLMS-USER", user.uid), userDocData);
+					console.log(userDocData, "userDocData");
+					createdUsers.push(userDocData);
+				} else {
+					message.error("User not authenticated.");
+				}
+			}
+
+			console.log("Successfully created and stored users:", createdUsers);
+			message.success("Successfully created and stored users:");
+		} catch (error) {
+			console.error("Error creating users:", error);
+			setError(error as Error);
+			message.error("Error creating users.");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	return {mutate, loading, error};
+};
+
+export default useCreateAndStoreUsers;

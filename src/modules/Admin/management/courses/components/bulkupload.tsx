@@ -41,6 +41,12 @@ const generateRandomUsers = (count: number): User[] => {
 	return users;
 };
 
+// import { useState } from "react";
+// import { createUserWithEmailAndPassword } from "firebase/auth";
+// import { doc, setDoc } from "firebase/firestore";
+// import { message } from "antd";
+// import { auth, db } from "../../../../../Firebase";
+
 const createAndStoreUsers = async (usersData: User[]) => {
 	try {
 		const createdUsers: {

@@ -8,21 +8,30 @@ export function getStoredUser() {
 export function setStoredUser(user: userProps) {
 	localStorage.setItem("user", JSON.stringify(user));
 }
-export function getStoredFireUser() {
-	const storedUser = localStorage.getItem("Fire-user ");
-	return storedUser ? JSON.parse(storedUser) : null;
-}
+// export function getStoredFireUser() {
+// 	const storedUser = localStorage.getItem("Fire-user ");
+// 	return storedUser ? JSON.parse(storedUser) : null;
+// }
 
-export function setStoredFireUser(user: userProps) {
-	localStorage.setItem("Fire-user", JSON.stringify(user));
-}
+// export function setStoredFireUser(user: userProps) {
+// 	localStorage.setItem("Fire-user", JSON.stringify(user));
+// }
+
 export function getStoredCart() {
-	const storedUser = localStorage.getItem("cart");
-	return storedUser ? JSON.parse(storedUser) : null;
+	const cartData = localStorage.getItem("cart");
+	if (cartData) {
+		try {
+			return JSON.parse(cartData);
+		} catch (error) {
+			console.error("Error parsing cart data:", error);
+			return [];
+		}
+	}
+	return [];
 }
 
-export function setStoredCart(user: userProps) {
-	localStorage.setItem("cart", JSON.stringify(user));
+export function setStoredCart(cart: any[]) {
+	localStorage.setItem("cart", JSON.stringify(cart));
 }
 
 // STUB: save login token to local storage

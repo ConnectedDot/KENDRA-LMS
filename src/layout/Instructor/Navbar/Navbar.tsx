@@ -69,17 +69,23 @@ const Navbar = () => {
 
 	const adminNavigation: NavigationItem[] = [
 		{
+			name: "Dashboard",
+			href: `${PrivatePaths.ADMIN}dashboard`,
+			current: false,
+			key: "dashbaord",
+		},
+		{
 			name: "Manage Courses",
 			href: `${PrivatePaths.ADMIN}courses-view`,
 			current: false,
 			key: "manage-courses",
 		},
-		{
-			name: "Admin Panel",
-			href: `${PrivatePaths.ADMIN}admin-panel`,
-			current: false,
-			key: "admin-panel",
-		},
+		// {
+		// 	name: "Admin Panel",
+		// 	href: `${PrivatePaths.ADMIN}admin-panel`,
+		// 	current: false,
+		// 	key: "admin-panel",
+		// },
 		{
 			name: "User Management",
 			href: `${PrivatePaths.ADMIN}user-management`,
@@ -108,23 +114,29 @@ const Navbar = () => {
 
 	const instructorNavigation: NavigationItem[] = [
 		{
+			name: "Dashboard",
+			href: `${PrivatePaths.INSTRUCTOR}dashbaord`,
+			current: false,
+			key: "dashboard",
+		},
+		{
 			name: "My Courses",
 			href: `${PrivatePaths.INSTRUCTOR}courses-view`,
 			current: false,
 			key: "my-courses",
 		},
 		{
-			name: "Mentor",
+			name: "Mentorship",
 			href: `${PrivatePaths.INSTRUCTOR}mentorships`,
 			current: false,
 			key: "mentor",
 		},
-		{
-			name: "Groups",
-			href: `${PrivatePaths.INSTRUCTOR}groups`,
-			current: false,
-			key: "groups",
-		},
+		// {
+		// 	name: "Groups",
+		// 	href: `${PrivatePaths.INSTRUCTOR}groups`,
+		// 	current: false,
+		// 	key: "groups",
+		// },
 		{
 			name: "Programs",
 			href: `${PrivatePaths.INSTRUCTOR}programs-view`,
@@ -147,17 +159,23 @@ const Navbar = () => {
 
 	const userNavigation: NavigationItem[] = [
 		{
+			name: "Dashboard",
+			href: `${PrivatePaths.USER}dashboard`,
+			current: false,
+			key: "dashbaord",
+		},
+		{
 			name: "Learning Path",
 			href: `${PrivatePaths.USER}courses-enrolled`,
 			current: false,
 			key: "learning-path",
 		},
-		{
-			name: "Community",
-			href: `${PrivatePaths.USER}community`,
-			current: false,
-			key: "community",
-		},
+		// {
+		// 	name: "Community",
+		// 	href: `${PrivatePaths.USER}community`,
+		// 	current: false,
+		// 	key: "community",
+		// },
 		{
 			name: "Progress",
 			href: `${PrivatePaths.USER}progress`,

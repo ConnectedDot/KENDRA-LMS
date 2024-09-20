@@ -2,16 +2,11 @@ import {createContext, useEffect, useState} from "react";
 import {
 	getLoginToken,
 	getStoredCart,
-	getStoredFireUser,
 	getStoredUser,
+	setStoredCart,
 	setStoredUser,
 } from "../storage";
-import {
-	ChildProps,
-	CombinedUserProps,
-	instructorProps,
-	userProps,
-} from "../interface";
+import {ChildProps, CombinedUserProps, userProps} from "../interface";
 
 export const AuthContext = createContext({
 	user: undefined as userProps | undefined,
@@ -27,8 +22,7 @@ export const AuthContext = createContext({
 function AuthContextProvider({children}: ChildProps) {
 	const [authToken, setAuthToken] = useState<string | undefined>(undefined);
 	const [user, setUser] = useState<userProps | undefined>(undefined);
-	const [fireUser, setFireUser] = useState<userProps | undefined>(undefined);
-	const [cart, setCart] = useState<userProps[]>([]);
+	const [cart, setCart] = useState<any[]>([]);
 
 	useEffect(() => {
 		const data = getLoginToken();
@@ -38,17 +32,11 @@ function AuthContextProvider({children}: ChildProps) {
 	}, []);
 
 	useEffect(() => {
-		const data = getStoredFireUser();
-		if (data) {
-			setFireUser(data);
-		}
-	}, []);
-
-	useEffect(() => {
 		const fetchUserDetails = async () => {
 			const userDetails = await getStoredUser();
 			if (userDetails) {
 				setUser(userDetails);
+				setCart(userDetails.cart || []);
 			}
 		};
 
@@ -57,7 +45,7 @@ function AuthContextProvider({children}: ChildProps) {
 
 	useEffect(() => {
 		const fetchCart = async () => {
-			const data = await getStoredCart();
+			const data = getStoredCart();
 			if (data) {
 				setCart(data);
 			}
@@ -119,14 +107,21 @@ function AuthContextProvider({children}: ChildProps) {
 
 	const value = {
 		user: user,
-		fireUser: fireUser,
 		token: authToken,
 		isAuthenticated: !!authToken,
 		authenticate: authenticate,
 		logout: logout,
 		updateUser: updateUser,
 		cart: cart,
-		setCart: setCart,
+		setCart: (newCart: any[]) => {
+			setCart(newCart);
+			if (user) {
+				const updatedUser = {...user, cart: newCart};
+				setUser(updatedUser);
+				setStoredUser(updatedUser);
+			}
+			setStoredCart(newCart);
+		},
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

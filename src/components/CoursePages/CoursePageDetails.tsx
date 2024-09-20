@@ -1,14 +1,33 @@
-import React from "react";
-import {useLocation} from "react-router-dom";
+import React, {useContext} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Course} from "../../interface";
+import {AuthContext} from "../../context";
 
 interface CoursesViewProps {
 	course: Course;
 }
 
-export const CourseDetailsPage: React.FC<CoursesViewProps> = ({course}) => {
+const CourseDetailsPage = () => {
 	const location = useLocation();
-	// const {course} = location.state as CoursesViewProps;
+	const {course} = location.state as CoursesViewProps;
+
+	const {user, cart, setCart} = useContext(AuthContext);
+	const navigate = useNavigate();
+
+	const handleAddToCart = () => {
+		const updatedCart = [...cart, course];
+		setCart(updatedCart);
+	};
+
+	const handleBuyNow = () => {
+		if (!user) {
+			navigate("/register");
+		} else if (user.enrolledCourses?.includes(course.id)) {
+			navigate(`/course/${course.id}/watch`);
+		} else {
+			navigate(`/course/${course.id}/purchase`);
+		}
+	};
 
 	return (
 		<div className="container mx-auto p-4">
@@ -92,6 +111,7 @@ export const CourseDetailsPage: React.FC<CoursesViewProps> = ({course}) => {
 							₦{course.price}
 						</h2>
 						<p className="text-gray-600 mb-4 line-through">₦24,900</p>
+
 						<p className="text-red-500 mb-4">
 							{/* {course.discount} */}
 							20% off
@@ -135,3 +155,5 @@ export const CourseDetailsPage: React.FC<CoursesViewProps> = ({course}) => {
 		</div>
 	);
 };
+
+export default CourseDetailsPage;

@@ -1,36 +1,107 @@
-import {Dialog, Transition} from "@headlessui/react";
-import {Fragment, useState} from "react";
+import React, {Fragment, useState} from "react";
+import {
+	Dialog,
+	DialogPanel,
+	Transition,
+	TransitionChild,
+} from "@headlessui/react";
 import {LockClosedIcon} from "@heroicons/react/20/solid";
-import {Link} from "react-router-dom";
+import {useFirebaseRegister} from "../../hooks/auth";
+import useCreateAndStoreUsers from "../../modules/Admin/hooks";
+import {LoadingOutlined} from "@ant-design/icons";
 
-const Signin = () => {
-	let [isOpen, setIsOpen] = useState(false);
+interface SigninProps {
+	isOpen: boolean;
+	openModal: () => void;
+	closeModal: () => void;
+}
 
-	const closeModal = () => {
-		setIsOpen(false);
+interface User {
+	email: string;
+	firstName: string;
+	lastName: string;
+	role: string;
+	isVerified: boolean;
+	password: string;
+	photo: string;
+}
+
+const SigninModal: React.FC<SigninProps> = ({
+	isOpen,
+	openModal,
+	closeModal,
+}) => {
+	const [formData, setFormData] = useState({
+		email: "",
+		password: "",
+		firstName: "",
+		lastName: "",
+		role: "User",
+		isVerified: true,
+		photo: "",
+	});
+
+	const {mutate, loading, error} = useCreateAndStoreUsers();
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		// setIsLoading(true);
+
+		// if (!validateForm()) {
+		// 	// setIsLoading(false);
+		// 	return;
+		// }
+
+		try {
+			await mutate([formData]);
+			closeModal();
+		} catch (error) {
+			// Handle error here
+			// console.error(error);
+			// setIsLoading(false);
+		}
 	};
 
-	const openModal = () => {
-		setIsOpen(true);
+	// const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	const {name, value, type, checked} = e.target;
+	// 	const updatedFormData = new FormData();
+	// 	formData.forEach((value, key) => {
+	// 		updatedFormData.append(key, value);
+	// 	});
+	// 	if (type === "checkbox") {
+	// 		updatedFormData.set(name, checked.toString());
+	// 	} else {
+	// 		updatedFormData.set(name, value);
+	// 	}
+	// 	setFormData(updatedFormData);
+	// };
+
+	// console.log(formData);
+
+	// const createUser = (): User => {
+	// 	return {
+	// 		email: formData.get("email") as string,
+	// 		firstName: formData.get("firstName") as string,
+	// 		lastName: formData.get("lastName") as string,
+	// 		role: formData.get("role") as string,
+	// 		isVerified: formData.get("isVerified") === "true",
+	// 		password: formData.get("password") as string,
+	// 		photo: formData.get("photo") as string,
+	// 	};
+	// };
+
+	console.log(formData);
+
+	const handleInputChange = (e?: any) => {
+		const {name, value} = e.target;
+		setFormData(prevData => ({...prevData, [name]: value}));
 	};
 
 	return (
-		<>
-			<div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:pr-0">
-				<div className="hidden lg:block">
-					<button
-						type="button"
-						className="text-lg text-Blueviolet font-medium"
-						onClick={openModal}
-					>
-						Log In
-					</button>
-				</div>
-			</div>
-
+		<React.Fragment>
 			<Transition appear show={isOpen} as={Fragment}>
 				<Dialog as="div" className="relative z-10" onClose={closeModal}>
-					<Transition.Child
+					<TransitionChild
 						as={Fragment}
 						enter="ease-out duration-300"
 						enterFrom="opacity-0"
@@ -40,11 +111,11 @@ const Signin = () => {
 						leaveTo="opacity-0"
 					>
 						<div className="fixed inset-0 bg-black bg-opacity-25" />
-					</Transition.Child>
+					</TransitionChild>
 
 					<div className="fixed inset-0 overflow-y-auto">
 						<div className="flex min-h-full items-center justify-center p-4 text-center">
-							<Transition.Child
+							<TransitionChild
 								as={Fragment}
 								enter="ease-out duration-300"
 								enterFrom="opacity-0 scale-95"
@@ -53,17 +124,12 @@ const Signin = () => {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-									<div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-										<div className="w-full max-w-md space-y-8">
+								<DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+									<div className="flex min-h-full items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
+										<div className="w-full max-w-md space-y-4">
 											<div>
-												<img
-													className="mx-auto h-12 w-auto"
-													src="/assets/logo/logo.svg"
-													alt="Your Company"
-												/>
-												<h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-													Sign in to your account
+												<h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">
+													Create a new user{" "}
 												</h2>
 											</div>
 											<form className="mt-8 space-y-6" action="#" method="POST">
@@ -72,7 +138,39 @@ const Signin = () => {
 													name="remember"
 													defaultValue="true"
 												/>
-												<div className="-space-y-px rounded-md shadow-sm">
+												<div className="rounded-md shadow-sm space-y-4">
+													<div>
+														<label htmlFor="email-address" className="sr-only">
+															First Name
+														</label>
+														<input
+															id="name"
+															name="firstName"
+															type="firstName"
+															autoComplete="firstName"
+															required
+															className="relative block w-full appearance-none rounded-none rounded-t-md border border-grey500 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+															placeholder="First Name"
+															onChange={handleInputChange}
+														/>
+													</div>
+													<div>
+														<label htmlFor="password" className="sr-only">
+															Last Name
+														</label>
+														<input
+															id=" name"
+															name="lastName"
+															type="lastName"
+															autoComplete="lastName"
+															required
+															className="relative block w-full appearance-none rounded-none rounded-b-md border border-grey500 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+															placeholder="Last Name"
+															onChange={handleInputChange}
+														/>
+													</div>
+												</div>
+												<div className="rounded-md shadow-sm space-y-4">
 													<div>
 														<label htmlFor="email-address" className="sr-only">
 															Email address
@@ -85,6 +183,7 @@ const Signin = () => {
 															required
 															className="relative block w-full appearance-none rounded-none rounded-t-md border border-grey500 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
 															placeholder="Email address"
+															onChange={handleInputChange}
 														/>
 													</div>
 													<div>
@@ -99,48 +198,29 @@ const Signin = () => {
 															required
 															className="relative block w-full appearance-none rounded-none rounded-b-md border border-grey500 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
 															placeholder="Password"
+															onChange={handleInputChange}
 														/>
-													</div>
-												</div>
-
-												<div className="flex items-center justify-between">
-													<div className="flex items-center">
-														<input
-															id="remember-me"
-															name="remember-me"
-															type="checkbox"
-															className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-														/>
-														<label
-															htmlFor="remember-me"
-															className="ml-2 block text-sm text-gray-900"
-														>
-															Remember me
-														</label>
-													</div>
-
-													<div className="text-sm">
-														<Link
-															to="#"
-															className="font-medium text-indigo-600 hover:text-indigo-500"
-														>
-															Forgot your password?
-														</Link>
 													</div>
 												</div>
 
 												<div>
 													<button
+														onClick={handleSubmit}
+														className="items-center justify-center h-12 rounded-xl focus-visible:outline-black focus:outline-none inline-flex bg-black border-2 focus-visible:ring-black hover:bg-gray-500 hover:text-black px-6 py-3 text-center text-white w-full"
 														type="submit"
-														className="group relative flex w-full justify-center rounded-md border border-transparent bg-Blueviolet py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+														// className="group relative flex w-full justify-center rounded-md border border-transparent bg-Blueviolet py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 													>
-														<span className="absolute inset-y-0 left-0 flex items-center pl-3">
-															<LockClosedIcon
-																className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-																aria-hidden="true"
+														Submit{" "}
+														{loading && (
+															<LoadingOutlined
+																style={{
+																	fontSize: 16,
+																	fontWeight: "500",
+																	// color: "black",
+																}}
+																spin
 															/>
-														</span>
-														Sign in
+														)}
 													</button>
 												</div>
 											</form>
@@ -153,17 +233,18 @@ const Signin = () => {
 											className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
 											onClick={closeModal}
 										>
-											Got it, thanks!
+											Cancel
+											<span className="ml-3"></span>
 										</button>
 									</div>
-								</Dialog.Panel>
-							</Transition.Child>
+								</DialogPanel>
+							</TransitionChild>
 						</div>
 					</div>
 				</Dialog>
 			</Transition>
-		</>
+		</React.Fragment>
 	);
 };
 
-export default Signin;
+export default SigninModal;

@@ -1,8 +1,14 @@
-import {Dialog, Transition} from "@headlessui/react";
+import React from "react";
+import {
+	Dialog,
+	Transition,
+	TransitionChild,
+	DialogPanel,
+} from "@headlessui/react";
 import {Fragment, useState} from "react";
 import {LockClosedIcon} from "@heroicons/react/20/solid";
 
-const Register = () => {
+const RegisterModal = () => {
 	let [isOpen, setIsOpen] = useState(false);
 
 	const closeModal = () => {
@@ -28,7 +34,7 @@ const Register = () => {
 
 			<Transition appear show={isOpen} as={Fragment}>
 				<Dialog as="div" className="relative z-10" onClose={closeModal}>
-					<Transition.Child
+					<TransitionChild
 						as={Fragment}
 						enter="ease-out duration-300"
 						enterFrom="opacity-0"
@@ -38,11 +44,11 @@ const Register = () => {
 						leaveTo="opacity-0"
 					>
 						<div className="fixed inset-0 bg-black bg-opacity-25" />
-					</Transition.Child>
+					</TransitionChild>
 
 					<div className="fixed inset-0 overflow-y-auto">
 						<div className="flex min-h-full items-center justify-center p-4 text-center">
-							<Transition.Child
+							<TransitionChild
 								as={Fragment}
 								enter="ease-out duration-300"
 								enterFrom="opacity-0 scale-95"
@@ -51,7 +57,7 @@ const Register = () => {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+								<DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 									<div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 										<div className="w-full max-w-md space-y-8">
 											<div>
@@ -145,8 +151,8 @@ const Register = () => {
 											Got it, thanks!
 										</button>
 									</div>
-								</Dialog.Panel>
-							</Transition.Child>
+								</DialogPanel>
+							</TransitionChild>
 						</div>
 					</div>
 				</Dialog>
@@ -155,4 +161,4 @@ const Register = () => {
 	);
 };
 
-export default Register;
+export default RegisterModal;

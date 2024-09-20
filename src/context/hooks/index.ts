@@ -3,7 +3,6 @@ import {
 	getLoginToken,
 	getStoredUser,
 	setLoginToken,
-	setStoredFireUser,
 	setStoredUser,
 } from "../../storage";
 import {useNavigate} from "react-router-dom";
@@ -63,7 +62,6 @@ export function clearLocalStorage() {
 		displayName: "",
 	});
 	setLoginToken("");
-	setStoredFireUser({} as userProps);
 	localStorage.removeItem("persist:root");
 	localStorage.clear();
 }
