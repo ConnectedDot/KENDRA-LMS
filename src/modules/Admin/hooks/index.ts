@@ -2,7 +2,8 @@ import {useState} from "react";
 import {deleteDoc, doc, getDoc, updateDoc} from "firebase/firestore";
 import {message} from "antd";
 import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
-import {db, storage} from "../../../Firebase";
+import {auth, db, storage} from "../../../Firebase";
+import {deleteUser as firebaseDeleteUser} from "firebase/auth";
 
 // User Management Hooks
 
@@ -85,10 +86,31 @@ export const useDeleteUser = () => {
 
 		if (!userDoc.exists()) {
 			message.error("User does not exist");
+			setIsLoading(false);
+			return;
 		}
 
 		try {
+			// Delete user from Firestore
 			await deleteDoc(userRef);
+
+			// Delete user from Firebase Authentication
+			const uid = userDoc.data()?.uid as any;
+			const user = auth.currentUser;
+			if (user && user.uid === uid) {
+				user
+					.delete()
+					.then(() => {
+						// Account deleted.
+					})
+					.catch(error => {
+						// An error happened.
+						setError(error);
+						message.error(`Error deleting user account: ${error.message}`);
+					});
+			} else {
+				await firebaseDeleteUser(uid);
+			}
 		} catch (err: any) {
 			setError(err);
 			message.error(`Error deleting user data: ${err.message}`);

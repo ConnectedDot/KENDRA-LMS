@@ -199,7 +199,6 @@ const TableComponent = () => {
 				</div>
 			),
 		},
-
 		{
 			title: "First Name",
 			dataIndex: "firstName",
@@ -284,7 +283,6 @@ const TableComponent = () => {
 				</Tag>
 			),
 		},
-
 		{
 			title: "Actions",
 			dataIndex: "actions",

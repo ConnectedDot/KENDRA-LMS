@@ -1,12 +1,6 @@
-import React, {
-	useContext,
-	useEffect,
-	useState,
-	lazy,
-	ReactElement,
-} from "react";
-import {Routes, Route, Navigate} from "react-router-dom";
-import {PrivatePaths, PublicPaths} from "./path";
+import React, {useContext, useEffect, lazy} from "react";
+import {Routes, Route, useNavigate} from "react-router-dom";
+import {PrivatePaths} from "./path";
 import {AuthContext} from "../context";
 import {Loader} from "../components";
 
@@ -33,10 +27,6 @@ const paths = [
 			() => import("../modules/Auth/VerifyEmail/verificationdialog")
 		),
 	},
-	// {
-	//   path: "/change-password/*",
-	//   element: <AuthActionRouter />,
-	// },
 	{
 		path: "/email-dalogue/*",
 		element: lazy(
@@ -57,12 +47,6 @@ const paths = [
 		path: "/change-password/*",
 		element: lazy(() => import("../modules/Auth/ChangePassword")),
 	},
-
-	// just to view it
-	// {
-	//   path: "/coursepage",
-	//   element: lazy(() => import("../components/CoursePages/CourseDetails")),
-	// },
 	{
 		path: "*",
 		element: lazy(() => import("../modules/NotFound")),
@@ -71,31 +55,30 @@ const paths = [
 
 function Auth() {
 	const {user} = useContext(AuthContext);
-	// let navigateTo: string = PublicPaths.LOGIN; // Default to a valid path
+	const navigate = useNavigate();
 
-	// if (user) {
-	// 	if (user.role === "Admin") {
-	// 		navigateTo = PrivatePaths.ADMIN;
-	// 	} else if (user.role === "Instructor") {
-	// 		navigateTo = PrivatePaths.INSTRUCTOR;
-	// 	} else {
-	// 		navigateTo = PrivatePaths.USER;
-	// 	}
-	// }
-
-	// 	return (
-	// 		<React.Suspense fallback={<Loader />}>
-	// 			<Navigate to={navigateTo} replace />
-	// 		</React.Suspense>
-	// 	);
-	// }
+	useEffect(() => {
+		if (user) {
+			let navigationPath = "/";
+			if (user.role === "Admin") {
+				navigationPath = `${PrivatePaths.ADMIN}dashboard`;
+			} else if (user.role === "Instructor") {
+				navigationPath = `${PrivatePaths.INSTRUCTOR}dashboard`;
+			} else if (user.role === "User") {
+				navigationPath = `${PrivatePaths.USER}dashboard`;
+			}
+			navigate(navigationPath, {replace: true});
+		}
+	}, [user, navigate]);
 
 	return (
-		<Routes>
-			{paths.map(({path, element: Element}) => (
-				<Route key={path} path={path} element={<Element />} />
-			))}
-		</Routes>
+		<React.Suspense fallback={<Loader />}>
+			<Routes>
+				{paths.map(({path, element: Element}) => (
+					<Route key={path} path={path} element={<Element />} />
+				))}
+			</Routes>
+		</React.Suspense>
 	);
 }
 

@@ -106,6 +106,9 @@ export const AvatarMenu = () => {
 								<span className="block text-sm  max-w-[85%] truncate text-gray-500 dark:text-gray-400">
 									{user?.email}
 								</span>
+								<span className="block text-sm  max-w-[85%] truncate text-gray-500 dark:text-gray-400">
+									({user?.role})
+								</span>
 							</div>
 							<ul className="py-2" aria-labelledby="user-menu-button">
 								{dropdownItems.slice(0, -1).map((item, index) => (
