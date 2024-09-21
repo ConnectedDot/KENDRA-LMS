@@ -1,100 +1,59 @@
-# Getting Started with Create React App
-# KENDRA-LMS
+<h1 align="center">Welcome to KENDRA LMS 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://github.com/ConnectedDot/KENDRA-LMS/blob/develop/LICENSE" target="_blank">
+    <img alt="License: BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License" src="https://img.shields.io/badge/License-BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License-yellow.svg" />
+  </a>
+  <a href="https://twitter.com/Mc\_Samuell" target="_blank">
+    <img alt="Twitter: Mc\_Samuell" src="https://img.shields.io/twitter/follow/Mc\_Samuell.svg?style=social" />
+  </a>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Kendra LMS is an innovative online learning platform that connects learners with instructors from around the globe. 
 
-## Project Structure
+### 🏠 [Homepage](https://kendra-lms.vercel.app)
 
+### ✨ [Demo](https://youtu.be/YhrYUb_mFTY)
+
+## Install
+
+```sh
+yarn install
 ```
-/c:/Theophilus/ALX/Projects/KENDRA-LMS/
-├── public/
-│   ├── index.html
-│   └── ...
-├── src/
-│   ├── components/
-│   ├── App.js
-│   ├── index.js
-│   └── ...
-├── package.json
-└── README.md
+
+## Usage
+
+```sh
+yarn run start
 ```
 
-## Available Scripts
+## Run tests
 
-In the project directory, you can run:
+```sh
+yarn run test
+```
 
-### `npm start`
+## Author
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+👤 **Theophilus Samuel**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+* Website: connecteddots.disha.page
+* Twitter: [@Mc\_Samuell](https://twitter.com/Mc\_Samuell)
+* Github: [@ConnectedDot](https://github.com/ConnectedDot)
+* LinkedIn: [@theophilus-mcsamue](https://linkedin.com/in/theophilus-mcsamue)
 
-### `npm test`
+## 🤝 Contributing
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/ConnectedDot/KENDRA-LMS/issues). 
 
-### `npm run build`
+## Show your support
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Give a ⭐️ if this project helped you!
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📝 License
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Copyright © 2024 [Theophilus Samuel](https://github.com/ConnectedDot).<br />
+This project is [BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License](https://github.com/ConnectedDot/KENDRA-LMS/blob/develop/LICENSE) licensed.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-
-
-
-### Summary
-
-- **Project Structure**: Detailed structure of the project.
-- **Available Scripts**: Instructions on how to run, test, build, and eject the project.
-- **Features**: List of key features of the project.
-- **Installation**: Step-by-step guide to set up the project locally.
-- **Usage**: Instructions on how to start the development server, run tests, and build for production.
-- **Contributing**: Guidelines for contributing to the project.
-- **License**: Information about the project's license.
-- **Contact**: Contact information for the project maintainer.
-
-This README should provide a comprehensive overview of your project and help others understand how to use and contribute to it.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
