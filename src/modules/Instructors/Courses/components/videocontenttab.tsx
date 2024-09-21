@@ -76,63 +76,6 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 		onUpdateData({Content: localFormData.Content});
 	};
 
-	/// Working fine, test for others
-	// const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	const files = e.target.files;
-	// 	if (!files) return;
-
-	// 	const uploadPromises = Array.from(files).map(async (file, index) => {
-	// 		const uploadUrl = await uploadVideo(file); // Assume this function uploads the video and returns the URL
-	// 		return {
-	// 			id: localFormData.Videos.length + index + 1,
-	// 			title: file.name,
-	// 			youtubeId: uploadUrl,
-	// 			thumbnailUrl: "", // You can generate or fetch the thumbnail URL
-	// 			playtime: "00:00", // You can calculate or fetch the playtime
-	// 			watched: false,
-	// 		};
-	// 	});
-
-	// 	const uploadedVideos = await Promise.all(uploadPromises);
-	// 	setLocalFormData(prevData => ({
-	// 		...prevData,
-	// 		Videos: [...prevData.Videos, ...uploadedVideos],
-	// 	}));
-	// 	onUpdateData({Videos: [...localFormData.Videos, ...uploadedVideos]});
-	// };
-
-	// const uploadVideo = async (file: File): Promise<string> => {
-	// 	return new Promise((resolve, reject) => {
-	// 		const storageRef = ref(
-	// 			storage,
-	// 			`courses/${formData.Title}/videos/${file.name}`
-	// 		);
-	// 		const uploadTask = uploadBytesResumable(storageRef, file);
-
-	// 		uploadTask.on(
-	// 			"state_changed",
-	// 			snapshot => {
-	// 				const progress =
-	// 					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-	// 				setUploadProgress(prevProgress => ({
-	// 					...prevProgress,
-	// 					[file.name]: progress,
-	// 				}));
-	// 				console.log(`Upload is ${progress}% done`);
-	// 			},
-	// 			error => {
-	// 				console.error("Error uploading file:", error);
-	// 				reject(error);
-	// 			},
-	// 			() => {
-	// 				getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-	// 					resolve(downloadURL);
-	// 				});
-	// 			}
-	// 		);
-	// 	});
-	// };
-
 	const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setOpen(true);
 		const files = e.target.files;
@@ -273,6 +216,14 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 				/>
 			</div>
 
+			<Button
+				type="text"
+				className="text-sm mt-4 mb-4 text-white bg-gray-800"
+				onClick={() => setOpen(true)}
+			>
+				Open Upload Modal
+			</Button>
+
 			<div className="p-6 bg-gray-200 rounded-3xl">
 				<h2 className="text-sm font-semibold mb-4">Disclaimer</h2>
 				<div className="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-[18px]">
@@ -287,9 +238,6 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 					</p>
 				</div>
 			</div>
-			<Button type="primary" onClick={() => setOpen(true)}>
-				Open Upload Modal
-			</Button>
 
 			<Modal
 				open={open}
@@ -308,7 +256,12 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 				closable={false}
 				onCancel={() => setOpen(false)}
 				footer={
-					<Button size="small" type="primary" onClick={handleModalClose}>
+					<Button
+						size="small"
+						className="text-sm mt-4 mb-4 text-white bg-gray-800"
+						type="text"
+						onClick={handleModalClose}
+					>
 						Proceed <AiFillForward />
 					</Button>
 				}
@@ -326,12 +279,6 @@ const VideoContentTab: React.FC<VideoContentTabProps> = ({
 									size={"small"}
 									percent={uploadProgress[fileName]}
 								/>
-								{/* <Button
-									type="link"
-									onClick={() => handleVideoUpload(uploadingFiles as any)}
-								>
-									Retry
-								</Button> */}
 							</div>
 						))}
 					</div>

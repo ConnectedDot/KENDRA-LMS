@@ -31,7 +31,7 @@ const CoursesList = () => {
 		<Navbarin title={"Add a New Course | Kendra LMS"}>
 			<section className="flex justify-between mt-2 px-0 md:mx-0 ">
 				<button
-					className="flex items-center text-sm gap-3 font-medium text-gray-700 rounded-xl py-2 px-4 dark:bg-white dark:text-gray-600 dark:hover:text-black"
+					className="flex items-center mb-1 text-sm gap-3 font-medium text-gray-700 rounded-xl py-2 px-4 dark:bg-white dark:text-gray-600 dark:hover:text-black"
 					onClick={handleGoBack}
 				>
 					<MdArrowBack /> Go Back

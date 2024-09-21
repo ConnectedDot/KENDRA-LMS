@@ -24,3 +24,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .vercel
+jsdoc.json
+structure.txt
+generate-readme.js
+src/README (1).md

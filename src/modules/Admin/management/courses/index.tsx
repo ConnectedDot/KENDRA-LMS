@@ -18,6 +18,16 @@ const CourseManagementTabs = () => {
 	};
 
 	const {courses, error, loading} = useFetchCourses();
+	const [courseContent, setCourseContent] = useState<Course[]>([]);
+
+	useEffect(() => {
+		if (courses && courses.length > 0) {
+			setCourseContent(courses);
+		} else {
+			setCourseContent([]);
+		}
+	}, [courses]);
+
 	console.log(courses, "courses");
 
 	const HandleViewCourses = (course: Course) => {
@@ -60,7 +70,7 @@ const CourseManagementTabs = () => {
 							/>
 						</div>
 					) : (
-						courses.map(feature => (
+						courseContent?.map(feature => (
 							<div
 								onClick={() => HandleViewCourses(feature)}
 								key={feature.id}

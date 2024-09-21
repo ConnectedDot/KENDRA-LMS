@@ -19,11 +19,11 @@ const CourseOverview = ({course}: {course: any}) => {
 	};
 
 	const calculateTotalReviewsAndRating = () => {
-		const totalReviews = course.Videos.reduce(
-			(acc: any, video: {reviewsCount: any}) => acc + video.reviewsCount,
+		const totalReviews = course?.Videos.reduce(
+			(acc: any, video: {reviewsCount: any}) => acc + video?.reviewsCount,
 			0
 		);
-		const totalRating = course.Videos.reduce(
+		const totalRating = course?.Videos.reduce(
 			(acc: number, video: {rating: number; reviewsCount: number}) =>
 				acc + video.rating * video.reviewsCount,
 			0

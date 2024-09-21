@@ -23,12 +23,18 @@ interface CoursePlayerProps {
 }
 
 export const CoursePlayer: React.FC<CoursePlayerProps> = ({course}) => {
-	const [playlists, setPlaylists] = useState(course.Videos);
+	const [courseContent, setCourseContent] = useState<Course | null>(null);
+	const [playlists, setPlaylists] = useState(course?.Videos || []);
 	const [currentTabIndex, setcurrentTabIndex] = useState(0);
 	const [searchVisible, setSearchVisible] = useState(false);
-	const indexVideo = course.Videos.findIndex(
-		(video: {youtubeId: any}) => video.youtubeId === course.Videos[0].youtubeId
-	);
+	const videoRef = useRef<HTMLVideoElement | null>(null);
+	const [currentVideo, setCurrentVideo] = useState("");
+
+	useEffect(() => {
+		if (courseContent?.Videos && courseContent.Videos.length > 0) {
+			setCurrentVideo(courseContent.Videos[0].youtubeId);
+		}
+	}, [courseContent]);
 
 	const handleVideoChange = (url: string) => {
 		startTransition(() => {
@@ -36,11 +42,6 @@ export const CoursePlayer: React.FC<CoursePlayerProps> = ({course}) => {
 			setCurrentVideo(url);
 		});
 	};
-
-	const videoRef = useRef<HTMLVideoElement | null>(null);
-	const [currentVideo, setCurrentVideo] = useState(
-		course.Videos[indexVideo].youtubeId
-	);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		setLoading(false);
@@ -52,11 +53,16 @@ export const CoursePlayer: React.FC<CoursePlayerProps> = ({course}) => {
 	console.log(course);
 
 	useEffect(() => {
+		if (course) {
+			setCourseContent(course);
+		}
+	}, [course]);
+
+	useEffect(() => {
 		if (videoRef.current) {
 			const player = videojs(videoRef.current, {
 				controls: true,
 				autoplay: false,
-
 				preload: "auto",
 				sources: [
 					{
@@ -79,37 +85,37 @@ export const CoursePlayer: React.FC<CoursePlayerProps> = ({course}) => {
 	const items: TabsProps["items"] = [
 		{
 			label: "Overview",
-			children: <CourseOverview course={course} />,
+			children: <CourseOverview course={courseContent} />,
 			icon: <DashboardFilled />,
 			key: "1",
 		},
 		{
 			label: "Q&A",
-			children: <CourseQnA course={course} />,
+			children: <CourseQnA course={courseContent} />,
 			icon: <QuestionCircleOutlined />,
 			key: "2",
 		},
 		{
 			label: "Notes",
-			children: <CourseNotes course={course} />,
+			children: <CourseNotes course={courseContent} />,
 			icon: <GiNotebook />,
 			key: "3",
 		},
 		{
 			label: "Announcements",
-			children: <AnnouncementTabs course={course} />,
+			children: <AnnouncementTabs course={courseContent} />,
 			icon: <IoMdMicrophone />,
 			key: "4",
 		},
 		{
 			label: "Reviews",
-			children: <ReviewTabs course={course} />,
+			children: <ReviewTabs course={courseContent} />,
 			icon: <MdFeedback />,
 			key: "5",
 		},
 		{
 			label: "Learning Tools",
-			children: <LearningTabs course={course} />,
+			children: <LearningTabs course={courseContent} />,
 			icon: <GiSpanner />,
 			key: "6",
 		},
@@ -199,7 +205,7 @@ export const CoursePlayer: React.FC<CoursePlayerProps> = ({course}) => {
 							className="playlist-container sm:h-screen"
 							style={{height: "", overflowY: "auto"}}
 						>
-							{course?.Videos.map((playlist: any, index: any) => (
+							{courseContent?.Videos?.map((playlist: any, index: any) => (
 								<div
 									key={index}
 									onClick={() => handleVideoChange(playlist.youtubeId)}
@@ -225,7 +231,7 @@ export const CoursePlayer: React.FC<CoursePlayerProps> = ({course}) => {
 											className="mr-2 mb-5"
 											checked={playlist.watched}
 											onChange={() => {
-												const updatedPlaylists = course?.Videos.map(
+												const updatedPlaylists = courseContent?.Videos.map(
 													(video: any, idx: any) => {
 														if (idx === index) {
 															return {...video, watched: !video.watched};
