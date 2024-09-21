@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {PublicPaths} from "../../routes/path";
 import Footer from "../../components/Footer";
@@ -10,8 +10,24 @@ import {featuredCourses, learnersAreViewing, testimonials} from "../../Data";
 import {CarouselImages} from "../../components/CarouselComponent/carouselimages";
 
 const Home = () => {
+	// const [categories, setCategories] = useState([]);
+	// const [featuredCourses, setFeaturedCourses] = useState([]);
+	// const [testimonials, setTestimonials] = useState([]);
+	// const [learnersAreViewing, setLearnersAreViewing] = useState([]);
+
+	useEffect(() => {
+		// Fetch categories data
+		// fetchCategories().then(data => setCategories(data));
+		// Fetch featured courses data
+		// fetchFeaturedCourses().then(data => setFeaturedCourses(data));
+		// Fetch testimonials data
+		// fetchTestimonials().then(data => setTestimonials(data));
+		// Fetch learners are viewing data
+		// fetchLearnersAreViewing().then(data => setLearnersAreViewing(data));
+	}, []);
+
 	return (
-		<HomeLayout>
+		<HomeLayout title={"Homepage | Kendra LMS"}>
 			<div className="bg-white">
 				<div className="relative isolate px-6 pt-14 lg:px-8">
 					<div className="mx-auto max-w-2xl py-4 sm:py-14 lg:py-18">
@@ -66,13 +82,7 @@ const Home = () => {
 					</div>
 				</div>
 
-				{/* <div className="p-6 mx-auto md:mx-44 w-8xl py-4 sm:py-8 lg:py-16">
-					<CarouselImages
-						images={featuredCourses.map(course => course.image)}
-					/>
-				</div> */}
-
-				<div className="p-6 mx-auto md:mx-44 w-8xl py-4 sm:py-8 lg:py-16">
+				<div className="">
 					<div className="relative isolate px-6 pt-14 lg:px-8">
 						<div className="text-4xl">A broad selection of courses</div>
 						<div className="text-xl mb-6 ">
@@ -80,7 +90,6 @@ const Home = () => {
 							published every month
 						</div>
 						<div className="">
-							{/* <CategoryTabs categories={categories} /> */}
 							<FeaturedCourses courses={featuredCourses} />
 							<Testimonials testimonials={testimonials} />
 							<LearnersAreViewing courses={learnersAreViewing} />
@@ -92,7 +101,7 @@ const Home = () => {
 
 				{/* import ReviewCarousel from "../../components/ReviewCard"; */}
 
-				<section className=" px-4 mx-auto md:mx-24 w-8xl rounded-3xl bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
+				<section className="rounded-3xl bg-white dark:bg-yellow-700 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
 					<div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">
 						<Link
 							to="#"
@@ -168,7 +177,6 @@ const Home = () => {
 					{/* <div className="bg-gradient-to-b from-gray-50 to-transparent dark:from-gray-900 w-full h-full absolute top-0 left-0 z-0"></div> */}
 				</section>
 			</div>
-			<Footer />
 		</HomeLayout>
 	);
 };

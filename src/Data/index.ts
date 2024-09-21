@@ -1,40 +1,4 @@
-export const featuredCourses = [
-	{
-		image: "https://picsum.photos/400/?grayscale",
-		title: "The Complete Python Bootcamp From Zero to Hero",
-		instructor: "Jose Portilla",
-		rating: "4.6 ★ (513,434)",
-		price: "₦41,900",
-	},
-	{
-		image: "https://picsum.photos/400/600/?grayscale",
-		title: "100 Days of Code: The Complete Python Pro Bootcamp",
-		instructor: "Dr. Angela Yu",
-		rating: "4.7 ★ (313,685)",
-		price: "₦41,900",
-	},
-	{
-		image: "https://picsum.photos/400/300/?grayscale",
-		title: "Automate the Boring Stuff with Python Programming",
-		instructor: "Al Sweigart",
-		rating: "4.6 ★ (113,846)",
-		price: "₦41,900",
-	},
-	{
-		image: "https://picsum.photos/400/700/?grayscale",
-		title: "Python for Data Science and Machine Learning Bootcamp",
-		instructor: "Jose Portilla",
-		rating: "4.6 ★ (144,760)",
-		price: "₦41,900",
-	},
-	{
-		image: "https://picsum.photos/400/600/?grayscale",
-		title: "Python Programming - From Basics to Advanced level",
-		instructor: "EdYoda for Business, Dipesh Sharma",
-		rating: "4.4 ★ (7,267)",
-		price: "₦24,900",
-	},
-];
+// import { v4 as uuidv4 } from 'uuid';
 
 export const testimonials = [
 	{
@@ -91,35 +55,35 @@ export const testimonials = [
 
 export const learnersAreViewing = [
 	{
-		image: "https://via.placeholder.com/150",
+		image: "https://picsum.photos/id/237/400",
 		title: "100 Days of Code: The Complete Python Pro Bootcamp",
 		instructor: "Dr. Angela Yu",
 		rating: "4.7 ★ (313,685)",
 		price: "₦41,900",
 	},
 	{
-		image: "https://via.placeholder.com/150",
+		image: "https://picsum.photos/id/238/400",
 		title: "The Complete 2024 Web Development Bootcamp",
 		instructor: "Dr. Angela Yu",
 		rating: "4.7 ★ (393,841)",
 		price: "₦41,900",
 	},
 	{
-		image: "https://via.placeholder.com/150",
+		image: "https://picsum.photos/id/239/400",
 		title: "The Complete Python Bootcamp From Zero to Hero",
 		instructor: "Jose Portilla",
 		rating: "4.6 ★ (513,434)",
 		price: "₦41,900",
 	},
 	{
-		image: "https://via.placeholder.com/150",
+		image: "https://picsum.photos/id/240/400",
 		title: "Ultimate AWS Certified Cloud Practitioner CLF-CO2",
 		instructor: "Stephane Maarek",
 		rating: "4.7 ★ (230,186)",
 		price: "₦41,900",
 	},
 	{
-		image: "https://via.placeholder.com/150",
+		image: "https://picsum.photos/id/241/400",
 		title: "Ultimate AWS Certified Solutions Architect Associate",
 		instructor: "Stephane Maarek",
 		rating: "4.7 ★ (214,437)",
@@ -127,15 +91,15 @@ export const learnersAreViewing = [
 	},
 ];
 
-export const categories = [
-	"Python",
-	"Microsoft Excel",
-	"Web Development",
-	"JavaScript",
-	"Data Science",
-	"Amazon AWS",
-	"Drawing",
-];
+// export const categories = [
+// 	"Python",
+// 	"Microsoft Excel",
+// 	"Web Development",
+// 	"JavaScript",
+// 	"Data Science",
+// 	"Amazon AWS",
+// 	"Drawing",
+// ];
 
 export const category = [
 	{
@@ -630,3 +594,364 @@ export const tagOptions = [
 	{value: "astrophysics", label: "Astrophysics"},
 	{value: "geophysics", label: "Geophysics"},
 ];
+
+export const featuredCourses = [
+	{
+		id: 1,
+		image: "https://picsum.photos/400/?grayscale",
+		title: "The Complete Python Bootcamp From Zero to Hero",
+		instructor: "Jose Portilla",
+		rating: "4.6 ★ (513,434)",
+		price: "$99.99",
+		description:
+			"Learn Python like a Professional! Start from the basics and go all the way to creating your own applications and games!",
+		level: "Beginner",
+		fullBrief:
+			"This course will take you from zero to hero in Python programming. You will learn everything from the basics to advanced topics, including web development, data science, and machine learning.",
+		videos: [
+			{title: "Introduction to Python", duration: "10:00"},
+			{title: "Python Basics", duration: "20:00"},
+			{title: "Advanced Python", duration: "30:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 2,
+		image: "https://picsum.photos/400/600/?grayscale",
+		title: "100 Days of Code: The Complete Python Pro Bootcamp",
+		instructor: "Dr. Angela Yu",
+		rating: "4.7 ★ (313,685)",
+		price: "$99.99",
+		description:
+			"Master Python by building 100 projects in 100 days. Learn data science, automation, and web development.",
+		level: "Intermediate",
+		fullBrief:
+			"This course is designed to take you from a beginner to a professional Python developer. You will build 100 projects in 100 days, covering a wide range of topics including data science, automation, and web development.",
+		videos: [
+			{title: "Day 1: Introduction", duration: "15:00"},
+			{title: "Day 2: Python Basics", duration: "25:00"},
+			{title: "Day 3: Project 1", duration: "35:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 3,
+		image: "https://picsum.photos/400/300/?grayscale",
+		title: "Automate the Boring Stuff with Python Programming",
+		instructor: "Al Sweigart",
+		rating: "4.6 ★ (113,846)",
+		price: "$99.99",
+		description:
+			"Learn how to use Python to automate tasks and save time. No programming experience required.",
+		level: "Beginner",
+		fullBrief:
+			"This course will teach you how to use Python to automate tasks and save time. You will learn how to write scripts to automate tasks such as web scraping, file manipulation, and data analysis.",
+		videos: [
+			{title: "Introduction to Automation", duration: "12:00"},
+			{title: "Automating Web Scraping", duration: "22:00"},
+			{title: "Automating File Manipulation", duration: "32:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 4,
+		image: "https://picsum.photos/400/700/?grayscale",
+		title: "Python for Data Science and Machine Learning Bootcamp",
+		instructor: "Jose Portilla",
+		rating: "4.6 ★ (144,760)",
+		price: "$99.99",
+		description:
+			"Learn how to use Python for data science and machine learning. Includes hands-on projects and real-world examples.",
+		level: "Advanced",
+		fullBrief:
+			"This course will teach you how to use Python for data science and machine learning. You will learn how to analyze data, build machine learning models, and deploy them to production.",
+		videos: [
+			{title: "Introduction to Data Science", duration: "14:00"},
+			{title: "Machine Learning Basics", duration: "24:00"},
+			{title: "Building a Machine Learning Model", duration: "34:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 5,
+		image: "https://picsum.photos/400/600/?grayscale",
+		title: "Python Programming - From Basics to Advanced level",
+		instructor: "EdYoda for Business, Dipesh Sharma",
+		rating: "4.4 ★ (7,267)",
+		price: "$59.99",
+		description:
+			"Learn Python programming from basics to advanced level. Includes hands-on projects and real-world examples.",
+		level: "All Levels",
+		fullBrief:
+			"This course will take you from the basics of Python programming to advanced topics. You will learn how to write Python scripts, build applications, and work with data.",
+		videos: [
+			{title: "Python Basics", duration: "16:00"},
+			{title: "Advanced Python", duration: "26:00"},
+			{title: "Python Projects", duration: "36:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 6,
+		image: "https://picsum.photos/400/800/?grayscale",
+		title: "Advanced Python Programming",
+		instructor: "John Doe",
+		rating: "4.8 ★ (50,000)",
+		price: "$129.99",
+		description:
+			"Take your Python skills to the next level with advanced programming techniques and best practices.",
+		level: "Advanced",
+		fullBrief:
+			"This course is designed for experienced Python developers who want to take their skills to the next level. You will learn advanced programming techniques, best practices, and how to write efficient and maintainable code.",
+		videos: [
+			{title: "Advanced Data Structures", duration: "18:00"},
+			{title: "Design Patterns in Python", duration: "28:00"},
+			{title: "Optimizing Python Code", duration: "38:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 7,
+		image: "https://picsum.photos/400/900/?grayscale",
+		title: "Python for Web Development",
+		instructor: "Jane Smith",
+		rating: "4.7 ★ (75,000)",
+		price: "$89.99",
+		description:
+			"Learn how to use Python for web development. Build web applications using Django and Flask.",
+		level: "Intermediate",
+		fullBrief:
+			"This course will teach you how to use Python for web development. You will learn how to build web applications using popular frameworks like Django and Flask, and how to deploy them to production.",
+		videos: [
+			{title: "Introduction to Web Development", duration: "20:00"},
+			{title: "Building a Web App with Django", duration: "30:00"},
+			{title: "Building a Web App with Flask", duration: "40:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 8,
+		image: "https://picsum.photos/400/1000/?grayscale",
+		title: "Python for Finance",
+		instructor: "Michael Johnson",
+		rating: "4.5 ★ (60,000)",
+		price: "$79.99",
+		description:
+			"Learn how to use Python for financial analysis and algorithmic trading.",
+		level: "Advanced",
+		fullBrief:
+			"This course will teach you how to use Python for financial analysis and algorithmic trading. You will learn how to analyze financial data, build trading algorithms, and backtest your strategies.",
+		videos: [
+			{title: "Introduction to Financial Analysis", duration: "22:00"},
+			{title: "Building Trading Algorithms", duration: "32:00"},
+			{title: "Backtesting Strategies", duration: "42:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 9,
+		image: "https://picsum.photos/400/1100/?grayscale",
+		title: "Python for Machine Learning",
+		instructor: "Sarah Johnson",
+		rating: "4.6 ★ (70,000)",
+		price: "$89.99",
+		description:
+			"Learn how to use Python for machine learning. Build machine learning models and deploy them to production.",
+		level: "Intermediate",
+		fullBrief:
+			"This course will teach you how to use Python for machine learning. You will learn how to build machine learning models, train them on data, and deploy them to production.",
+		videos: [
+			{title: "Introduction to Machine Learning", duration: "24:00"},
+			{title: "Building ML Models", duration: "34:00"},
+			{title: "Deploying ML Models", duration: "44:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 10,
+		image: "https://picsum.photos/400/1200/?grayscale",
+		title: "Python for Cybersecurity",
+		instructor: "David Williams",
+		rating: "4.7 ★ (80,000)",
+		price: "$99.99",
+		description:
+			"Learn how to use Python for cybersecurity. Build security tools and automate security tasks.",
+		level: "Intermediate",
+		fullBrief:
+			"This course will teach you how to use Python for cybersecurity. You will learn how to build security tools, automate security tasks, and protect your systems from cyber threats.",
+		videos: [
+			{title: "Introduction to Cybersecurity", duration: "26:00"},
+			{title: "Building Security Tools", duration: "36:00"},
+			{title: "Automating Security Tasks", duration: "46:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 11,
+		image: "https://picsum.photos/400/1300/?grayscale",
+		title: "Python for Data Analysis",
+		instructor: "Emily Davis",
+		rating: "4.6 ★ (90,000)",
+		price: "$79.99",
+		description:
+			"Learn how to use Python for data analysis. Analyze data, build visualizations, and draw insights.",
+		level: "Intermediate",
+		fullBrief:
+			"This course will teach you how to use Python for data analysis. You will learn how to analyze data, build visualizations, and draw insights from data using popular libraries like Pandas and Matplotlib.",
+		videos: [
+			{title: "Introduction to Data Analysis", duration: "28:00"},
+			{title: "Building Visualizations", duration: "38:00"},
+			{title: "Drawing Insights", duration: "48:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+	{
+		id: 12,
+		image: "https://picsum.photos/400/1400/?grayscale",
+		title: "Python for Artificial Intelligence",
+		instructor: "James Brown",
+		rating: "4.7 ★ (100,000)",
+		price: "$99.99",
+		description:
+			"Learn how to use Python for artificial intelligence. Build AI models and deploy them to production.",
+		level: "Advanced",
+		fullBrief:
+			"This course will teach you how to use Python for artificial intelligence. You will learn how to build AI models, train them on data, and deploy them to production.",
+		videos: [
+			{title: "Introduction to AI", duration: "30:00"},
+			{title: "Building AI Models", duration: "40:00"},
+			{title: "Deploying AI Models", duration: "50:00"},
+		],
+		category: {
+			title: "Development",
+			id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		},
+		subcategoryId: {title: "Web Development", id: "ad1234567891"},
+	},
+];
+const getRandomElement = (arr: any[]) =>
+	arr[Math.floor(Math.random() * arr.length)];
+
+const availablecategory = [
+	{
+		title: "Development",
+		id: "1f0e7f9b-1b1b-4c9d-bd4e-1c3e6e93a6df",
+		subcategories: [
+			{id: "ad1234567891", title: "Web Development"},
+			{id: "ad1234567892", title: "Mobile Development"},
+			{id: "ad1234567893", title: "Game Development"},
+		],
+	},
+	{
+		title: "IT & Software",
+		id: "2f0e7f9b-2b2b-4c9d-bd4e-2c3e6e93a6df",
+		subcategories: [
+			{id: "ad1234567894", title: "Networking"},
+			{id: "ad1234567895", title: "Hardware"},
+			{id: "ad1234567896", title: "Operating Systems"},
+		],
+	},
+];
+
+featuredCourses.forEach(course => {
+	const category = getRandomElement(availablecategory);
+	const subcategoryId = getRandomElement(category.subcategories);
+	course.category = {title: category.title, id: category.id};
+	course.subcategoryId = {title: subcategoryId.title, id: subcategoryId.id};
+});
+
+// Example usage
+console.log(featuredCourses);
+
+featuredCourses.push(
+	{
+		id: 13,
+		image: "https://picsum.photos/400/1500/?grayscale",
+		title: "Introduction to Networking",
+		instructor: "Alice Johnson",
+		rating: "4.5 ★ (50,000)",
+		price: "$79.99",
+		description:
+			"Learn the basics of networking, including protocols, topologies, and hardware.",
+		level: "Beginner",
+		fullBrief:
+			"This course will teach you the fundamentals of networking. You will learn about different network protocols, topologies, and hardware components.",
+		videos: [
+			{title: "Networking Basics", duration: "10:00"},
+			{title: "Network Protocols", duration: "20:00"},
+			{title: "Network Topologies", duration: "30:00"},
+		],
+		category: {
+			title: "IT & Software",
+			id: "2f0e7f9b-2b2b-4c9d-bd4e-2c3e6e93a6df",
+		},
+		subcategoryId: {title: "Networking", id: "ad1234567894"},
+	},
+	{
+		id: 14,
+		image: "https://picsum.photos/400/1600/?grayscale",
+		title: "Advanced Operating Systems",
+		instructor: "Bob Smith",
+		rating: "4.7 ★ (40,000)",
+		price: "$99.99",
+		description:
+			"Deep dive into operating systems, covering advanced topics and concepts.",
+		level: "Advanced",
+		fullBrief:
+			"This course covers advanced topics in operating systems. You will learn about process management, memory management, and file systems.",
+		videos: [
+			{title: "Process Management", duration: "15:00"},
+			{title: "Memory Management", duration: "25:00"},
+			{title: "File Systems", duration: "35:00"},
+		],
+		category: {
+			title: "IT & Software",
+			id: "2f0e7f9b-2b2b-4c9d-bd4e-2c3e6e93a6df",
+		},
+		subcategoryId: {title: "Operating Systems", id: "ad1234567896"},
+	}
+);

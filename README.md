@@ -219,9 +219,7 @@ To run tests, use the following command:
 yarn run test
 ```
 
-## Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/ConnectedDot/KENDRA-LMS/issues). 
 
 
 ## Project Stack
@@ -257,6 +255,9 @@ The Kendra LMS project utilizes a variety of technologies to deliver a robust an
 
 This stack ensures that the platform is efficient, scalable, and maintainable, providing a seamless experience for both learners and instructors.
 
+## Contributing
+
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/ConnectedDot/KENDRA-LMS/issues). 
 
 ## License
 

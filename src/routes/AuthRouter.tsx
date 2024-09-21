@@ -48,6 +48,18 @@ const paths = [
 		element: lazy(() => import("../modules/Auth/ChangePassword")),
 	},
 	{
+		path: "/course/:category/:subcategory",
+		element: lazy(
+			() => import("../components/CoursePages/coursescategorypage")
+		),
+	},
+	{
+		path: "/course/:category/:subcategory/:id",
+		element: lazy(
+			() => import("../components/CoursePages/coursescategorypage")
+		),
+	},
+	{
 		path: "*",
 		element: lazy(() => import("../modules/NotFound")),
 	},
