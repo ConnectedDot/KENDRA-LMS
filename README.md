@@ -1,68 +1,89 @@
-<h1 align="center">Welcome to KENDRA LMS 👋</h1>
-<p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
-  <a href="https://github.com/ConnectedDot/KENDRA-LMS/blob/develop/LICENSE" target="_blank">
-    <img alt="License: BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License" src="https://img.shields.io/badge/License-BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License-yellow.svg" />
-  </a>
-  <a href="https://twitter.com/Mc\_Samuell" target="_blank">
-    <img alt="Twitter: Mc\_Samuell" src="https://img.shields.io/twitter/follow/Mc\_Samuell.svg?style=social" />
-  </a>
-</p>
 
 > Kendra LMS is an innovative online learning platform that connects learners with instructors from around the globe. 
 As the project proposes, it’s more or less a mini-Udemy-like project to provide virtual learning experience to learners, and allow instructors present their skilled program/courses to prospective learners.
 This is a web-based educational platform designed to facilitate online learning through dynamic course categorization, content delivery, and personalized learning paths. The platform mimics the structure of popular online learning websites (Udemy), allowing users to navigate through courses based on categories and subcategories, enhancing their learning experience.
 
 
-- Deployed: 🏠 [Homepage](https://kendra-lms.vercel.app)
 
-- Demo Video:✨ [Demo](https://youtu.be/YhrYUb_mFTY)
-
-
-
-<p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
-  <a href="https://github.com/ConnectedDot/KENDRA-LMS/blob/develop/LICENSE" target="_blank">
-    <img alt="License: BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License" src="https://img.shields.io/badge/License-BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License-yellow.svg" />
-  </a>
-  <a href="https://twitter.com/Mc\_Samuell" target="_blank">
-    <img alt="Twitter: Mc\_Samuell" src="https://img.shields.io/twitter/follow/Mc\_Samuell.svg?style=social" />
-  </a>
-</p>
-
-# Kendra LMS
+# Kendra LMS ![alt text](src/assets/Logo/3-re.png)
 
 Kendra LMS is an innovative online learning platform that connects learners with instructors from around the globe. 
 As the project proposes, it’s more or less a mini-Udemy-like project to provide virtual learning experience to learners, and allow instructors present their skilled program/courses to prospective learners.
 This is a web-based educational platform designed to facilitate online learning through dynamic course categorization, content delivery, and personalized learning paths. The platform mimics the structure of popular online learning websites (Udemy), allowing users to navigate through courses based on categories and subcategories, enhancing their learning experience.
 
+
+
+- Deployed: 🏠 [Homepage](https://kendra-lms.vercel.app)
+
+- Demo Video:✨ [Demo](https://youtu.be/YhrYUb_mFTY)
+
+## Folder Structuring
+
+```
+src/
+|-- assets/
+|-- axios-instance/
+|   |-- Logo/
+|       |-- 3-re.png
+|-- components/
+|   |-- Cards/
+|   |-- Carousel/
+|   |-- CarouselComponents/
+|   |-- Footer/
+|   |-- Forms/
+|   |-- Loader/
+|   |-- Modals/
+|       |-- index.ts
+|-- Firebase/
+|-- hooks/
+|-- interface/
+|-- layouts/
+|   |-- Admin/
+|   |-- Instructor/
+|   |-- Home/
+|   |-- Learners/
+    |-- index.tsx
+|-- modules/
+|   |-- Admin/
+|       |-- Auths/
+|       |-- components/
+|       |-- hooks/
+|       |-- management/
+|       |-- index.tsx
+|   |-- Auth/
+|       |-- index.tsx
+|   |-- Admin/
+|       |-- index.tsx
+|   |-- Home/
+|       |-- index.tsx
+|   |-- Insttructor/
+|       |-- courses/
+|       |-- profile/
+|       |-- index.tsx
+|   |-- Learners/
+|       |-- courses/
+|       |-- profile/
+|       |-- index.tsx
+|-- routes/
+|       |-- index.tsx
+|-- storage/
+|-- utils/
+|   |-- index.ts
+|-- App.tsx
+|-- index.tsx
+```
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Features](#features)
 3. [Prerequisites](#prerequisites)
 4. [Installation](#installation️)
 5. [Usage](#usage️)
-<!-- 6. [Learnings and Next Steps](#learnings-and-next-steps️) -->
 6. [Contributing](#contributing)
-<!-- 8. [Related Projects](#related-projects) -->
 7. [Project Stack](#project-stack)
 8. [License](#license)
 9. [Contact](#contact)
 
 
-
-## License
-
-This project is [BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License](https://github.com/ConnectedDot/KENDRA-LMS/blob/develop/LICENSE) licensed.
-
-## Contact
-
-👤 **Theophilus Samuel**
-
-* Website: connecteddots.disha.page
-* Twitter: [@Mc\_Samuell](https://twitter.com/Mc\_Samuell)
-* Github: [@ConnectedDot](https://github.com/ConnectedDot)
-* LinkedIn: [@theophilus-mcsamue](https://linkedin.com/in/theophilus-mcsamue)
 
 ## Introduction
 
@@ -258,51 +279,3 @@ This project is [BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License](https
 ## Show your support
 
 Give a ⭐️ if this project inspire you!
-
-<!-- ***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_ -->
-
-<!-- 
-
-## Install
-
-```sh
-yarn install
-```
-
-## Usage
-
-```sh
-yarn run start
-```
-
-## Run tests
-
-```sh
-yarn run test
-```
-
-## Author
-
-👤 **Theophilus Samuel**
-
-* Website: connecteddots.disha.page
-* Twitter: [@Mc\_Samuell](https://twitter.com/Mc\_Samuell)
-* Github: [@ConnectedDot](https://github.com/ConnectedDot)
-* LinkedIn: [@theophilus-mcsamue](https://linkedin.com/in/theophilus-mcsamue)
-
-## 🤝 Contributing
-
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/ConnectedDot/KENDRA-LMS/issues). 
-
-## Show your support
-
-Give a ⭐️ if this project helped you!
-
-## 📝 License
-
-Copyright © 2024 [Theophilus Samuel](https://github.com/ConnectedDot).<br />
-This project is [BSD 3--Clause &#34;New&#34; or &#34;Revised&#34; License](https://github.com/ConnectedDot/KENDRA-LMS/blob/develop/LICENSE) licensed.
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_ -->
