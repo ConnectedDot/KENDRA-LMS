@@ -1,10 +1,4 @@
 
-> Kendra LMS is an innovative online learning platform that connects learners with instructors from around the globe. 
-As the project proposes, it’s more or less a mini-Udemy-like project to provide virtual learning experience to learners, and allow instructors present their skilled program/courses to prospective learners.
-This is a web-based educational platform designed to facilitate online learning through dynamic course categorization, content delivery, and personalized learning paths. The platform mimics the structure of popular online learning websites (Udemy), allowing users to navigate through courses based on categories and subcategories, enhancing their learning experience.
-
-
-
 # Kendra LMS ![alt text](src/assets/Logo/3-re.png)
 
 Kendra LMS is an innovative online learning platform that connects learners with instructors from around the globe. 
